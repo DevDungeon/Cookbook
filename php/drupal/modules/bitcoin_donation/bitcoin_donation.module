@@ -1,0 +1,77 @@
+<?php
+/**
+ * @file
+ * Add a Bitcoin Donation block to your website
+ * 
+ * Add a Bitcoin receive button and allow visitors
+ * to donate to your wallet
+ * 
+ * Questions: nanodano@devdungeon.com
+ *
+ */
+
+
+/**
+ * Implements hook_menu().
+ */
+function bitcoin_donation_menu() {
+  $items['admin/config/bitcoin_donation'] = array(
+    'title' => 'Bitcoin Donation',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bitcoin_donation_admin_settings'),
+    'access arguments' => array('adminster site configuration'),
+    'file' => 'bitcoin_donation.admin.inc',
+  );
+  return $items;
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function bitcoin_donation_block_info() {
+  $blocks['bitcoin_donation_block'] = array(
+    'info' => t('Bitcoin Donation'),
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function bitcoin_donation_block_view($delta = '') {
+  switch ($delta) {
+    case 'bitcoin_donation_block':
+      $bitcoin_address = variable_get('bitcoin_donation_receive_address', 'NOT SET');
+      $label = variable_get('site_name', 'Donation');
+      $subject = t('Donate with Bitcoins!') . "<img src=\"/" .
+        drupal_get_path('module', 'bitcoin_donation') .
+        "/img/BC_Logo_.png\" width=\"25\" height=\"25\" />";
+      $content = "<div class=\"bitcoin-donation-widget\">";
+      if (
+        file_exists(drupal_get_path('module', 'bitcoin_donation') .
+          "/phpqrcode/qrlib.php")
+      ) {
+        $bitcoin_link = $bitcoin_address . "&label=" . $label;
+        include_once(drupal_get_path('module', 'bitcoin_donation') .
+          "/phpqrcode/qrlib.php");
+        $content .= '<img src="/' . drupal_get_path('module', 'bitcoin_donation') .
+          '/QRcode.php?qr_text=' . $bitcoin_link  . '" /><br />';
+      }
+      $content .= '<a href="bitcoin:' . $bitcoin_address . "?label=" . $label .
+        '">' . $bitcoin_address . '</a>';
+      $content .= "</div>";
+    break;
+  }
+  return array('subject' => $subject, 'content' => $content); 
+}
+
+
+/**
+ * Implements hook_uninstall()
+ */
+function bitcoin_donation_uninstall() {
+  variable_del('bitcoin_donation_receive_address');
+}
+

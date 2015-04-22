@@ -1,0 +1,12 @@
+Installation:
+Modules -> enable
+
+Admin:
+/admin/config/bitcoin_donation
+
+QR Code support:
+Requires the phpqrcode library from http://phpqrcode.sourceforge.net/
+Folder should be placed inside the bitcoin_donation module folder.
+Example: sites/all/modules/contrib/bitcoin_donation/phpqrcode/qrlib.php
+
+

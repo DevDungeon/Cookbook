@@ -1,0 +1,9 @@
+name = Bitcoin Donation
+description = Provides a Bitcoin donation widget for your site. By www.devdungeon.com
+core = 7.x
+files[] = bitcoin_donation.module
+files[] = bitcoin_donation.admin.inc
+configure = admin/config/bitcoin_donation
+
+version = "7.x-0.1"
+core = "7.x"

@@ -1,0 +1,10 @@
+wget \
+-o wget.log \
+-v \
+-U 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.6) Gecko/20070802 SeaMonkey/1.1.4' \
+--retry-connrefused \
+--waitretry=5 \ 
+-B http://www.domain.com/
+-i infile.dat \
+-P ./folderprefix \
+-nc #noclobber on overwrite

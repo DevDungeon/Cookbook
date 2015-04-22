@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.2 -->
+<interface>
+  <requires lib="gtk+" version="3.0"/>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name test1 -->
+      <column type="test"/>
+      <!-- column-name < define a new column >1 -->
+      <column type="&lt; define a new column &gt;"/>
+      <!-- column-name asdfasdf1 -->
+      <column type="asdfasdf"/>
+    </columns>
+    <data>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+    </data>
+  </object>
+  <object class="GtkWindow" id="window1">
+    <property name="can_focus">False</property>
+    <signal name="delete-event" handler="onDeleteWindow" swapped="no"/>
+    <child>
+      <object class="GtkTreeView" id="treeview1">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="halign">start</property>
+        <property name="valign">center</property>
+        <property name="margin_top">8</property>
+        <property name="margin_bottom">5</property>
+        <property name="model">liststore1</property>
+        <signal name="show" handler="handleShowTree" swapped="no"/>
+        <child internal-child="selection">
+          <object class="GtkTreeSelection" id="treeview-selection1"/>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window2">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkComboBox" id="combobox1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+  </object>
+</interface>

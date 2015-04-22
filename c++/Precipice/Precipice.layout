@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="FragmentColor.shader" open="0" top="0" tabpos="4">
+		<Cursor position="132" topLine="0" />
+	</File>
+	<File name="ManualPerspective.shader" open="1" top="0" tabpos="4">
+		<Cursor position="19" topLine="0" />
+	</File>
+	<File name="VertexPosition.shader" open="1" top="0" tabpos="5">
+		<Cursor position="143" topLine="0" />
+	</File>
+	<File name="display.hpp" open="1" top="0" tabpos="2">
+		<Cursor position="237" topLine="0" />
+	</File>
+	<File name="init.hpp" open="1" top="0" tabpos="3">
+		<Cursor position="2578" topLine="82" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="751" topLine="9" />
+	</File>
+</CodeBlocks_layout_file>

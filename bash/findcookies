@@ -1,0 +1,7 @@
+#!/bin/bash
+# Find all cookies in dump file for a specific domain
+
+read -p "Host to search for cookies: " host
+read -p "Cap file: " capfile
+
+grep $host $capfile -a | grep -a ^Cookie: 

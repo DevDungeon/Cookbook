@@ -1,0 +1,46 @@
+#!/usr/bin/node
+/* 
+ * jdcollection_archive.js - Download all videos from jdcollection.net
+ * Copyright (C) 2013 DevDungeon.com - nanodano@devdungeon.com
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * ==================================================================== 
+ *
+ * http://www.devdungeon.com
+ * NanoDano - nanodano@devdungeon.com
+ * 2013-07-11
+ * 
+ * Licensed under GNU GPL v3
+ */
+
+var request = require('request');
+var cheerio = require('cheerio');
+
+var input_url = 'http://www.jdcollection.net/archive';
+
+request(input_url, function(err, resp, body) {
+	if (err)
+		throw err;
+	$ = cheerio.load(body);
+
+	$('.view-content .views-table tbody tr .views-field-title a').each(function() {
+		var page_url = $(this).attr('href');
+		request(input_url + page_url, function(err, resp, body) {
+			$ = cheerio.load(body);
+			console.log($('#content iframe').html());
+		});
+	});
+
+});

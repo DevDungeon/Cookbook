@@ -1,0 +1,14 @@
+#!/bin/env bash
+
+# Compile and link single file nasm programs
+# usage: asm hello
+# compiles hello.asm to hello.o then links it to hello
+
+# Compile
+nasm -f elf64 "$1.asm"
+
+# Link
+ld -d -o "$1" "$1.o"
+
+# Run
+./"$1"

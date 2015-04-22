@@ -1,0 +1,9 @@
+name = "DevDungeon.com Google AnalyticEvent Tracking"
+description = "Javascript events for Google anlyticsevent tracking"
+core = 7.x
+package = DevDungeon.com
+files[] = devdungeoncom_google_event_tracker.module
+
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "devdungeoncom_google_event_tracker"

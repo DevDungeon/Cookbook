@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Tail file and look for Hosts
+read -p "Cap file: " capfile
+tail -f $capfile | grep -a "Host:"

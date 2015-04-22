@@ -1,0 +1,24 @@
+# depslib dependency file v1.0
+1354939890 source:d:\workspace\c++\precipice\precipice\main.cpp
+	<string>
+	<vector>
+	<iostream>
+	<fstream>
+	<sstream>
+	<algorithm>
+	<glload/gl_3_3_comp.h>
+	<glload/gll.hpp>
+	<GL/glfw.h>
+	"vertices.hpp"
+	"init.hpp"
+	"cleanup.hpp"
+	"display.hpp"
+
+1354941032 d:\workspace\c++\precipice\precipice\init.hpp
+
+1354504463 d:\workspace\c++\precipice\precipice\cleanup.hpp
+
+1354940386 d:\workspace\c++\precipice\precipice\display.hpp
+
+1354603868 d:\workspace\c++\precipice\precipice\vertices.hpp
+

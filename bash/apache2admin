@@ -1,0 +1,247 @@
+#!/bin/bash
+# Apache2 configuration helper - www.devdungeon.com
+# Questions: dave@devdungeon.com
+# This script is meant to help with daily tasks involving 
+# virtual hosts. It was written for Ubuntu 10.10, but should
+# work with most distributions. Some versions put all of the
+# virtual host configurations into one vhosts.* file. This 
+# script is only compatible with the method of creating 
+# vhosts by generating symlinks from /sites-enabled/ to /sites-available/.
+#
+# NOTE This script is not indended to be used out of the box, it will need
+# to be customized to your system. Make sure you know what you are doing so
+# you don't bork your config files. It's nothing too sophisticated, just a
+# tool to help you from typing so many commands
+
+config_root="/etc/apache2" 		# Path to apache2 config folder containing sites-available & sites-enabled (Ex: /etc/apache2)
+apache2="/etc/init.d/apache2" 	# Path to apache init.d script for reloading configs (Ex: /etc/init.d/apache2)
+hosts_file="/etc/hosts"
+
+check_permissions()
+{
+	clear
+	if [ ! -w $config_root ]; then
+		echo "===================== !!!!!!!!!!!!!!! ========================"
+		echo "  You do not have permission to write to $config_root."
+		echo "  Make sure you are running as the correct user"
+		echo "  if you wish to make changes."
+		echo "====================== !! WARNING !! ========================="
+		echo ""
+		read -p "Press return to continue..."
+		clear
+	fi
+}
+
+print_intro()
+{
+	echo "  +===================================+"
+	echo "  | Apache2 Virtual Host Configurator |"
+	echo "  +===================================+"
+	echo ""
+	echo "  Options"
+	echo "    0. Print this menu"
+	echo "    1. List sites-available"
+	echo "    2. List sites-enabled"
+	echo "    3. Enable site"
+	echo "    4. Disable site"
+	echo "    5. Delete site"
+	echo "    6. View/edit virtual host file"
+	echo "    7. Clone virtual host file"
+	echo "    8. Run apache2ctl configtest"
+	echo "    9. Run ${apache2} reload"
+	echo "    h. View/edit ${hosts_file}"
+	echo ""
+	echo "    q. Quit"
+	echo ""
+}
+
+list_available()
+{
+	echo -e "\n-- Available sites (${config_root}/sites-available):"
+	ls ${config_root}/sites-available
+	echo ""
+}
+
+list_enabled()
+{
+	echo -e "\n-- Enabled sites (${config_root}/sites-enabled):"
+	ls ${config_root}/sites-enabled
+	echo ""
+}
+
+enable_site()
+{
+	list_available
+	read -p "Enter name of available site to enable:" site_name
+	if [ -z "$site_name" ]; then
+		echo "No site name entered. Aborting."
+	elif [ ! -e ${config_root}/sites-available/${site_name} ]; then
+		echo "No virtual host entry in sites-available for: ${site_name}"
+	else
+		read -p "Enter name of enabled site (blank for same name): " new_name
+		echo "New site name: ${new_name:=$site_name}"
+		if [ -e ${config_root}/sites-enabled/${new_name} ]; then
+			echo "That site already exists: ${config_root}/sites-enabled/${new_name}. Aborting"
+		else
+			if ln -s ${config_root}/sites-available/${site_name} ${config_root}/sites-enabled/${new_name}
+			then
+				echo "Successfully created symlink from ${config_root}/sites-available/${site_name} to ${config_root}/sites-enabled/${new_name}. Make sure to reload the Apache2 configuration."
+			else
+				echo "Error creating symlink from ${config_root}/sites-available/${site_name} to ${config_root}/sites-enabled/${new_name}."
+			fi
+		fi
+	fi
+}
+
+disable_site()
+{
+	list_enabled
+	read -p "Enter the name of the enabled site to disable:" disable_site_name
+	if [ -z "$disable_site_name" ]; then
+		echo "No site name entered. Aborting."
+	else
+		if [ -e ${config_root}/sites-enabled/${disable_site_name} ]; then
+			if rm ${config_root}/sites-enabled/${disable_site_name}
+			then
+				echo "Successfully disabled site: ${disable_site_name}"
+			else
+				echo "Error removing ${config_root}/sites-enabled/${disable_site_name}."
+			fi
+		else	
+			echo "Site does not exist: ${config_root}/sites-enabled/${disable_site_name}."
+		fi
+	fi
+}
+
+delete_site()
+{
+	echo "NOTE: This will delete the virtual host files in ${config_root}/sites-available,"
+	echo "      but it will not destroy any symlinks that currently exist in sites-enabled"
+	echo "      Use the Disable Site option to first destroy a symblink"
+	echo "NOTE: This does not delete any document folders that may exist in"
+	echo "      the www root."
+	list_available
+	read -p "Enter the name of the site to delete: " delete_name
+	if [ -e ${config_root}/sites-available/${delete_name} ] && [ ! -z "$delete_name" ]; then
+		if rm ${config_root}/sites-available/${delete_name}
+		then
+			echo "Successfully deleted ${delete_name}"
+		else
+			echo "Error deleting ${config_root}/sites-available/${delete_name}"
+		fi
+	else
+		echo "Invalid site name: ${config_root}/sites-available/${delete_name}"
+	fi
+}
+
+edit_vhost()
+{
+	list_available
+	read -p "Enter the name of the site to edit: " edit_name
+	if [ -e ${config_root}/sites-available/${edit_name} ]; then
+		if ! nano ${config_root}/sites-available/${edit_name}
+		then
+			echo "Error editing: ${config_root}/sites-available/${edit_name}"
+		fi
+	else
+		echo "Site does not exist: ${config_root}/sites-available/${edit_name}"
+	fi
+}
+
+clone_vhost()
+{
+	list_available
+	read -p "Enter the name of the site to clone: " clone_source
+	if [ -e ${config_root}/sites-available/${clone_source} ] && [ ! -z "${clone_source}" ]; then
+		read -p "Enter the new name: " clone_target
+		if [ ! -e ${config_root}/sites-available/${clone_target} ] && [ ! -z "${clone_target}" ]; then
+			if ! cp ${config_root}/sites-available/{${clone_source},${clone_target}}
+			then
+				echo "Error copying ${config_root}/sites-available/{${clone_source},${clone_target}}"
+			else
+				echo "Successfuly cloned ${clone_source} to ${clone_target}"
+			fi
+		else
+			echo "Invalid target: ${config_root}/sites-available/${clone_target}. Aborting"
+		fi
+	else
+		echo "Invalid site name: ${clone_source}. Aborting."
+	fi
+}
+
+apache_test_config()
+{
+	if ! apache2ctl configtest
+	then
+		echo "Error running apachectl configtest"
+	fi
+}
+
+apache_reload()
+{
+	if ! ${apache2} reload
+	then
+		echo "Error running ${apache2} reload."
+	fi
+}
+
+edit_hosts()
+{
+	if ! nano ${hosts_file}
+	then
+		echo "Error editing ${hosts_file}"
+	fi
+}
+
+handle_input()
+{
+	read -p "Enter choice: " choice
+	while [ "$choice" != "q" ] && [ "$choice" != "Q" ];
+	do
+		case "$choice" in
+		"0" )
+			print_intro
+			;;
+		"1" )
+			list_available
+			;;
+		"2" )
+			list_enabled
+			;;
+		"3" )
+			enable_site
+			;;
+		"4" )
+			disable_site
+			;;
+		"5" )
+			delete_site
+			;;
+		"6" )
+			edit_vhost
+			;;
+		"7" )
+			clone_vhost
+			;;
+		"8" )
+			apache_test_config
+			;;
+		"9" )
+			apache_reload
+			;;
+		"h" )
+			edit_hosts
+			;;
+		esac
+		read -p "Enter choice (0 for menu): " choice
+	done
+}
+
+main()
+{
+	check_permissions
+	print_intro
+	handle_input
+}
+
+main

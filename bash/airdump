@@ -1,0 +1,9 @@
+#!/bin/bash
+# Listen and dump from wlan device
+
+read -e -p "Listen device: " -i "mon0" wlan_device
+read -e -p "Output file: " -i "out.pcap" dump_file_path
+read -p "Channel: " channel
+read -p "bssid: " bssid
+
+airodump-ng $wlan_device -w $dump_file_path --channel $channel --bssid $bssid

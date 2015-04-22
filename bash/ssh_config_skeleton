@@ -1,0 +1,13 @@
+Host example
+	HostName example.com
+	Port 2202
+	User username
+	IdentityFile ~/.ssh/id_rsa
+	#ForwardX11 yes
+	Compression yes
+	#LocalForward localhost:13117 localhost:3306
+	#RemoteForward 3306:localhost:13117 # connect local 13117 points to remote:3306
+Host myhost
+	Hostname 123.123.123.255
+	Port 8888
+	User username

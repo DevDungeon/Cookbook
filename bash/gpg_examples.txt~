@@ -1,0 +1,27 @@
+To generate a new keypair use
+# gpg --gen-key
+
+To generate a revocation certificate
+# gpg --output revoke.asc --gen-revoke mykey
+
+List keys
+# gpg --list-keys
+
+Exporting public key
+# gpg --output me.gpg --export me@example.com
+
+Exporting public key in ASCII for sharing
+# gpg --armor --export me@example.com
+
+Exporting private key for backup
+# gpg -a --export-secret-keys me@example.com
+
+Importing a public key
+# gpg --import someone.gpg
+
+Encrypting and decrypting
+# gpg --output doc.gpg --encrypt --recipient someone@example.com doc
+# gpg --output doc --decrypt doc.gpg
+
+# or use symmetric encryption (password)
+gpg --output doc.gpg --symmetric doc

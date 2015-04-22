@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Uses youtube-dl to extract audio from a youtube URL
+# Exctracts to ogg format
+
+youtube-dl -x --audio-format vorbis --audio-quality 0 "$1"

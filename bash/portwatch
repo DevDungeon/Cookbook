@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Watch a port
+read -p "Port: " -i "22" port
+
+tcpdump port $port

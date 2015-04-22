@@ -1,0 +1,25 @@
+Metadata-Version: 1.1
+Name: xmpppy
+Version: 0.5.0rc1
+Summary: XMPP-IM-compliant library for jabber instant messenging.
+Home-page: http://xmpppy.sourceforge.net/
+Author: Alexey Nezhdanov
+Author-email: snakeru@users.sourceforge.net
+License: GPL
+Download-URL: http://sourceforge.net/project/showfiles.php?group_id=97081&package_id=103821
+Description: This library provides functionality for writing xmpp-compliant
+        clients, servers and/or components/transports.
+        
+        It was initially designed as a "rework" of the jabberpy library but
+        has become a separate product.
+        
+        Unlike jabberpy it is distributed under the terms of GPL.
+Keywords: jabber,xmpp
+Platform: All
+Classifier: Topic :: Communications :: Chat
+Classifier: License :: OSI Approved :: GNU General Public License (GPL)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Natural Language :: English
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers

@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+
+$a = 2;
+$b = 3;
+print $a**$b, "\n";
+
+print STDOUT "enter filename: ";
+chomp($infile = <STDIN>);
+open(INFILE, "<$infile");
+
+$line = <INFILE>;
+print STDOUT $line;
+
+print "Continuing...\n";
+
+print STDOUT <INFILE>;

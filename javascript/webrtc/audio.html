@@ -1,0 +1,42 @@
+<html>
+  <body>
+
+
+    <audio autoplay></audio>
+
+    <script>
+
+      function hasGetUserMedia() {
+        // Note: Opera is unprefixed.
+        return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                  navigator.mozGetUserMedia || navigator.msGetUserMedia);
+      }
+
+      if (hasGetUserMedia()) {
+          // Good to go!
+        console.log('good to go');
+        console.log(navigator.mozGetUserMedia);
+      } else {
+        alert('getUserMedia() is not supported in your browser');
+      }
+     
+      var onFailSoHard = function(e) {
+        console.log('Reeeejected!', e);
+      };
+
+      // Not showing vendor prefixes.
+      navigator.mozGetUserMedia({video: false, audio: true}, function(localMediaStream) {
+        var audio = document.querySelector('audio');
+        audio.src = window.URL.createObjectURL(localMediaStream);
+
+        // Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
+        // See crbug.com/110938.
+        video.onloadedmetadata = function(e) {
+          // Ready to go. Do some stuff.
+        };
+      }, onFailSoHard);
+
+    </script>
+
+  </body>
+</html>

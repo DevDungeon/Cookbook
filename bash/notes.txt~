@@ -1,0 +1,91 @@
+Example PS1
+\[\e[1;36m\]\u\[\e[1;37m\]@\[\e[1;33m\]\H\[\e[m\] \[\e[1;36m\]\W\[\e[m\] \[\e[1;37m\]\$ \[\e[0m\]
+
+# BASH HISTORY SEARCH AND REPLACE
+      ^string1^string2^ Quick substitution. Repeat the last command, replacing string1 with
+      string2. Equivalent to ``!!:s/string1/string2/''
+
+# MORE BASH COMMAND LINE TRICKERY (messing with the history)
+make a directory then move into it:
+mkdir cgi-bin; cd !#$ 
+!#$ is shorthand for "the first word of this command". If I wanted to pick the third word
+out of the previous command, that would be: !!:3 (don't forget there is a zeroth word).
+
+# execute the most recent command the contains the following string: 
+!?string
+
+# globally search replace on the previous line:
+!!:gs/old/new/
+
+# HEADS AND TAILS
+ever wanted to copy a few files in the same directory, all of which have same 
+long prefix, like: cp /usr/local/etc/apache/file1.txt /usr/local/etc/apache/file2.txt
+you can grap and reuse that prefix. It's named !#:1:h like:
+cp /usr/local/etc/apache/file1.txt !#:1:h/file2.txt !#:1:h/file3.txt
+
+
+# SAVING A COMMAND WITHOUT EXECUTING
+While using bash, if you have typed a long command, and then realize you don't want to execute it yet, don't delete it. Simply
+append a # to the beginning of the line, and then hit enter. Bash will not execute the command, but will store it in history so later
+you can go back, remove the # from the front, and execute it. 
+
+# GOING FORWARD A BACK A WORD
+META-F goes forward a word
+META-B goes backward a word
+
+# COMPARE A FILE WITH IT'S VARIOUS VERSIONS IN THE SAME DIRECTORY
+diff file.*
+
+# EXAMPLE of a basic command line script
+for f in `ls | grep -v "\.sh$"`; { mv ${f} ${f}.sh; }
+
+# searching the history
+Cntrl-R starts a reverse incremental search 
+
+# Keyboard shortcuts: 
+CTRL-k: delete ('kill') from cursor position to the end of the line
+*	CTRL-u: delete from cursor position to the beginning of the line
+*	ALT-d: delete from cursor position to the end of the current 'word'
+*	CTRL-w: delete from cursor position to the beginning of the current 'word'
+*	CTRL-a: move cursor to the first character of the line
+*	CTRL-e: move cursor beyond the last character of the line
+*	ALT-a: move cursor to the first character of the current 'word'
+*	ALT-e: move cursor to the last character of the current 'word'
+*	CTRL-y: insert latest deleted 'word'
+*	ESC-_ or !$: repeats the last argument of the previous command.
+Example: You created a directory with mkdir /usr/local/bin/peter/pan. Now you want to change into that directory with cd. Instead of typing the path again, you type cd ESC-_ or
+
+
+Black       0;30     Dark Gray     1;30
+Blue        0;34     Light Blue    1;34
+Green       0;32     Light Green   1;32
+Cyan        0;36     Light Cyan    1;36
+Red         0;31     Light Red     1;31
+Purple      0;35     Light Purple  1;35
+Brown       0;33     Yellow        1;33
+Light Gray  0;37     White         1;37
+
+
+
+==
+Instructions for using Android GPS 
+==
+
+Install app on Android phone: BlueNMEA.
+When running it will tell you it is listening on TCP 4352.
+
+On the computer, use adb to forward the TCP port over USB to the phone.
+adb forward tcp:4352 tcp:4352
+
+Then you can point gpsd to localhost:4352 to get its data.
+gpsd -N -n -D5 tcp://localhost:4352
+
+gpsd runs on port 2497 (or something) and kismet is configured to use this by default.
+
+Launch Kismet and watch the magic work.
+###############################################
+# get kml from results
+
+giskismet -x Kismet-20111221-20-36-33-1.netxml 
+
+giskismet -q "SELECT * FROM WIRELESS" -o aps.kml

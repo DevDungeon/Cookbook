@@ -27,6 +27,7 @@ class IP(Structure):
         return cls.from_buffer_copy(socket_buffer)
 
     def __init__(self, socket_buffer=None):
+
         # Map protocol constants to names
         self.protocol_map = {
             1: "ICMP",

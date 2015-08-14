@@ -1,7 +1,9 @@
 object CmdArgs {
-  def main(args: Array[String]) {
-    println("Args:  " + args.toList)
-    println("Args does not count the program name. Arg 0 is first arg. Print with args(0)")
+    def main(args: Array[String]) {
 
-  }
+        // Args does not count the program name.
+        println("First argument: " + args(0))
+        println("All Command Line Arguments: " + args.toList)
+
+    }
 }

@@ -1,0 +1,18 @@
+<html>
+  <body>
+
+    <audio autoplay id="myAudioElement"></video>
+
+    <script>
+        var failHandler = function(e) {
+            console.log('Failed to get user media.', e);
+        };
+
+        navigator.mozGetUserMedia({audio: true}, function(localMediaStream) {
+            var video = document.querySelector('#myAudioElement');
+            video.src = window.URL.createObjectURL(localMediaStream);
+        }, failHandler);
+    </script>
+
+  </body>
+</html>

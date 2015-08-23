@@ -16,7 +16,7 @@ func main() {
 	fileInfo, err := os.Stat("test.txt")
 	if err != nil {
 		if os.IsNotExist(err) {
-			log.Println("File does not exist.")
+			log.Fatal("File does not exist.")
 		}
 	}
 	log.Println("File does exist. File information:")

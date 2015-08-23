@@ -16,4 +16,5 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Println(newFile)
+	newFile.Close()
 }

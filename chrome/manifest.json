@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+
+  "name": "Chrome Extension Template",
+  "description": "Extension base template ready for development",
+  "version": "1.0",
+
+  "options_page": "options.html",
+
+  "permissions": [
+    //"http://example.com",
+    "notifications"
+  ],
+
+  //"omnibox": { "keyword" : "" },
+
+  "browser_action": {
+    "default_icon": "img/icon.png",
+    "default_popup": "index.html"
+  }
+
+}

@@ -1,0 +1,9 @@
+# Use Go compiler instead of cgo, build all 
+CGO_ENABLED=0 go build -a progam.go
+
+
+
+# When go getting tell it to use Go compiler (not cgo)
+# and rebuild all dependencies (-a) right in to the file. This will compile pthread, libc, or whatever else
+# It also removes debug info (-ldflags '-s') reducing the file size
+CGO_ENABLED=0 go get -a -ldflags '-s' github.com/nanodano/somegoprogram

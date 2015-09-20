@@ -1,0 +1,9 @@
+#Host template.local
+#	HostName zvza.net
+#	Port 2202
+#	User dtron
+#	IdentityFile ~/.ssh/id_rsa
+#	ForwardX11 no
+#	Compression yes
+#	LocalForward localhost:13117 localhost:3306
+#	RemoteForward 2222:localhost:13117

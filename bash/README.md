@@ -1,4 +1,3 @@
-bash-stuff
-==========
+# Bash
 
-Bash scripts and notes
+Bash reference scripts and notes

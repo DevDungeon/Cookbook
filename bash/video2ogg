@@ -1,3 +1,0 @@
-#!/bin/bash
-# Convert a video to mp3 file
-ffmpeg -i "$1" -vn -ar 44100 -ac 2 -ab 192k -f ogg "$1".ogg

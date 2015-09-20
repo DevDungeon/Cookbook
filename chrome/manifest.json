@@ -9,6 +9,8 @@
 
   "permissions": [
     //"http://example.com",
+    //"storage",
+    //"tabs"
     "notifications"
   ],
 
@@ -18,5 +20,7 @@
     "default_icon": "img/icon.png",
     "default_popup": "index.html"
   }
+
+  //"update_url": "http://path.to/autoupdater_updates.xml",
 
 }

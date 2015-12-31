@@ -26,4 +26,5 @@ print "Platform: ", sys.platform
 print "File system encoding: ", sys.getfilesystemencoding()
 print "Default encoding: ", sys.getdefaultencoding()
 print "C API version: ", sys.api_version
-print "Python version: ", sys.version
+print "Python version: ", sys.version  # Human readable
+print "Python version info", sys.version_info  # As a data struct

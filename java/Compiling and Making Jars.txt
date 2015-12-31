@@ -1,0 +1,21 @@
+Compiling and Making Jars
+
+# Compile a program with
+javac MyProgram.java
+
+# Run with
+java MyProgram arg1 arg2
+
+# =====================================
+
+# Create a jar by compiling first
+javac MyProgram.java
+
+# Then creating the jar. This will create a default manifest file in the jar
+jar cf MyProgram.jar MyProgram.class
+
+# Edit the manifest file in the archive to include
+Main-Class: MyProgram
+
+# Then run the jar with
+java -jar MyProgram.jar arg1 arg2

@@ -1,0 +1,3 @@
+pip install python-ldap \
+   --global-option=build_ext \
+   --global-option="-I$(xcrun --show-sdk-path)/usr/include/sasl"

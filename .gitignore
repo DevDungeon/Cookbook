@@ -1,2 +1,14 @@
 *~
 .idea
+.DS_Store
+/java/Swing/HelloWorld/nbproject/private/
+/java/Swing/HelloWorld/build/
+/java/Swing/HelloWorld/dist/
+/java/Swing/HelloWorldMaven/target/
+/java/Swing/MultipleWindows/nbproject/private/
+/java/Swing/MultipleWindows/build/
+/java/Swing/MultipleWindows/dist/
+/java/Swing/FileDragNDrop/nbproject/private/
+/java/UsingApacheHttpClient/target/
+/java/JsonExample/target/
+/java/Swing/FileDragNDrop/build/

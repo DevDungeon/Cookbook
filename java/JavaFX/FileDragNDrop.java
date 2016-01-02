@@ -20,7 +20,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.RectangleBuilder;
 import javafx.stage.Stage;
 
-public class DragNDrop extends Application {
+public class FileDragNDrop extends Application {
     public static void main(String[] args) {
         Application.launch(args);
     }

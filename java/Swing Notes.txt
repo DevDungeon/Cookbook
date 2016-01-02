@@ -1,3 +1,0 @@
-Swing native look n feel
-
-UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

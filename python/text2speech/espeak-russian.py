@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from espeak import espeak
 
-import codecs
 # Install espeak in Ubuntu with
 # sudo apt-get instll espeak
 # sudo apt-get install python-espeak
@@ -20,7 +19,5 @@ espeak.set_voice("ru")
 
 # Python2 files must be marked # -*- coding: utf-8 -*-
 espeak.synth("где папа")
-
 while espeak.is_playing:
 	pass
-	

@@ -3,7 +3,7 @@
 # Lib at: https://github.com/parente/pyttsx
 
 import pyttsx
-engine = pyttsx.init("espeak")
+engine = pyttsx.init()
 engine.setProperty('rate', 70)
 
 voices = engine.getProperty('voices')

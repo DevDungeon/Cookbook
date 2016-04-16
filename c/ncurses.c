@@ -1,5 +1,5 @@
 // Compile with
-// g++ ncurses.cpp -lncurses
+// gcc ncurses.c -lncurses
 
 // If necessary install ncurses headers with 
 // sudo apt-get install libncurses-dev

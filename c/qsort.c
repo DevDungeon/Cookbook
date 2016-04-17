@@ -28,7 +28,7 @@ void swap(int values[], int i, int j) {
 
 void print_array(int nums[], int len) {
 	printf("Values: ");
-	for (int i = 0; i < len; i++) {
+	for (int i = 0; i < len - 1; i++) {
 		printf("%d, ", nums[i]);
 	}
 	printf("%d.\n", nums[len - 1]);
@@ -42,7 +42,7 @@ int main() {
 	int array_len = sizeof(nums) / sizeof(int);
 	print_array(nums, array_len);
 	
-	qsort(nums, 0, (sizeof(nums) / sizeof(int)));
+	qsort(nums, 0, array_len - 1);
 	
 	print_array(nums, array_len);
 	return 0;

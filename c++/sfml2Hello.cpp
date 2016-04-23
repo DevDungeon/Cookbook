@@ -1,3 +1,8 @@
+// g++ -c main.cpp
+// g++ -c main.cpp -I<sfml-install-path>/include
+
+// g++ main.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system
+// g++ main.o -o sfml-app -L<sfml-install-path>/lib -lsfml-graphics -lsfml-window -lsfml-system
  #include <SFML/Window.hpp>
 
 

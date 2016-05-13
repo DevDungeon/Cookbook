@@ -6,13 +6,17 @@ git clone https://github.com/NanoDano/cookbook
 
 [DevDungeon Cookbook](http://www.devdungeon.com/cookbook)
 
-Cookbook is a collection of code snippets organized by programming language. It includes re-usable snippets, notes, templates programs, and other references. The purpose of Cookbook is to provide a large amount of example code for reading, studying, learning, re-using, extending and improving. Most examples are contained in a single file and are small enough to read even if you are not familiar with the programming language. That is what makes it good for learning new languages in small pieces. The small examples are the building blocks of large more complex programs. Some examples are whole project templates ready to go, like the Chrome browser extension template in the chrome_extension folder.
+## What is the Cookbook?
+
+The Cookbook is a collection of code snippets organized by programming language. It also includes notes, template programs, and other references. The purpose of Cookbook is to provide example code for reading, reference, or re-use. Most examples are a single file. They are building blocks for larger more complex programs. Some examples are project templates ready to go, like the [Chrome browser extension template](https://github.com/NanoDano/cookbook/tree/master/chrome_extension).
 
 Cookbook is a bookmark and git repository that everyone should keep handy. If you have your own snippets I highly encourage you to create a pull request in GitHub.
 
 ## The Cookbook Method
 
-If you are interested in learning to program, or already know how to program but want to learn new languages, I recommend you give the Cookbook Method a try. It is the method I developed over time for learning new languages and preserving the knowledge learned in those endeavors in a useful way.
+### Develop Your Own Cookbook
+
+If you are interested in learning to program, or already know how to program but want to learn new languages and build your toolbox then I recommend you give the Cookbook Method a try. It is the method I developed over time for learning new languages and preserving the knowledge learned in those endeavors in a useful way.
 
 ### Steps
 

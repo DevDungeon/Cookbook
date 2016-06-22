@@ -1,15 +1,29 @@
-import socket
-from OpenSSL import SSL
+import socket, ssl
 
-context = SSL.Context(SSL.SSLv23_METHOD)
-context.use_privatekey_file('key.pem')
-context.use_certificate_file('cert.pem')
+bindsocket = socket.socket()
+bindsocket.bind(('', 10024))
+bindsocket.listen(5)
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s = SSL.Connection(context, s)
-s.bind(('', 12345))
-s.listen(5)
-
-(connection, address) = s.accept()
 while True:
-    print repr(connection.recv(65535))
+    newsocket, fromaddr = bindsocket.accept()
+    connstream = ssl.wrap_socket(newsocket,
+                                 server_side=True,
+                                 certfile="cert.pem",
+                                 keyfile="key.pem",
+                                 ssl_version=ssl.PROTOCOL_TLSv1)
+    try:
+        deal_with_client(connstream)
+    finally:
+        connstream.shutdown(socket.SHUT_RDWR)
+        connstream.close()
+
+def deal_with_client(connstream):
+    data = connstream.read()
+    # null data means the client is finished with us
+    while data:
+        if not do_something(connstream, data):
+            # we'll assume do_something returns False
+            # when we're finished with client
+            break
+        data = connstream.read()
+    # finished with client

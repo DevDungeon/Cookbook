@@ -36,7 +36,18 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Get a domain
+	// Get one domain
+	var result Domain
+	err = c.Find(bson.M{"name": "www.example123123123.com"}).One(&result)
+	if err != nil {
+		if err == mgo.ErrNotFound {
+			log.Println("Domain not found.")
+		}
+		log.Fatal(err)
+	}
+	fmt.Println("Domains:", result)
+
+	// Get many domain
 	var results []Domain
 	err = c.Find(bson.M{"name": "www.example.com"}).All(&results)
 	if err != nil {

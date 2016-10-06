@@ -30,22 +30,22 @@ Creating a .jar with Maven
 Add the jar plugin to the Maven pom.xml
 
 <project>
-<build>
-<plugins>
-<plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-jar-plugin</artifactId>
-	<version>2.4</version>
-	<configuration>
-		<archive>
-			<manifest>
-				<mainClass>com.mycompany.packagename.MainClass</mainClass>
-			</manifest>
-		</archive>
-	</configuration>
-</plugin>
-</plugins>
-</build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.mycompany.packagename.MainClass</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
 
 Creating a .jar with dependencies inside using Maven
@@ -53,23 +53,23 @@ Creating a .jar with dependencies inside using Maven
 Add the shade plugin inside the Maven pom.xml
 
 <project>
-<build>
-<plugins>
-<plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-shade-plugin</artifactId>
-	<executions>
-		<execution>
-			<phase>package</phase>
-			<goals>
-				<goal>shade</goal>
-			</goals>
-		</execution>
-	</executions>
-	<configuration>
-		<finalName>uber-${artifactId}-${version}</finalName>
-	</configuration>
-</plugin>
-</plugins>
-</build>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<finalName>uber-${artifactId}-${version}</finalName>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

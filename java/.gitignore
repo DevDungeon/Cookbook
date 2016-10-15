@@ -3,3 +3,4 @@ build
 nbactions.xml
 *.class
 target
+test.txt

@@ -1,0 +1,50 @@
+================================================================
+ adb commands
+================================================================
+adb shell netcfg
+adb shell ip route
+adb shell ifconfig wlan0
+adb push files
+adb install a.apk
+take screenshot
+- C:\Users\dtron>adb shell screencap -p /sdcard/Download/screencap.png
+- C:\Users\dtron>adb pull /sdcard/Download/screencap.png
+
+
+================================================================
+Proxying HTTP(S) traffic with Fiddler
+================================================================
+Optionally use Charles
+turn on allow other computers, https, decrypt https
+add certificate as trusted http://www.cantoni.org/2013/11/06/capture-android-web-traffic-fiddler
+Tap on Settings, then Wi-Fi
+Find network, click and hold
+Set proxy back to None
+Go up a level in settings to Security
+Tap Trusted credentials, then select the User tab
+Tap on the Fiddler “Do not trust” certificate, then scroll down to remove it and reboot
+
+================================================================
+Decompilation
+================================================================
+Decompile and rebuild using these tools:
+- how to get an official apk off the phone
+- how to decompile it and look around
+- how to repackage and install and run
+-apktool
+-dex2jar
+-androguard
+- jd-gui
+-dexid
+-dare
+
+java -jar apktool.jar b myapp-modded # build
+adb logcat | egrep 'VFY|Verify'
+
+Inside the code you can
+- insert trojan code/keyloggers: steal username/password
+- find encryption keys, passwords
+- change variables
+- change how things work
+
+At some point you'll have to look at the application code. Maybe it's using a proprietary binary protocol, maybe the traffic is encrypted or compressed, maybe you can't make sense of some values. I suggest trying multiple decompilers/engines. They are not perfect, and a lot of times one works well where the other fails. Virtuous Ten Studio is a good one to start with. Then I alway extract the classes.dex file from the APK (it's just a ZIP file) and run it through dex2jar. I then run the resulting JAR through JD-GUI (JD-Core engine) and SecureTeam Java Decompiler (Procyon engine). Also, jadx can target DEX directly, without dex2jar.

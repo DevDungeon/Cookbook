@@ -1,4 +1,3 @@
-
 # See if last statement executed was successful
 ./runSomething
 

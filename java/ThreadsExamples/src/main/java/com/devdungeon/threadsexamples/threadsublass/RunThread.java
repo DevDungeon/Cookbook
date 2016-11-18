@@ -3,18 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.devdungeon.threadsexamples;
+package com.devdungeon.threadsexamples.threadsublass;
 
 /**
  *
- * @author dtron
+ * @author NanoDano <nanodano@devdungeon.com>
  */
-public class ThreadSubclassExample extends Thread {
-    public void run() {
-        System.out.println("Hello from a thread!");
-    }
-
-    public static void main(String args[]) {
+public class RunThread {
+    
+    public static void main(String[] args) {
         (new ThreadSubclassExample()).start();
     }
+    
 }

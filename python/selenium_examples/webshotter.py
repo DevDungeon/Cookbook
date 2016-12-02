@@ -1,5 +1,6 @@
 # To run
-# 1) Install the Selenium package for Python (pip install selenium)
+# 1) Install the Selenium package for Python
+#       pip install selenium
 # 2) Download the Chrome Web Driver: https://sites.google.com/a/chromium.org/chromedriver/home
 # 3) Put the executable in your PATH or just drop it in the same folder with webshotter.py
 # 4) Test run with:

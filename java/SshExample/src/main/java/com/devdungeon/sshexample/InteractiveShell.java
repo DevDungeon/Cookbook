@@ -8,7 +8,7 @@ import com.jcraft.jsch.UIKeyboardInteractive;
 import com.jcraft.jsch.UserInfo;
 import javax.swing.*;
 
-public class Main{
+public class InteractiveShell{
     
     public static void main(String[] arg){
 
@@ -61,9 +61,7 @@ public class Main{
 
             session.setUserInfo(ui);
 
-            // It must not be recommended, but if you want to skip host-key check,
-            // invoke following,
-            // session.setConfig("StrictHostKeyChecking", "no");
+            // session.setConfig("StrictHostKeyChecking", "no"); // Skip host-key check
 
             session.connect(30 * 1000); // making a connection with the optional timeout
 

@@ -37,11 +37,13 @@ password = <password>
 
 ======
 
-Register the package on pypi.python.org
+Register the package by uploading it
+
 
 ========
 Compile for source distribution at minimum
 
 python setup.py sdist
 
+pip install twine
 twine upload dist/*

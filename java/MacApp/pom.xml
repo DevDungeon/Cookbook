@@ -15,24 +15,20 @@
             <plugin>
                 <groupId>sh.tak.appbundler</groupId>
                 <artifactId>appbundle-maven-plugin</artifactId>
-                <version>1.0.4</version>
+                <version>1.2.0</version>
                 <configuration>
                     <mainClass>com.devdungeon.macapp.MainWindow</mainClass>        
                     <iconFile>devdungeon.icns</iconFile>
                 </configuration>
                 <executions>
-                  <execution>
-                    <phase>package</phase>
-                    <goals>
-                      <goal>bundle</goal>
-                    </goals>
-                  </execution>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>bundle</goal>
+                        </goals>
+                    </execution>
                 </executions>
-              </plugin>
+            </plugin>
         </plugins>
-        
-        
-        
     </build>
-    
 </project>

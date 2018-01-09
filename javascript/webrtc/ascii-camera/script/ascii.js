@@ -1,7 +1,15 @@
 // Author: Andrei Gheorghe (http://github.com/idevelop)
 
-var ascii = (function() {
-	function asciiFromCanvas(canvas, options) {
+var ascii = (function() {NanoDano
+#9417
+
+
+    general
+    Search
+
+    LOAD MORE MESSAGES
+
+    function asciiFromCanvas(canvas, options) {
 		// Original code by Jacob Seidelin (http://www.nihilogic.dk/labs/jsascii/)
 		// Heavily modified by Andrei Gheorghe (http://github.com/idevelop)
 

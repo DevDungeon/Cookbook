@@ -7,6 +7,9 @@ CGO_ENABLED=0 go build -a progam.go
 # It also removes debug info (-ldflags '-s') reducing the file size
 CGO_ENABLED=0 go get -a -ldflags '-s' github.com/nanodano/somegoprogram
 
+3 https://blog.codeship.com/building-minimal-docker-containers-for-go-applications/
+# CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+
 #################################
 
 # Generally, --ldflags '-extldflags "-static"' can be added to the compile command and it will output a proper static executable.

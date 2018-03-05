@@ -1,0 +1,36 @@
+Compiling Qt5 from source
+=========================
+
+sudo apt install libgl1-mesa-dev
+sudo apt install libglu1-mesa-dev
+
+
+git clone git://code.qt.io/qt/qt5.git
+
+cd qt5
+
+
+./configure -opensource -nomake tests
+
+make
+
+sudo make install
+
+Path is to /usr/local/Qt*/bin
+
+Compiling Qt Creator from source
+================================
+
+https://wiki.qt.io/Building_Qt_Creator_from_Git
+
+git clone --recursive https://code.qt.io/qt-creator/qt-creator.git
+mv qt-creator{,-src}
+mkdir qt-creator
+cd qt-creator
+
+qmake ../qt-creator-src/qtcreator.pro
+make qmake_all
+
+make -j<cpuCount+1>
+
+[sudo make install]

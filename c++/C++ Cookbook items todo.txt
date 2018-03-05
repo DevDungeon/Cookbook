@@ -1,0 +1,103 @@
+C++
+
+Installing a compiler to get started
+- Ubuntu - gcc or Qt
+- Windows - gcc or Qt or Vistual Studio or DevC++
+- Mac - gcc or XCode
+-  - Qt
+
+Editors
+- Qt Creator
+- Visual Studio
+- Clion
+- Visual Studio Code
+
+Basics
+- Hello world
+- Taking command line arguments
+- Compiling and linking separately
+- Other compiler options
+- creating a simple make file
+- creating a cmake file
+
+- sleep
+- random numbers
+- Environment variables
+- ncurses
+- colorizing output
+- serial communication (arduino?)
+- Getting user home dir
+- Getting number of CPUs
+- Getting max memory size
+- Getting list of disks
+- Determining window/mac in cmake or on run?
+- system calls
+- tcp client/server
+- tls client/server
+
+- Spitting out programs memory locations
+- Wrapping an existing binary with a custom backdoor
+
+- Reading and Writing Files
+- Packaging
+	- creating a man page
+	- creating a .deb
+	- creating a .exe
+		- with an icon (for gui app)
+	- creating a mac .app (gui)
+		- creating something brew-installable
+
+
+
+- HTTP requests
+- JSON processing
+- SSH connections
+- Generating crypto keys
+- Discord Bot?
+- AIML?
+- OpenAL
+	- Binaural audio
+- Qt OpenGL
+- 2D OpenGL
+	- Game of Life
+- 3D OpenGL basics
+	- Minecraft world generator clone
+- Gtk
+- wxWidgets
+- Qt
+- Qt Mobile
+- Game Development (in space!)
+	- keyboard and mouse input
+	- drawing ui
+	- menu system
+	- drawing shapes
+	- physics
+	- collisions
+	- lighting
+	- particles
+
+
+
+
+
+
+
+
+
+
+
+C++ pentesting
+- same stuff that was in Go
+- lots of shell stuff
+- antivirus evasion
+- wrapping a program
+- process attaching/hijacking
+- dll injection/hijacking
+- buffer overflow examples
+- instructions on finding/exploiting overflow
+- honeypots
+- keylogger (goes in pentest playlis)
+- app fuzzers
+- network fuzzers
+- port scanners
+- wardrive tool (pi w/ wifi+gpsd?)

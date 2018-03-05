@@ -1,4 +1,4 @@
-To get started with C++ you need a compiler toolchain.
+To get started with C++ you need a compiler toolchain. I recommend using g++(gcc) for beginners.
 
 Installing on Ubuntu
 --------------------

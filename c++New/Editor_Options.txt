@@ -1,0 +1,24 @@
+These are some of the recommended editors for various platforms.
+
+Cross platform
+--------------
+Qt Creator
+Visual Studio Code
+Atom
+Sublime Text
+vim
+emacs
+Code::Blocks
+NetBeans
+CLion
+Eclipse
+Dev-C++
+
+Windows Only
+------------
+Visual Studio
+
+Mac Only
+--------
+XCode
+

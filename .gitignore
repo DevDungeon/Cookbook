@@ -21,3 +21,6 @@ a.exe
 .dropbox.attr
 .~lock*
 .vscode
+a.out
+
+*.swp

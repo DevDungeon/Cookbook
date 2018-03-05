@@ -1,0 +1,13 @@
+To get started with C++ you need a compiler toolchain.
+
+Installing on Ubuntu
+--------------------
+Install gcc with sudo apt install build-essential
+
+Installing on Windows
+---------------------
+Install Visual Studio, Qt Creator, MSYS2, or Dev-C++
+
+Installing on MacOS
+-------------------
+Install XCode or brew install gcc

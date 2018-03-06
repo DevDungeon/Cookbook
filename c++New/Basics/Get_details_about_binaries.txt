@@ -13,3 +13,6 @@ Use objdump to get information aboutan object file
     objdump -x some_lib.o
 
 
+
+Tools
+    objdump, nm, llvm-readobj, readelf (ELF), otool (MachO, dumpbin (PECOFF)

@@ -6,7 +6,7 @@ static:
 	
 shared:
 	# Compile the library to be shared
-	g++ -fpic -c src/functions.cpp -o obj/functions.o
+	g++ -fPIC -c src/functions.cpp -o obj/functions.o
 	g++ -shared -o lib/libfunctions.so obj/functions.o
 
 

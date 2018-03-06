@@ -6,7 +6,7 @@ Install gcc with sudo apt install build-essential
 
 Installing on Windows
 ---------------------
-Install Visual Studio, Qt Creator, MSYS2, or Dev-C++
+Install Visual Studio, Qt Creator, MSYS2 for gcc, or Dev-C++
 
 Installing on MacOS
 -------------------

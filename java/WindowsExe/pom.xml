@@ -55,7 +55,7 @@
                             <goal>launch4j</goal>
                         </goals>
                         <configuration>
-                            <headerType>gui</headerType>
+                            <headerType>gui</headerType><!--gui|console|jniGui32|jniConsole32-->
                             <jar>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar</jar>
                             <outfile>${project.build.directory}/TestWindowsApp.exe</outfile>
                             <downloadUrl>http://java.com/download</downloadUrl>

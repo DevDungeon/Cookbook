@@ -1,4 +1,4 @@
-package com.devdungeon.pcaptest;
+package com.devdungeon.cookbook.pcap;
 
 import java.io.EOFException;
 import java.util.concurrent.TimeoutException;

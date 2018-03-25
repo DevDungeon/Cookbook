@@ -24,3 +24,5 @@ a.exe
 a.out
 
 *.swp
+*.exe
+*.exe~

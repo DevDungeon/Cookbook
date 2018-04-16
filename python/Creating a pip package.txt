@@ -32,7 +32,7 @@ Create a new directory to hold your package
 
 Executable scripts
 ------------------
-Add scripts to the bin folder. Put a shebang so it is handled properly.
+Add scripts to a bin/ directory. Create a .cmd file for Windows and a shell script with a shebang for Linux/Mac. Refer to the examples provided for how to build the scripts.
 
 
 Set up ~/.pypirc (Optional)

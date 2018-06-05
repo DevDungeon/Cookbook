@@ -1,0 +1,24 @@
+#######################################
+# Syntax Coloring Map For ArduinoCloudThing
+#######################################
+
+#######################################
+# Class (KEYWORD1)
+#######################################
+
+ArduinoCloud	KEYWORD1
+ArduinoCloudThing	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+# methods names in commond
+begin	KEYWORD2
+poll	KEYWORD2
+addProperty	KEYWORD2
+addExternalProperty	KEYWORD2
+writeProperty	KEYWORD2
+readProperty	KEYWORD2
+enableDebug	KEYWORD2
+disableDebug	KEYWORD2

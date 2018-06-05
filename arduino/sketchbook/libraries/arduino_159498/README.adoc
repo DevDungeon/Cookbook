@@ -1,0 +1,100 @@
+:toc: macro
+:toclevels: 4
+:sectnums:
+
+toc::[]
+= Arduino Cloud Library
+Use this library to connect your Arduino/Genuino to Arduino cloud.
+To have your configurations ready follow the https://create.arduino.cc/getting-started[getting started] or go to the https://cloud.arduino.cc/cloud[cloud dashboard].
+
+== Supported devices
+
+=== Zero +  WiFi101, MKR1000
+
+IMPORTANT: Make sure to have the correct SSL certificate for arduino.cc. Look https://github.com/arduino-libraries/WiFi101-FirmwareUpdater#to-update-ssl-certificates[here] for the the update instuctions.
+
+=== Yun-Shield
+
+IMPORTANT: The yun or yun shield firmware should be >=1.6.2. Look https://www.arduino.cc/en/Tutorial/YunSysupgrade[here] for the the upgrade instuctions.
+
+== Credits
+The library is based on the https://eclipse.org/paho/clients/c/embedded/[Paho Library].
+
+Special thanks to Joël Gähwiler author of https://github.com/256dpi/arduino-mqtt[arduino-mqtt library] for his work on porting the paho library on Arduino.
+
+== APIs
+
+=== Setup and Configuration
+- `ArduinoCloudThing()`
+- `void begin(const char* name, const char* username, const char* id, const char* password, Client &client)`
+
+=== Property configuration
+==== Simple property
+
+- `void addProperty(const char* name, const char* datatype, const char* permission)`
+
+==== Policy managed property
+Is possible to specify a policy as:
+
+- ON_CHANGE: the value will be written only if it is changed
+- TIMED: is necessary to specify a lapse (seconds)
+
+- `void addProperty(const char* name, const char* datatype, const char* permission, const char* policy)`
+
+- `void addProperty(const char* name, const char* datatype, const char* permission, const char* policy, int lapse)`
+
+==== Other object property
+An object can also read or write a property of another object, is just necessary to specify the other object's name
+
+- `void addExternalProperty(const char* other_device_name, const char* name, const char* datatype)`
+
+=== Write properties
+- `void writeProperty(const char* name, char* value)`
+- `void writeProperty(const char* name, float value)`
+- `void writeProperty(const char* name, int value)`
+- `void writeProperty(const char* name, String value)`
+
+=== Read properties
+- `String readProperty(const char* name)`
+- `String readProperty(const char* other_device_name, const char* name)`
+
+=== Extra
+- `void poll()`
+- `void push()`
+- `void enableDebug()`
+- `void disableDebug()`
+
+== Variables
+
+### Permissions
+- `R` - The property can be only written from the device
+- `RW` - The property can be written and from the device and can update the value from other objects
+
+### Polices
+- `TIMED` - Waiting seconds before update a new data
+- `ON_CHANGE` - Publish value only on change
+
+### Data Type
+#### Standard
+- `CHARSTRING`
+- `FLOAT`
+- `INT`
+
+#### Temperature
+- `TEMPERATURE_C` - celsius
+- `TEMPERATURE_F` - fahrenheit
+
+#### Lenght
+- `LENGHT_M` - meters
+- `LENGHT_C` - centimeters
+- `LENGHT_I` - inches
+
+#### Vars
+- `PERCENTAGE`
+- `ANALOG`
+- `LUMEN`
+- `PPM` - gas part per million
+- `STATUS` - on/off
+
+== Debug
+The default debug output is on SerialUSB, in order to change the output is necessary to edit CLOUD_DEBUG_SERIAL at the begin of `src/ArduinoCloudThingBase.h`

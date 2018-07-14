@@ -57,3 +57,9 @@ Compile for source distribution at minimum
       python setup.py sdist  # Package the release file
       twine upload ./dist/<package_file>
 
+Updating packages
+-----------------
+
+      # Create the distribution file
+      python setup.py sdist 
+      twine upload dist/<tar.gz package file>

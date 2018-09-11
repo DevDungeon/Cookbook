@@ -24,3 +24,8 @@ Renewing
 --------
 
 	sudo certbot renew --dry-run
+	sudo certbot renew
+
+or re-run
+
+	certbot certonly

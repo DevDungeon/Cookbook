@@ -19,7 +19,9 @@ public class Main {
     public static void main(String[] args) {
         try {
             // Instead of Main.class you can use getClass() when non-static
-            BufferedImage background = ImageIO.read(Main.class.getResource("/devdungeon120x120.png"));          
+            // Root resource directory is src/main/resources
+            URL resourceUrl = Main.class.getResource("/devdungeon120x120.png");
+            BufferedImage background = ImageIO.read(resource);
             System.out.println(background.getData());
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

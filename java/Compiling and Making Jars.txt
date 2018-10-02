@@ -4,52 +4,61 @@ Compiling and Making Jars
 Compiling and running
 ---------------------
 Compile a program with
+
 	javac MyProgram.java
 
 Run with
-	java MyProgram arg1 arg2
 
-Then turn the program in to a .jar
+	java MyProgram arg1 arg2
 
 Creating a .jar
 -----------------
 First compile like normal
+
 	javac MyProgram.java
 
 Then create the jar. This will create a default manifest file in the jar
+
 	jar cf MyProgram.jar MyProgram.class
 
 Edit the manifest file in the archive to include
+
 	Main-Class: MyProgram
 
+or
+
+	Main-Class: com.devdungeon.x.MainClass
+
 Then run the jar with
+
 	java -jar MyProgram.jar arg1 arg2
 
 Creating a .jar with Maven
 ---------------------------
 Add the jar plugin to the Maven pom.xml
 
-<project>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>com.mycompany.packagename.MainClass</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-</project>
+	<project>
+		<build>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.4</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<mainClass>com.mycompany.packagename.MainClass</mainClass>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
+			</plugins>
+		</build>
+	</project>
 
 Creating a .jar with dependencies inside using Maven
 ----------------------------------------------------
+
 Add the shade plugin inside the Maven pom.xml
 
 <project>

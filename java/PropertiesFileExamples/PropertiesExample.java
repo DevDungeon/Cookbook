@@ -27,6 +27,7 @@ class PropertiesExample {
         try {
             // store() Takes OutputStream or Writer
             properties.store(output, "Comments.\nMultiple lines allowed.");
+            // or storeToXML
         } catch (IOException ex) {
             System.err.println(ex.getMessage());
         }
@@ -46,6 +47,7 @@ class PropertiesExample {
         Properties properties = new Properties();
         try {
             properties.load(in);
+            // or loadFromXML
         } catch (IOException ex) {
             System.err.println(ex.getMessage());
             System.exit(1);

@@ -36,9 +36,9 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
+                <!-- <configuration>
                     <finalName>uber-${project.artifactId}-${project.version}</finalName>
-                </configuration>
+                </configuration> -->
             </plugin>           
         </plugins>
     </build>

@@ -4,3 +4,4 @@ nbactions.xml
 *.class
 target
 test.txt
+*.iml

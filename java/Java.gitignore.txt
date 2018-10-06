@@ -3,4 +3,6 @@ build
 target
 nbactions.mxl
 *.class
+*.iml
+.idea
 

@@ -1,0 +1,52 @@
+# Text to speech
+?
+
+# Desktop notify command
+?
+
+# Check PATH for program location
+where cmd
+
+# Open file explorer in location
+explorer .
+
+# Cat equivalent
+type test.txt
+
+# Piping and redirecting
+type test.txt > copy.txt
+type test.txt | python process.py
+
+# Listening ports
+netstat /b
+
+# Networking info
+ipconfig /all
+
+# General sysinfo
+systeminfo; sysinfo
+
+# MD5/Sha hashing for verification
+
+
+# Python launching
+
+
+# Java launching
+
+# Comments
+
+# Environment variables
+
+# For loops
+
+# DirectX/Graphics diagnostics
+dxdiag
+
+# windows subsystem for linux (in cmd)
+wsl echo hello | something-else
+type test.txt | wsl python process.py > output.txt
+# In wsl:
+notepad.exe
+cmd.exe
+

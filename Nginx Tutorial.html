@@ -1,0 +1,652 @@
+<!--<h1>Nginx Tutorial</h2>-->
+<!-- Tags: Nginx, Java, TomCat, Go, Node.js, JavaScript, Apache, PHP, Linux, sysadmin, JSP, Servlet, Python, Proxy, WSL -->
+
+<h2>Overview</h2>
+
+<ul>
+    <li>Intro</li>
+    <li>Why use nginx?</li>
+    <li>Install nginx</li>
+        Build nginx from source
+        Install nginx on Ubuntu
+        Install nginx on Windows
+        Install nginx on Mac
+    <li>Create a reverse proxy</li>
+    <li>Serve static files</li>
+    <li>Add SSL</li>
+    <li><a href="#force_https">Redirect HTTP to HTTPS</a></li>
+    <li><a href="#force_www">Redirect non-www to www</a></li>
+    <li>Conclusion</li>
+</ul>    
+
+
+<!-- ############################################ -->
+
+<h2>Intro</h2>
+
+<p>Use nginx if you need to reverse proxy, load balance, and rate limit network services like web servers. It's userful if you have multiple web services listening on various ports and you need a single public endpoint to reroute requests internally. This would allow you to host multiple domain names on port 80 while using a combination of different Node.js, Go, and Java to power separate web services behind the scenes. We'll cover using nginx as a simple reverse proxy to pass incoming traffic to a local web server, how to serve static files, adding SSL encryption, and how to require https and www on your site. This guide is for someone who needs a quick reference to setting up a simple nginx server. For the latest documentation always check out the official website <a href="https://www.nginx.com/" target="_blank">https://www.nginx.com/</a> and the source mirror at <a href="https://github.com/nginx/nginx" target="_blank">https://github.com/nginx/nginx</a>.</p>
+
+
+
+
+<h2>Why use nginx?</h2>
+
+<p>
+    if you have multiple domain names for a web server
+
+        if you want to run java tomcat servlet container, a go app, a node app, and apache, etc
+    
+        great for creating a public endpoint to route to multiple web services locally or remotely and even doing load balancing and rate limiting.
+
+        apps can listen locally on low priivelege sockets, using nginx as gateway, does ssl, ip blacklisting, load balancing, rate limiting, proxying, logging, serve static files
+        
+
+    nginx can handle the load balancing to multiple backend servers and serve static files if needed, rate limiting
+
+    it's fast, proven
+    
+    
+</p>
+
+
+
+
+
+
+
+
+<h2>Install nginx</h2>
+
+<p>This covers building nginx from source, installing on Ubuntu with apt-get, downloading the pre-compiled binaries for Windows, and using brew to install it on Mac. For the latest links and information always check out the official website at <a href="https://www.nginx.com/" target="_blank">https://www.nginx.com/</a></p>
+
+
+
+
+<a name="build_nginx_from_source"></a>
+<h3>Build nginx from source</h3>
+
+<p>If possible, this is a great option to get the latest version. Linux distribution package managers often lag behind and don't have the latest version. Arch Linux is known for having relatively up-to-date packages and Debian is known for having slow release cycles where versions get stale.</p>
+
+<p>This will also cover how to create a basic working environment for nginx, a minimal config file, and how to start and stop the server. This was tested on Ubuntu.</p>
+
+<p>The first step is to download and extract the nginx source zip or tar.gz. Find a release from the read-only GitHub repo (<a href="https://github.com/nginx/nginx/releases" target="_blank">https://github.com/nginx/nginx/releases</a>) or the upstream <a href="http://hg.nginx.org/nginx/tags" target="_blank">Nginx.org Mercurial repo</a>. Find the latest release tag, like http://hg.nginx.org/nginx/rev/release-1.15.5. On the left-hand side there is a zip and gz option to download the tag, for example, <a href="http://hg.nginx.org/nginx/archive/release-1.15.5.tar.gz" target="_blank">http://hg.nginx.org/nginx/archive/release-1.15.5.tar.gz</a>.</p>
+
+<pre><code>
+    # Download & extract
+    wget https://github.com/nginx/nginx/archive/release-1.15.5.tar.gz
+    tar xzfv release-1.15.5.tar.gz
+    cd nginx-release-1.15.5
+
+    # Build
+    sudo apt-get install build-essential # If you need gcc and make
+    auto/configure
+    make
+</code></pre>
+
+# Executable in objs/
+# Executable file: objs/nginx
+# Sample configs in conf/
+# Default config: conf/nginx.conf
+
+
+nginx -T config.conf # Test config
+
+
+     Create a workspace for nginx
+
+        This is where temporary directories will be created, log files will be stored relative to this location, config files will be relative to here.
+
+        # Create a workspace (prefix) for nginx
+        mkdir /path/to/nginx_workspace
+        mkdir /path/to/nginx_workspace/logs
+        vim /path/to/nginx_workspace/my_nginx.conf
+
+        4) Start and stop
+        
+            # Start nginx
+            /path/to/objs/nginx -p /home/dano/nginx_workspace -c my.conf
+
+            # Stop nginx with `-s stop` flag
+            /path/to/nginx -p /home/dano/nginx_workspace -c my.conf -s stop
+            # The nginx.pid file that stores the process id of the listener is default stored in the logs/ directory in the prefix directory.
+        
+
+        # Note, it needs a config file, log path, how to set both of those w/ cli flags?
+        [alert] could not open error log file: open() "/usr/local/nginx/logs/error.log" failed (13: Permission denied)
+        2018/10/14 18:20:44 [emerg] 15859#0: open() "/usr/local/nginx/conf/nginx.conf" failed (2: No such file or directory)
+        # use nginx -c /path/to/conf.cfg # to specify config
+
+
+        # Use -p to change the prefix (what directory it uses as the base, where log paths are relative to, where -c conf file paths are relative to. This is also where it will create temporary directories.
+        # It will run in the background if it runs successfully
+        # It might error if you don't have the directories created for log files or if you need escalated privileges to write to certain directories.
+        # It is possible to run nginx in your userspace as a low privilege user if you bind to a port above 1024.
+
+        # Create a prefix/workspace
+        mkdir /home/dano/nginx_workspace
+        mkdir /home/dano/nginx_workspace/logs
+        vim /home/dano/nginx_workspace/my.conf
+        
+
+
+        Minimalist config. It will result in a 404 if you visit http://localhost:9999. 
+
+        events {
+            worker_connections  1024;
+          }  
+          http {
+            server {
+              listen 0.0.0.0:9999;
+            }
+          }
+
+
+
+
+    
+<h3>Install nginx on Ubuntu</h3>
+
+<p>The easiest way to get nginx on Ubuntu is to install using apt-get. Follow the instructions below to use the official Ubuntu package. You can also build from source following the <a href="#build_nginx_from_source">build nginx from source</a> instructions. The build from source instructions were tested in Ubuntu and worked very smoothly. It's very satisfying when a C project builds easily from source without a lot of dependencies. 
+
+<pre><code>
+    # See what version is available in the repos
+    apt-cache show nginx
+    # Install with apt-get package manager
+    sudo apt-get install nginx
+
+
+    # It will be started by default. Control it with:
+    # sudo systemctl (start|stop|restart) nginx
+</code></pre>
+
+ # Custom configs will go in /etc/nginx/conf.d/
+# Base config file: /etc/nginx/nginx.conf
+# Default config: /etc/nginx/sites-available/default
+# Default webroot: /var/www/html
+# Logs will be in /var/log/nginx/
+
+
+
+
+
+<h3>Install nginx on Windows</h3>
+
+There are a couple options on Windows. One option is to download the precompiled binaries for Windows from <a href="https://nginx.org/en/download.html" target="_blank">https://nginx.org/en/download.html</a>. Read more about 
+
+Another option is to download the source files as described in the <a href="#build_nginx_from_source">build nginx from source</a> section.
+
+You also have the option to use Ubuntu with the Windows Subsystem for Linux and follow the Ubuntu installation instructions. Additioanlly, you can run an Ubuntu virtual machine or use Docker to get a Linux environment and follow the compilation or Ubuntu install instructions.
+
+E.g. Version 1.15.5 http://nginx.org/download/nginx-1.15.5.zip
+    Simply extract the zip file and nginx.exe is sitting in the root. All you have to do is run it. If I extracted the directory to C:\opt\nginx then cd C:\opt\nginx
+nginx.exe
+??and stop it with nginx.exe -s stop??
+- Option 2 - use windows subsystem (((tutorial link))) to install ubuntu linux and then follow the ubuntu instructions to install with sudo apt-get install nginx
+https://nginx.org/en/download.html
+Windows nginx-1.15.5 https://nginx.org/download/nginx-1.15.5.zip
+
+    Example:
+    # Extracted nginx package to C:\nginx\
+
+    # Run nginx with
+    C:\nginx\nginx.exe -p C:\nginx\
+
+    # Stop it with
+    C:\nginx\nginx.exe -p C:\nginx\ -s stop
+
+<ul>
+    <li>Configs in: C:\nginx\conf\</li>
+    <li>Logs will be in: C:\nginx\logs\</li>
+    <li>Default webroot is: C:\nginx\html\</li>
+    <li>Default listen address: http://localhost:80</li>
+</ul>
+
+
+
+
+
+
+
+
+
+<h3>Install nginx on Mac</h3>
+
+<p>On a Mac computer, use <a href="https://formulae.brew.sh/formula/nginx" target="_blank">Homebrew</a> or follow the <a href="#build_nginx_from_source">build nginx from source</a> instructions.</p>
+
+<pre><code>
+    # Install with Homebrew
+    brew install nginx
+
+    # Start and stop nginx, sudo needed for low number ports
+    nginx  
+    nginx -s stop
+
+    # or control it using brew services
+    brew services start nginx
+    brew services stop nginx
+</code></pre>
+
+<ul>
+    <li>Default listen address: http://localhost:8080</li>
+    <li>Default web root: /usr/local/var/www/</li>
+    <li>Default config file: /usr/local/etc/nginx/nginx.conf</li>
+    <li>Add custom configs in: /usr/local/etc/nginx/servers/</li>
+    <li>Logs will be in in: /usr/local/var/log/nginx/</li>
+</ul>
+
+<!-- to learn more about cryptography and secure web applications with Go, check out my book -->
+
+
+
+
+
+
+
+
+
+<h2>Serve static files</h2>
+
+http://localhost:7777/
+with directory listing
+
+<pre><code>
+http {
+    server {
+        listen 0.0.0.0:7777;
+        root /path/to/public/directory;
+        location / {  
+            autoindex on;  # Directory listing (risky)
+        }
+        location /relative-to-root/dir {
+            autoindex off;
+            index index.html, index.htm
+        }
+
+    }
+}
+</code></pre>
+
+
+
+
+
+
+
+<h2>Create a reverse proxy</h2>
+
+<p>
+This example configuration send traffic from port 80 to localhost:9999, including the original IP as an extra HTTP header, X-Real-IP.
+</p>
+
+<pre><code>
+http {
+    server {
+        listen 80;
+        server_name mydomain.com;
+        location / {
+            proxy_pass http://localhost:9999/;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+    }
+}
+</code></pre>
+
+    NOTE: <h2>Set up a test HTTP server</h2>
+    -- You could
+    Before setting up the reverse proxy in nginx, it is helpful to have a web server running so you can verify the reverse proxy is working. If you already have a web server running like Apache or TomCat, you can use that. If you don't have one yet, these quick ways server to start an HTTP server with minimal dependencies.
+    In these examples we are running the test servers on port 9999. You only need to run one of these to test. If you want to run multiple ones at the same time, they will have to listen on different ports.
+    simple python script to run a server for testing (http or https?)
+
+<pre><code>
+    # Python HTTP server
+    python3 -m http.server --bind localhost 9999
+
+    # PHP built-in server
+    php -S localhost:9999
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Add SSL</h2>
+
+This assumes you already have a key
+(( self sign cert tutorial))
+(( lets encrypt tutorial))
+
+ssl passthru - config choice!
+----
+is ssl handled by nginx or by the other app? (does it matter?) whats easier? whast more secure? I'd say passing encrypted data all the way to the app, letting it handle, and passing encrypted data back through nginx as opposed to decrypting at nginx and passing unencrypted data over the rproxy
+- if your app is slow at ssl, letting nginx handle ssl might be more performant
+- if security is a concern and someone might sniff the network traffic internally or even on the same machine, then the encrypted traffic should pass through nginx to the app 
+- if the nginx reverse proxy and the destination applicaiton are on the same machine, then it's relatively safe to let nginx terminate the SSL and talk to the app internally in plain-text. If an attacker has enough permissions to monitor the network traffic, they most likely have the permission to view the SSL private key and decrypt the traffic.
+
+Adding SSL with nginx is dead simple. You just add an <b>ssl</b> keyword to the listen line and include two config options:
+    - ssl_certificate
+    - ssl_certificate_key
+
+<pre><code>
+    # Template SSL virtual host
+    server { 
+        listen 0.0.0.0:443 ssl;
+        server_name www.mydomain.com;
+
+        ssl_certificate /path/to/cert.pem
+        ssl_certificate_key /path/to/private-key.pem
+
+        # Optionally set strong ciphers
+        ssl_ciphers  HIGH:!aNULL:!MD5;
+
+        # Optionally configure logs
+        access_log  /path/to/access.log  customFormat;
+        error_log /path/to/error.log
+        log_format  customFormat  '$time_local $remote_addr $status "$request" '
+                                  '"$http_user_agent" "$http_x_forwarded_for"';
+    }
+</code></pre>
+
+
+    
+
+
+
+<a name="force_https"></a>
+<h2>Redirect HTTP to HTTPS</h2>
+
+If you want to redirect all HTTP traffic on port 80 to the secure HTTPS version listening on port 443, set up a permanent 301 redirect on port 80 for the domain names
+
+all traffic to HTTPS on port 443
+This will redirect all http traffic (whether its www or non-www prefixed) to the HTTPS version with www prefix. It will also redirect HTTPS traffic that does not have the www prefix to the same address with the www prefix.
+
+<pre><code>
+    # Redirect HTTP traffic to HTTPS (both www and non-www)
+    server {
+        listen 80;
+        server_name mydomain.com www.mydomain.com;
+
+        # Permanent redirect to HTTPS version with www prefix
+        return 301 https://www.mydomain.com$request_uri;
+    }
+</code></pre>
+
+
+
+<a name="force_www"></a>
+<h2>Redirect non-www to www</h2>
+
+<p>
+If you aren't using the domain name without a prefix for something, you should redirect it to www.yourdomain.com. This will reduce duplication errors and conflicts with search engines registering a page of yours twice.
+</p>
+
+<pre><code>
+    # Permanent redirect of non-www prefixed traffic to www version
+    server {
+        listen              443 ssl;
+        server_name         mydomain.com;
+        ssl_certificate /path/to/cert.pem
+        ssl_certificate_key /path/to/private-key.pem
+
+        # Permanent redirect to HTTPS version with www prefix
+        return 301 https://www.mydomain.com$request_uri;
+    }
+</code></pre>
+
+
+
+<!-- 
+
+Cheat sheet/reference/Full example/template/quickstart/quickreference/other tips
+<p>This config example is a summary and contains some additional tips. It is not meant to be used directly, but is a handy reference or starting point if you are working with nginx configuration. When I am starting a fresh config on a new server, I'd look at the official default packaged nginx.conf for best practices, and incorporate what I need from this reference. As always, things change over time, and the current verison is 1.15.5. Check out the <a href="https://nginx.org/" target="_blank">official nginx website</a> for the most up-to-date documentation.</p>
+
+// Normal web site examples
+    // redirect http to https
+    // redirect non-ww to www
+    // ssl configs
+// serving static files
+// reverse proxy example
+
+// whitelist specific ip
+// load balance/rate limit
+// log formatting
+// ipv6
+##
+# Basic Settings
+##
+
+sendfile on;
+tcp_nopush on;
+tcp_nodelay on;
+keepalive_timeout 65;
+types_hash_max_size 2048;
+# server_tokens off;
+
+# server_names_hash_bucket_size 64;
+# server_name_in_redirect off;
+
+include /etc/nginx/mime.types;
+default_type application/octet-stream;
+
+##
+# SSL Settings
+##
+
+ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
+ssl_prefer_server_ciphers on;
+
+##
+# Logging Settings
+##
+
+access_log /var/log/nginx/access.log;
+error_log /var/log/nginx/error.log;
+
+##
+# Gzip Settings
+##
+
+// multiple servers entries
+// multiple rproxies together
+// autoindexing
+// doing includes
+//?control pid?
+//gzip
+//cache?
+?control user
+// setting index files
+//raw tcp/tls without http? proxy
+
+// add headers
+
+<pre><code>
+# Example nginx.conf - cheat sheet only
+
+#user www-data;
+#worker_processes auto;
+#pid /run/nginx.pid;
+#include /etc/nginx/modules-enabled/*.conf;
+
+events {
+    worker_connections  1024;
+} 
+
+http {
+    server {
+        listen 0.0.0.0:9999;
+    }
+}
+
+
+
+http {
+    server {
+        listen 0.0.0.0:7777;
+        root /path/to/public/directory;
+        location / {  
+            autoindex on;  # Directory listing (risky)
+        }
+        location /relative-to-root/dir {
+            autoindex off;
+            index index.html, index.htm
+        }
+
+    }
+}
+
+
+http {
+    server {
+        listen 80;
+        server_name mydomain.com;
+        location / {
+            proxy_pass http://localhost:9999/;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+    }
+}
+
+
+
+# Template SSL virtual host
+server { 
+    listen 0.0.0.0:443 ssl;
+    server_name www.mydomain.com;
+
+    ssl_certificate /path/to/cert.pem
+    ssl_certificate_key /path/to/private-key.pem
+
+    # Optionally set strong ciphers
+    ssl_ciphers  HIGH:!aNULL:!MD5;
+
+    # Optionally configure logs
+    access_log  /path/to/access.log  customFormat;
+    error_log /path/to/error.log
+    log_format  customFormat  '$time_local $remote_addr $status "$request" '
+                              '"$http_user_agent" "$http_x_forwarded_for"';
+}
+</code></pre>
+
+
+
+// raw tcp/tlsd forward?
+
+gzip on;
+gzip_disable "msie6";
+
+# gzip_vary on;
+# gzip_proxied any;
+# gzip_comp_level 6;
+# gzip_buffers 16 8k;
+# gzip_http_version 1.1;
+# gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+##
+# Virtual Host Configs
+##
+
+include /etc/nginx/conf.d/*.conf;
+include /etc/nginx/sites-enabled/*;
+}
+
+
+#mail {
+#       # See sample authentication script at:
+#       # http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
+#
+#       # auth_http localhost/auth.php;
+#       # pop3_capabilities "TOP" "USER";
+#       # imap_capabilities "IMAP4rev1" "UIDPLUS";
+#
+#       server {
+#               listen     localhost:110;
+#               protocol   pop3;
+#               proxy      on;
+#       }
+#
+#       server {
+#               listen     localhost:143;
+#               protocol   imap;
+#               proxy      on;
+#       }
+#}
+
+
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Conclusion</h2>
+
+What should you be able to do now? (recap)
+where to find more config options (link)
+What next?
+Where to get more info?
+what else: 
+    rate limiting [docs link], load balancing [docs link], write custom modules [docs link]
+    https://www.nginx.com/blog/rate-limiting-nginx/
+    https://www.linode.com/docs/web-servers/nginx/use-nginx-reverse-proxy/
+
+    <!-- 
+
+    change log location/formatting
+
+    # Misc: nginx add_header? (available vars?)
+        nginx add_header "brought to you by" "your local nginx rproxy" 
+    change logs, log format,
+    -t test config
+    -s stop
+    -c /path/to/config.cnf
+    load balancing
+    rate limiting
+    -->
+    <!-- 
+    # beginner steps:
+        # Test config file, don't run server
+        
+
+    start start with nging -s stop? start?
+    nginx set config path with -c ? default /etc/nginx -->
+    <!-- 
+        <pre><code>
+        nginx -c /path/to/nginx.conf
+        </code></pre> -->
+
+        <!--    
+        ?restrict access by ip
+        ?mod rewrite? .htaccess equivalent? -->
+<!-- setting 404 page and error pages
+error_page   500 502 503 504  /50x.html;
+  # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+
+-->
+    <!-- ~??** PHP with nginx (uwsgi)~ skip
+    ~??** Python with nginx (?)~ skip
+    ~** Go/node.js/Java/tomcat apps -> just reverse proxy to them since they listen themselves~ skip -->
+
+    nginx for non-http and tcp raw?

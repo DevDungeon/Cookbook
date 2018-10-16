@@ -1,0 +1,588 @@
+<!--https://www.devdungeon.com/content/maven-basics-java-developers -->
+
+<h2>Overview</h2>
+
+<ul>
+    <li><a href="#intro">Introduction</a></li>
+    <li><a href="#what_is_maven">What is Maven?</a></li>
+    <li><a href="#why_use_maven">Why use Maven instead of compiling with javac?</a></li>
+    <li><a href="#maven_alternatives">Maven alternatives</a></li>
+    <ul>
+        <li><a href="#ant">Ant</a></li>
+        <li><a href="#gradle">Gradle</a></li>
+    </ul>
+    <li><a href="#installing_maven">Installing Maven</a></li>
+    <li><a href="#verify_installation">Verify installation</a></li>
+    <li><a href="#generate_project_with_archetype">Generate a new project with Maven using an archetype</a></li>
+    <li><a href="#what_is_the_pom_xml">What is the pom.xml?</a></li>
+    <li><a href="#running_common_maven_goals">Running common Maven goals</a></li>
+    <li><a href="#installing_jar_file">Installing a jar file to local repository manually</a></li>
+    <li><a href="#other_common_settings">Other common pom.xml settings</a></li>
+    <li><a href="#adding_external_dependencies">Adding dependencies to a project</a></li>
+    <li><a href="#recommended_plugins">Recommended, but optional plugins</a></li>
+    <ul>
+        <li><a href="#maven_compiler_plugin">Maven Compiler Plugin - Specify Java version</a></li>
+        <li><a href="#maven_source_plugin">Maven Source Plugin - Create a JAR with source files</a></li>
+        <li><a href="#maven_javadoc_plugin">Maven JavaDoc Plugin - Autogenerate documentation JAR</a></li>
+        <li><a href="#maven_gpg_plugin">Maven GPG Plugin - GPG sign your pre</a></li>
+        <li><a href="#maven_jar_plugin">Maven JAR Plugin - Create a JAR file</a></li>
+        <li><a href="#maven_shade_plugin">Maven Shade Plugin - Create a fat/uber/shaded JAR</a></li>
+        <li><a href="#launch4j_maven_plugin">Launch4j Maven Plugin - Create a Windows .exe</a></li>
+        <li><a href="#mac_app_bundler_plugin">AppBundle Maven Plugin - Create a Mac .app file</a></li>
+        <li><a href="#debian_maven_plugin">Debian Maven Plugin - Create a Debian/Ubuntu .deb package</a></li>
+    </ul>
+    <li><a href="#conclusions">Conclusions</a></li>
+    <li><a href="#helpful_links">Helpful links</li>
+</ul>
+
+<a name="intro"></a>
+<h2>Introduction</h2>
+
+<p>In this tutorial, we'll walk through basics of using Maven to create projects, compile Java source pre, and package our application as a standalone .jar with dependencies embedded, a Windows .exe, a Mac .app, and a Debian or Ubuntu based .deb package. I'll also mention some common settings and my recommended plugins.</p>
+
+<p>This tutorial assumes you already have the Java 8 JDK installed.</p>
+
+<a name="what_is_maven"></a>
+<h2>What is Maven?</h2>
+
+<p>Maven is a build tool that automates the compiling, dependency management, packaging, and even deployment of Java applications.</p>
+
+<p><img src="/sites/default/static/MavenBasics/MavenHomepage.png" style="max-width: 500px;" /></p>
+
+<a name="why_use_maven"></a>
+<h2>Why use Maven instead of compiling with javac?</h2>
+
+<p>It's good to know how to compile something manually using javac, but when projects get larger and require third-party libraries, it becomes tedious to manage dependencies and build scripts. Maven offers several benefits:</p>
+
+<ul>
+    <li>Generate pre-built templates for different types of projects</li>
+    <li>It's widely used and supported by the Java community and is an Apache project</li>
+    <li>Maven manages building the .jar, which requires manifest files and other tedious configuration if done by hand</li>
+    <li>Very extensible with many community plugins</li>
+    <li>Easy to run on the command line, and supported by all major IDEs.</li>
+    <li>Other people can easy load and build your project using Maven</li>
+    <li>Install packages to your local repository</li>
+    <li>Deploy packages to remote repositories</li>
+</ul>
+
+<p>Here are some of the other cool things it can do for you with optional plugins:</p>
+
+<ul>
+    <li>Generate JavaDoc documentation in HTML format</li>
+    <li>Attach source pre to a jar</li>
+    <li>Sign your pre using GPG</li>
+    <li>Create Windows .exe files and installers</li>
+    <li>Create Mac .app files</li>
+    <li>Create Debian/Ubuntu based .deb packages</li>
+</ul>
+
+
+<a name="maven_alternatives"></a>
+<h2>Maven alternatives</h2>
+
+<a name="ant"></a>
+<h3>Ant</h3>
+
+<p><img src="/sites/default/static/MavenBasics/AntHomepage.png" style="max-width: 500px;" /></p>
+
+<p>Maven is the sucessor of the Apache Ant build tool. I recommend to learn just enough Ant to run builds from projects that still use it, but not for new projects. It's generally as simple as running <strong>ant</strong> in the root folder with the <strong>build.xml</strong> file.</p> It is similar to the C Make program. Maven can run Ant tasks with the <strong>maven-antrun-plugin</strong>.</p>
+
+<a name="gradle"></a>
+<h3>Gradle</h3>
+
+<p><img src="/sites/default/static/MavenBasics/GradleHomepage.png" style="max-width: 500px;" /></p>
+
+<p>Gradle is the newest build tool on the block. Android has adopted Gradle as their build tool, but a large portion of projects are still using Maven as well. Gradle has a much more compact syntax, which makes it attractive to many people. Even if you decide to move to Gradle later, it is worth understanding Maven well.</p>
+
+<a name="installing_maven"></a>
+<h2>Installing Maven</h2>
+
+<p>Installing may not be necessary if your IDE comes with Maven bundled. For example, Maven comes bundled with NetBeans and IntelliJ IDEA. It is also worth noting that in Debian and Ubuntu based distributions you can simply install maven using apt. We will focus on manually installing Maven and using it from the command line in this tutorial.</p>
+
+<code>
+# Install maven in Debian/Ubuntu based distributions using apt
+sudo apt install maven
+</code>
+
+
+<p>To install manually, first go to the Maven download page at <a href="https://maven.apache.org/download.cgi" target="_blank">https://maven.apache.org/download.cgi</a>.</p>
+
+
+<p>Download the zipped binary package and then unzip it. The <strong>bin</strong> directory of the unzipped Maven download will contain the primary tool <strong>mvn</strong>. Add the Maven <strong>bin</strong> directory to your <strong>PATH</strong> environment variable. Also set the <strong>JAVA_HOME</strong> environment variable to the root directory of your JDK.</p>
+
+<p><img src="/sites/default/static/MavenBasics/MavenDownloadPage.png" style="max-width: 500px;" /></p>
+
+
+<a name="verify_installation"></a>
+<h2>Verify installation</h2>
+
+<p>To make sure it is installed properly, try running Maven from the terminal with:</p>
+
+<code>
+# Check Maven version
+mvn --version
+</code>
+
+<a name="generate_project_with_archetype"></a>
+<h2>Generate a new project with Maven using an archetypes</h2>
+
+<p>Maven has a concept called archetypes, which are essentially prebuilt project templates that include folder structure and files needed to get started for a specific type of project. There are tons of archetypes out there that come with templates for building things like command line apps, empty projects, gui apps, and web apps. You can generate a new project in interactive mode where you are prompted to answer a series of questions, or by passing in the arguments as command line options. There is at least one archetype worth memorizing and that is the <strong>maven-archetype-quickstart</strong>. This generates the simplest possible project with one source file ready for us to edit.</p>
+
+<code>
+mvn archetype:generate -DarchetypeArtifactId=maven-archetype-quickstart
+</code>
+
+<p>It will ask you to answer a few questions.</p>
+<ul>
+    <li><strong>groupId</strong> - Your namespace. Your website, or commonly a GitHub account. Examples: com.devdungeon, com.github.nanodano</li>
+    <li><strong>artifactId</strong> - Name of the package within your namespace(groupId). Example: mytools</li>
+    <li><strong>version</strong> - Your desired version number. Default provided of 1.0-SNAPSHOT</li>
+    <li><strong>package</strong> - Name of the package for the one generated .java file. Default of groupId provided.</li>
+</ul>
+
+<p>It will create a directory with the name of the artifactId you provided with a skeleton project ready to go. There will be a pom.xml file in the root directory and the pre inside <strong>src</strong> directory. Inside the <strong>src</strong> dir you will find a .java file with Hello World pre. This is where you can start coding.</p>
+
+<p>Optionally, if you want to skip the interactive mode, you can provide the command line arguments, like the groupId, artifactId, and version of your project as command line options like this:</p>
+
+<code>
+mvn archetype:generate -DgroupId=com.github.nanodano -DartifactId=myproject -Dversion=1.0.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+</code>
+
+<p>
+The example just above also includes the optional <strong>-DinteractiveMode=false</strong> flag, which disables the prompt for you to press Y and review the information. Leave interactiveMode set to true if you do want to review the information before it creates the project.
+</p>
+
+
+<h3>Other simple archetypes</h3>
+
+<p>There are a few other archetypes worth mentioning:</p>
+<ul>
+    <li><strong>maven-archetype-quickstart</strong> - Basic skeleton Java project</li>
+    <li><strong>maven-archetype-plugin</strong> - Template for building a custom Maven plugin</li>
+    <li><strong>maven-archetype-archetype</strong> - Template for building your own archetypes</li>
+    <li><strong>maven-archetype-webapp</strong> - Template for building a simple servlet</li>
+</ul>
+
+<h3>Example usage of different archetypes</h3>
+
+<code>
+# Basic Java App template we just looked at
+mvn archetype:generate -DarchetypeArtifactId=maven-archetype-quickstart
+
+# Web app template
+mvn archetype:generate -DarchetypeArtifactId=maven-archetype-webapp
+
+# Maven plugin template
+mvn archetype:generate -DarchetypeArtifactId=maven-archetype-plugin
+
+# Maven archetype template
+mvn archetype:generate -DarchetypeArtifactId=maven-archetype-archetype
+</code>
+
+
+<code>
+# Will list available archetypes to choose from
+mvn archetype:generate
+</code>
+
+<a name="what_is_the_pom_xml"></a>
+<h2>What is the pom.xml?</h2>
+
+<p>After generating a project with <strong>mvn archetype:generate</strong> there will be a <strong>pom.xml</strong> file in the root directory of the project. This is the Project Object Model and provides all the configuration for the build. This is the file where you specify what plugins to use and output file names, etc.</p>
+
+<a name="running_common_maven_goals"></a>
+<h2>Running common Maven goals</h2>
+
+<p>Maven has several actions that can be run, named goals. Some are built in, like compile, while others are provided by optional plugins. Here are some of the most important commands you should know. You need to run these commands from the root directory of your project, the directory with the pom.xml file.</p>
+
+<code>
+# Compile files (compiled .class files will be in the <strong>target</strong> directory.)
+mvn compile
+
+# Remove all files that were built by a Maven build
+mvn clean
+
+# package as jar (unless otherwise specified, can also do wars, ear, and others) output jar will be in the target dir
+mvn package
+
+# Package project and store it in your local repository for use in other projects
+mvn install
+
+# Package and push the jar to a remote repository like Maven Central for others to use
+mvn deploy
+
+# You can also run more than one goal in order
+mvn clean package
+
+# Download sources of dependencies
+mvn dependency:sources
+
+# Download javadocs of dependencies
+mvn dependency:resolve -Dclassifier=javadoc
+</code>
+
+
+
+
+
+<a name="other_common_settings"></a>
+<h2>Other common settings in the pom.xml</h2>
+
+
+<p>You can also include additional information about your project including but not limited to: description of project, developer contact information, source control info, and licensing information.</p>
+
+<code>
+<project>
+    ...
+    <!-- Additional information about project (optional) -->
+    <description>This is my cool project</description>
+
+    <developers>
+        <developer>
+            <name>Your Name</name>
+            <email>youremail@example.com</email>
+            <organization>Your Organization</organization>
+            <organizationUrl>https://www.github.com/myusername</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/MyUsername/myproject.git</connection>
+        <developerConnection>scm:git:ssh://github.com:MyUsername/myproject.git</developerConnection>
+        <url>https://github.com/MyUsername/myproject/tree/master</url>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    ...
+</project>
+</code>
+
+
+<a name="adding_external_dependencies"></a>
+<h2>Adding external dependencies to your project</h2>
+
+
+<p>To add external dependencies to your project, define a section for dependencies in the pom.xml file like this:</p>
+
+<code>
+<project>
+    ...
+    <dependencies>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.4</version>
+        </dependency>
+
+    </dependencies>
+    ...
+</project>
+</code>
+
+<p>Maven looks for dependencies in your default repository in your home directory in <strong>~/.m2/repository</strong>. You can override the path of the local repostiory by  modifying your settings.xml file in <strong>~/.m2/repository</strong> to add a <strong>localRepository</strong> tag like this:</p>
+
+<code>
+<!-- ~/.m2/settings.xml -->
+<settings>
+    <localRepository>/path/to/local/repo/</localRepository>
+</settings>
+</code>
+
+<p>You can even set up your <strong>settings.xml</strong> file to have different profiles that use different repositories and settings for different projects.</p>
+
+<p>If you don't have a dependency or plugin needed when Maven runs a goal, it will automatically try to download it from the central repository. You can even push your own projects to maven central making them available to everyone on the internet.</p>
+
+<p>Maven central is more secure than other central repositories like npm because the namespaces are controlled by owners and all pre is required to be signed with a GPG key that is publicly available. Someone would have to gain control of the repository credentials and the private gpg key to sign pre and push it to the central repo. Signing allows you to verify the pre came from the same author you expect it to.</p>
+
+<p>Read more about the Maven <strong>settings.xml</strong> file at <a href="https://maven.apache.org/settings.html" target="_blank">https://maven.apache.org/settings.html</a> and check out the central repository at <a href="https://search.maven.org" target="_blank">https://search.maven.org</a>.</p>
+
+
+<a name="installing_jar_file"></a>
+<h2>Installing a jar file to local repository manually</h2>
+
+<p>There is a goal called <strong>install-file</strong> that will take a jar file and install it to your local repository.You do not need to be inside a project or have a pom.xml in your directory to run this command, all it requires is the jar you want to put in your repository.</p>
+
+<code>
+# Install a jar file to your local repo
+mvn install:install-file -Dfile=someLibrary.jar
+</code>
+
+
+<a name="recommended_plugins"></a>
+<h2>Recommended, but optional plugins</h2>
+
+<p>Maven is built on a plugin architecture. even the built in commands like compile are still just plugins. you can override default plugin settings or enable third party plugins by creating entries in the project's pom.xml file. Here are some examples of plugins that are worth being familiar with. An example usage of each plugin is provided, but this is where you should put the plugins in the pom.xml:</p>
+
+<code>
+<project>
+    ...
+    <build>
+        <plugins>
+
+            <!-- Add plugins here -->
+
+        </plugins>
+    </build>
+    ...
+</project>
+</code>
+
+<p>After setting up these plugins, they will automatically hook in to the appropriate goal. For example, if you set up all of them, then running <strong>mvn package</strong> will automatically generate the javadoc and source jars, GPG sign your files, create the shaded jar, and package the .exe, .app, and .deb packages.</p>
+
+
+<a name="maven_compiler_plugin"></a>
+<h3>Maven Compiler Plugin - Specify Java version</h3>
+<code>
+<!-- maven-compiler-plugin - Compiler plugin is already included by default, we are just
+        overriding the settings, telling it to compile to 1.8 Java target. -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <configuration>
+        <source>1.8</source>
+        <target>1.8</target>
+    </configuration>
+</plugin>
+</code>
+
+<a name="maven_source_plugin"></a>
+<h3>Maven Source Plugin - Attach sources as JAR</h3>
+<code>
+<!-- maven-source-plugin - This plugin generates a jar with the source files attached.
+        Required for pushing to Maven Central-->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-source-plugin</artifactId>
+    <version>3.0.1</version>
+    <executions>
+        <execution>
+            <id>attach-sources</id>
+            <goals>
+                <goal>jar-no-fork</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+</code>
+
+<a name="maven_javadoc_plugin"></a>
+<h3>Maven JavaDoc Plugin - Autogenerate documentation as JAR</h3>
+<code>
+<!-- maven-javadoc-plugin - Generates a jar with the autogenerated JavaDoc documentation.
+        Required for pushing to Maven Central -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-javadoc-plugin</artifactId>
+    <version>3.0.0</version>
+    <executions>
+        <execution>
+            <id>attach-javadocs</id>
+            <goals>
+                <goal>jar</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+</code>
+
+
+<a name="maven_gpg_plugin"></a>
+<h3>Maven GPG Plugin - GPG sign your files</h3>
+<code>
+<!-- The maven-gpg-plugin - Signs the generated files with your GPG key
+    leaving a .asc file that others can verify.
+    Required for pushing to Maven Central. -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-gpg-plugin</artifactId>
+    <version>1.6</version>
+    <executions>
+        <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+                <goal>sign</goal>
+            </goals>
+            <configuration>
+                <!-- GPG keyname variable set in the ~/.m2/settings.xml  file -->
+                <keyname>${gpg.keyname}</keyname>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+<!-- Sample ~/.m2/settings.xml file with GPG key specified:
+    <settings>
+        <servers>
+            <server>
+                <id>ossrh</id>
+                <username>myusername</username>
+                <password>**********</password>
+            </server>
+        </servers>
+        <profiles>
+            <profile>
+                <id>sonatype-oss-release</id>
+                <properties>
+                    <gpg.keyname>MyUserGpgKeyName</gpg.keyname>
+                    <gpg.passphrase>**********</gpg.passphrase>
+                </properties>
+            </profile>
+        </profiles>
+    </settings> -->
+</code>
+
+
+<a name="maven_jar_plugin"></a>
+<h3>Maven Jar Plugin - Create a JAR file</h3>
+<code>
+<!-- maven-jar-plugin - Included by default, but configuration can be overriden.
+        Defines the main class for the jar -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-jar-plugin</artifactId>
+    <version>3.0.2</version>
+    <configuration>
+        <archive>
+            <manifest>
+                <mainClass>com.github.me.myproject.Main</mainClass>
+            </manifest>
+        </archive>
+    </configuration>
+</plugin>
+</code>
+
+
+<a name="maven_shade_plugin"></a>
+<h3>Maven Shade Plugin - Create a fat/uber/shaded JAR with dependencies</h3>
+<code>
+<!-- maven-shade-plugin - Create a "fat"/"shaded" jar with the dependencies included.
+        Makes the jar file much larger, but standalone.-->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-shade-plugin</artifactId>
+    <version>3.1.0</version>
+    <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>shade</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <finalName>${project.artifactId}-${project.version}-shaded</finalName>
+    </configuration>
+</plugin> 
+</code>
+
+
+
+<a name="launch4j_maven_plugin"></a>
+<h3>Launch4j Maven Plugin - Create a Windows .exe file</h3>
+<code>
+ <!-- launch4j-maven-plugin - Create a Windows .exe with the jar inside. 
+         JRE can optionally be embedded. -->
+<plugin>
+    <groupId>com.akathist.maven.plugins.launch4j</groupId>
+    <artifactId>launch4j-maven-plugin</artifactId>
+    <version>1.7.21</version>
+    <executions>
+        <execution>
+            <id>l4j-clui</id>
+            <phase>package</phase>
+            <goals>
+                <goal>launch4j</goal>
+            </goals>
+            <configuration>
+                <headerType>gui</headerType><!--gui|console|jniGui32|jniConsole32-->
+                <jar>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar</jar>
+                <outfile>${project.build.directory}/myapp.exe</outfile>
+                <downloadUrl>http://java.com/download</downloadUrl>
+                <classPath>
+                    <mainClass>com.github.me.myproject.Main</mainClass>
+                    <preCp>anything</preCp>
+                </classPath>
+                <icon>src/main/resources/myWindowsIcon.ico</icon>
+                <jre>
+                    <minVersion>1.6.0</minVersion>
+                    <jdkPreference>preferJre</jdkPreference>
+                </jre>
+                <versionInfo>
+                    <fileVersion>1.0.0.0</fileVersion>
+                    <txtFileVersion>${project.version}</txtFileVersion>
+                    <fileDescription>${project.name}</fileDescription>
+                    <copyright>2018 Me</copyright>
+                    <productVersion>1.0.0.0</productVersion>
+                    <txtProductVersion>1.0.0.0</txtProductVersion>
+                    <productName>${project.name}</productName>
+                    <companyName>John Q Smith</companyName>
+                    <internalName>myapp</internalName>
+                    <originalFilename>myapp.exe</originalFilename>
+                </versionInfo>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+</code>
+
+
+<a name="mac_app_bundler_plugin"></a>
+<h3>AppBundle Maven Plugin - Create a Mac .app</h3>
+<code>
+<!-- sh.tak.appbundler - Create a Mac .app file -->
+<plugin>
+    <groupId>sh.tak.appbundler</groupId>
+    <artifactId>appbundle-maven-plugin</artifactId>
+    <version>1.2.0</version>
+    <configuration>
+        <mainClass>com.github.me.myproject.Main</mainClass>        
+        <iconFile>myMacIcons.icns</iconFile>
+    </configuration>
+    <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>bundle</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+</code>
+
+
+<a name="debian_maven_plugin"></a>
+<h3>Debian Maven Plugin - Create a Debian/Ubuntu .deb package</h3>
+<code>
+<!-- net.sf.debian-maven - Creates a .deb package for Debian/Ubuntu based distros 
+        http://debian-maven.sourceforge.net/usage.html -->
+<plugin>
+    <groupId>net.sf.debian-maven</groupId>
+    <artifactId>debian-maven-plugin</artifactId>
+    <version>1.0.6</version>
+    <configuration>
+        <packageName>my-package</packageName>
+        <packageVersion>1.0.0</packageVersion>
+    </configuration>
+</plugin>
+</code>
+
+
+<a name="conclusions"></a>
+<h2>Conclusion</h2>
+
+<p>With the knowledge you have now, you should be able to start working on projects confidently with Maven. There is plenty more to learn about Maven since it can be heavily customized and there are lots of plugins available online. Keep learning and refer to some of the links below for further reading.</p>
+
+<a name="helpful_links"></a>
+<h2>Helpful Links</h2>
+
+<ul>
+    <li>Official Maven documentation - <a href="https://maven.apache.org/index.html" target="_blank">https://maven.apache.org/index.html</a></li>
+    <li>Maven Central repository - <a href="https://search.maven.org" target="_blank">https://search.maven.org</a></li>
+    <li>Maven Plugin Developers Centre - <a href="https://maven.apache.org/plugin-developers/index.html" target="_blank">https://maven.apache.org/plugin-developers/index.html</a></li>
+</ul>

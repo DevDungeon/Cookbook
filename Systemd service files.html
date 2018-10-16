@@ -1,0 +1,74 @@
+<h1> Creating Systemd Service Files</h1>
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fYQBvjYQ63U" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</center>
+
+<p><strong>systemd</strong> is used in many mainstream Linux distributions like Arch Linux, CentOS, Debian/Ubuntu, RedHat/Fedora, openSuse, Slackware, CoreOS and more. It provides an easy way to manage and control services and a simple method of creating your own services. This will cover the process of creating and managing your own custom service.</p>
+
+<p>You should copy your .service file to <strong>/etc/systemd/system</strong>. Do not symlink it. One, you can't run systemctl enable because you it will not follow a symlink. Two, it potentially opens up a security risk (e.g. a shell). For example, you run your service as a low privilege user but you are symlinking the .service file. Someone finds a flaw in your service where they are able to overwrite or modify files. They can turn that in to code execution by modifying the .service file that your low privilege user has access to and changing the command that is run (<strong>ExecStart</strong>). When the service is restarted the attackers command is run. This is also why you should not run the service as root.</p>
+
+<p>Note that you can also put the files in <strong>/usr/lib/systemd/system/</strong> but that should be reserved for system level packages. Anything in <strong>/etc/systemd/system</strong> will override it and that is where user changes should go.</p>
+
+<h2>The .service File</h2>
+
+<p>Create a .service file in the systemd folder. For example <strong>/etc/systemd/system/my_daemon.service</strong>. Here is an example .service file.</p>
+
+<code>
+[Unit]
+Description=My Miscellaneous Service
+After=network.target
+
+[Service]
+Type=simple
+# Another Type: forking
+User=nanodano
+WorkingDirectory=/home/nanodano
+ExecStart=/home/nanodano/my_daemon --option=123
+Restart=on-failure
+# Other restart options: always, on-abort, etc
+
+[Install]
+WantedBy=multi-user.target
+</code>
+
+<p>There are more options you can specify. For example, in addition to <strong>ExecStart</strong> you can specify <strong>ExecStop</strong> and <strong>ExecReload</strong> to control what happens when stopping and restarting. Those are not required though. If you omit the <strong>ExecStop</strong> option, it is smart enough to know it should kill the process. If you need a more graceful shutdown though, specify that with <strong>ExecStop</strong>. To see some more options, look at <strong>man systemd.service</strong> in your distribution. <a href="https://www.freedesktop.org/software/systemd/man/systemd.service.html" target="_blank">Freedesktop.org's man systemd.service </a>.</p>
+
+<code>
+# Read all the service options
+man systemd.service
+</code>
+
+<h2>Controlling the Service</h2>
+
+<code>
+# Control whether service loads on boot
+systemctl enable
+systemctl disable
+
+# Manual start and stop
+systemctl start
+systemctl stop
+
+# Restarting/reloading
+systemctl daemon-reload # Run if .service file has changed
+systemctl restart
+</code>
+
+<h2>View Status/Logs</h2>
+
+<code>
+# See if running, uptime, view latest logs
+systemctl status
+systemctl status [service_name]
+
+# See all systemd logs
+journalctl
+
+# Tail logs
+journalctl -f
+
+# Show logs for specific service
+journalctl -u my_daemon.service
+</code>
+

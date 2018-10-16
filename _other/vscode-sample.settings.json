@@ -1,0 +1,12 @@
+{
+    "telemetry.enableTelemetry": false,
+    "markdownlint.config": {
+        "MD003": {
+            "style": "setext_with_atx"
+        }
+    },
+    "markdownlint.run": "onSave",
+    "java.home": "C:\\o\\openjdk11",
+    "workbench.colorTheme": "Visual Studio Dark",
+    "html.autoClosingTags": false
+}

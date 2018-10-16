@@ -5,3 +5,4 @@ nbactions.xml
 target
 test.txt
 *.iml
+nb-configuration.xml

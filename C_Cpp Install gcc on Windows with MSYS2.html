@@ -1,0 +1,135 @@
+<h1>Installing gcc on Windows with MSYS2</h1>
+
+<h2>Intro</h2>
+
+<p>There are a variety of toolchains you can install on Windows for compiling C and C++ applications. Microsoft provides <a href="https://visualstudio.microsoft.com/vs/community/" target="_blank">Visual Studio Community</a> for free, and is a great IDE and toolchain. If you are developing exclusively for Windows, that is the tool I would recommend. For those who need or prefer the cross-platform GNU toolchain, you can install it using MSYS2. We will cover how to install gcc using MSYS2.</p>
+
+<h2>Installing and running MSYS2</h2>
+
+<p>
+Download MSYS2 from <a href="http://www.msys2.org/" target="_blank">http://www.msys2.org/</a>. Download the .exe file and follow the installation instructions on the site. After installing, navigate to the directory where it was installed, and run <strong>msys2.exe</strong>. For this tutorial, we will assume the default location of <strong>C:\msys64</strong>. After opening it you should find yourself in a bash shell.
+</p>
+
+<h2>Updating MSYS2</h2>
+
+<p>MSYS2 uses the <strong>pacman</strong> package manager that the Arch Linux distribution uses. After your initial install it is a good idea to update all the packages. Update everything using:</p>
+
+<code>
+pacman -Syu
+</code>
+
+<h2>Installing gcc using MSYS2</h2>
+
+<p>In the MSYS2 bash shell, use <strong>pacman</strong> again to install the build toolchain and compilers. Run the command below to install the <strong>mingw-w64-x86_64-toolchain</strong> package group.</p>
+
+<code>
+# Install make, autoconf, etc to C:\msys64\usr\bin
+pacman -S base-devel gcc vim
+</code>
+
+<p>Note that vim is optional, but very handy to have. Here is the list of packages that are installed with the above.</p>
+
+<code>
+# pacman -S base-devel
+   1) asciidoc  2) autoconf  3) autoconf2.13  4) autogen  5) automake-wrapper
+   6) automake1.10  7) automake1.11  8) automake1.12  9) automake1.13
+   10) automake1.14  11) automake1.15  12) automake1.16  13) automake1.6
+   14) automake1.7  15) automake1.8  16) automake1.9  17) bison  18) diffstat
+   19) diffutils  20) dos2unix  21) file  22) flex  23) gawk  24) gdb
+   25) gettext  26) gettext-devel  27) gperf  28) grep  29) groff  30) help2man
+   31) intltool  32) lemon  33) libtool  34) libunrar  35) libunrar-devel
+   36) m4  37) make  38) man-db  39) pacman  40) pactoys-git  41) patch
+   42) patchutils  43) perl  44) pkg-config  45) pkgfile  46) quilt  47) rcs
+   48) scons  49) sed  50) swig  51) texinfo  52) texinfo-tex  53) ttyrec
+
+# pacman -S gcc
+   binutils-2.30-1  isl-0.19-1  mpc-1.1.0-1
+   msys2-runtime-devel-2.11.1-2
+   msys2-w32api-headers-6.0.0.5223.7f9d8753-1
+   msys2-w32api-runtime-6.0.0.5223.7f9d8753-1
+   windows-default-manifest-6.4-1  gcc-7.3.0-3
+</code>
+
+<p>After installing the above the .exe files will be available in <strong>C:\msys64\usr\bin</strong>. Some of the executables that will be available are: awk, base64, curl, dd, diff, dos2unix, file, gcc, gdb, gpg, grep, gzip, head, hexdump, hostname, ld, ldd, ls, make, man, md5sum, merge, mkdir, more, mv, objdump, openssl, perl, python2, python2.7, readelf, rm, rmdir, sed, sha1sum, sha256sum, sha512sum, sort, split, stat, tail, tee, telnet, uniq, uname, vim, wget, which, whoami, yes.</p>
+
+<p>There are many other executables in the <strong>C:\msys64\usr\bin</strong> directory. Keep this in mind when making the decision to add the bin directory to your Windows PATH environment variable.</p>
+
+
+
+<h2>Installing other packages with pacman</h2>
+
+<p>You also have a ton of other packages available via the pacman package manager. View the full list of options at <a href="https://github.com/msys2/msys2/wiki/Packages" target="_blank">https://github.com/msys2/msys2/wiki/Packages</a>, or use the command below to search</p>
+
+<code>
+# Search pacman for a package (cmake)
+pacman -Ss cmake
+
+# msys/cmake 3.12.2-1
+#   A cross-platform open-source make system
+
+# Install with
+pacman -S cmake
+pacman -S clang
+pacman -S vim
+
+# Search for gcc (notice the msys/, mingw32/, and mingw64/ prefixes)
+pacman -Ss gcc
+</code>
+
+
+<p>Packages prefixed with <strong>msys/</strong> will be installed to the C:\msys64\usr\ environment. Some packages are prefixed with <strong>mingw</strong>.</p>
+
+
+
+<h2>Optional: Add executables to your Windows PATH</h2>
+
+<p>If you want to access everything from your Windows Command Prompt, then add the bin directory to your Windows PATH environment variable. Keep in mind this adds a lot of executables to your path which might conflict with other applications. The usr\bin\ directory contains the whole slew of executables listed above. There is a lot of unnecessary stuff in that directory. mingw64\bin\ directory has a sma</p>
+
+<code>
+C:\msys64\mingw64\bin
+C:\msys64\usr\bin
+</code>
+
+<h2>Header files and libraries</h2>
+
+<p>Libraries and include files can be found in two places. </p>
+
+<code>
+# Static and dynamic libraries
+C:\msys64\usr\lib
+C:\msys64\mingw64\lib
+
+# Header files
+C:\msys64\usr\include
+C:\msys64\mingw64\include
+</code>
+
+<h2>A note about msys vs mingw64 repos</h2>
+
+<p>
+Some things are only available in the msys/ repo like vim and git, and will only be available in \usr\bin\. Some things like gcc are available in msys\, mingw32\, and mingw64\ repos and can potentially end up being installed in both \usr\bin\ and \mingw64\bin\. This is where you have to be careful about how you set up your PATH environment variable. If you add \usr\bin\ in order to make vim or git available, you will also add everything in that directory, which may conflict with something if you also add the \mingw64\bin\ directory to your path. If you only want the toolchain without as much extra stuff, use the mingw64 packages. Then you can add only the \mingw64\bin directory to your PATH if desired. The mingw64 repository generally has more libraries available for install that are unavailable in the general msys repo (e.g. SDL, exif, freeglut).
+</p>
+
+<code>
+# Install gcc in mingw\bin directory
+pacman -S mingw-w64-x86_64-toolchain
+
+Packages (17) 
+mingw-w64-x86_64-binutils-2.30-5
+mingw-w64-x86_64-crt-git-7.0.0.5245.edf66197-1
+mingw-w64-x86_64-gcc-8.2.0-3
+mingw-w64-x86_64-gcc-ada-8.2.0-3
+mingw-w64-x86_64-gcc-fortran-8.2.0-3
+mingw-w64-x86_64-gcc-libgfortran-8.2.0-3
+mingw-w64-x86_64-gcc-libs-8.2.0-3
+mingw-w64-x86_64-gcc-objc-8.2.0-3
+mingw-w64-x86_64-gdb-8.2-1
+mingw-w64-x86_64-headers-git-7.0.0.5245.edf66197-1
+mingw-w64-x86_64-libmangle-git-7.0.0.5230.69c8fad6-1
+mingw-w64-x86_64-libwinpthread-git-7.0.0.5231.7da6518b-1
+mingw-w64-x86_64-make-4.2.1-2
+mingw-w64-x86_64-pkg-config-0.29.2-1
+mingw-w64-x86_64-tools-git-7.0.0.5242.1b29d1bc-1
+mingw-w64-x86_64-winpthreads-git-7.0.0.5231.7da6518b-1
+mingw-w64-x86_64-winstorecompat-git-7.0.0.5230.69c8fad6-1
+</code>

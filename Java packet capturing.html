@@ -1,0 +1,557 @@
+<h2>Overview</h2>
+
+
+<ul>
+    <li><a href="#prerequisites">Prerequisites</a></li>
+    <li><a href="#setup_with_maven">Setting up the project with Maven</a></li>
+    <li><a href="#list_network_devices">Listing network devices</a></li>
+    <li><a href="#live_capturing">Getting a handle and capturing live packets</a></li>
+    <li><a href="#capturing_with_filters">Capturing with a BPF filter</a></li>
+    <li><a href="#more_about_packets">Looking deeper at the packet classes</a></li>
+    <li><a href="#writing_pcap_file">Writing a pcap file</a></li>
+    <li><a href="#reading_pcap_file">Reading a pcap file</a></li>
+    <li><a href="#stats_about_handle">Get stats about a handle</a></li>
+    <li><a href="#full_code_example">Full code example</a></li>
+    <li><a href="#further_reading">Further reading</a></li>
+</ul>
+
+
+<p>This tutorial will cover packet capturing in the Java programming language using the <a href="https://github.com/kaitoy/pcap4j" target="_blank">pcap4j</a> library.</p>
+
+<h2>Other packet capturing tutorials</h2>
+
+<p>I have a few other packet capturing tutorials in other languages as well. If you want to learn how to use the underlying pcap library in C, refer to <a href="/content/using-libpcap-c">Using libpcap in C</a>. If you have an interest in Go, you can read <a href="/content/packet-capture-injection-and-analysis-gopacket">Packet Capture, Injection, and Analysis with Gopacket</a> or watch my talk from <a href="https://www.youtube.com/watch?v=APDnbmTKjgM" target="_blank">GopherCon 2016: Packet Capture, Analysis, and Injection with Go</a> on YouTube.</p> 
+
+
+
+<a name="prerequisites"></a>
+<h2>Prerequisites</h2>
+
+<h3>Java JDK 1.8</h3>
+
+<p>This example was tested with Java JDK 8. For instructions on installing the JDK on Windows, refer to my tutorial on <a href="/content/installing-jdk-18-and-9-windows-java-development">Installing JDK 1.8 and 9 in Windows</a>.</p>
+
+<p>On Debian and Ubuntu based distributions, you can instal JDK 8 easily with:</p>
+
+<code>
+sudo apt install openjdk-8-jdk
+</code>
+
+<p>On Mac and other platforms, I recommend using the Oracle JDK installer from <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank">Oracle's JDK download page</a>.</p>
+
+<h3>WinPcap or libpcap</h3>
+
+<p>You need a packet capturing library installed. On Linux and Mac, libpcap is typically included by default, and if not, most distributions provide a package for easy installation. Absolute worst case, you will need to build it yourself from source from <a href="http://www.tcpdump.org" target"_blank">http://www.tcpdump.org</a>. If using Windows, you need to install <a href="https://www.winpcap.org/install/default.htm" target="_blank">WinPcap</a> which provides a simple installer.</p>
+
+
+<h3>Pcap4j library</h3>
+
+<p>We will use the <a href="https://github.com/kaitoy/pcap4j" target="_blank">pcap4j</a> Java library to hook in to the native libpcap or WinPcap. In this tutorial we will use Maven and the Maven Central Repository to take care of our Java dependencies, so you don't have to worry about downloading anything manually. Maven will take care of everything. If you are unfamiliar with Maven or don't have it installed yet, I recommend you first read my tutorial on <a href="/content/maven-basics-java-developers">Maven Basics for Java Developers</a>.
+
+<p>If you prefer to download the JAR and manage the dependencies yourself, you can download the latest JAR from the <a href="https://github.com/kaitoy/pcap4j/releases" target="_blank">pcap4j GitHub release page</a>.</p>
+
+
+<a name="setup_with_maven"></a>
+<h2>Setting up the project with maven</h2>
+
+<h3>Generate project structure using maven-archetype-quickstart</h3>
+
+<p>I will use Maven to generate a skeleton project that is ready to go. Generate a quickstart project with the following command:</p>
+
+<code>
+# This is all one line
+mvn archetype:generate -DgroupId=com.github.username -DartifactId=pcap -Dversion=1.0.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+</code>
+
+<p>This will create a <strong>pcap</strong> directory with a <strong>pom.xml</strong> file and a <strong>src</strong> directory.</p>
+
+<h3>Add the pcap4j dependency in pom.xml</h3>
+
+<p>Inside the created directory, edit the <strong>pom.xml</strong> file and add a new dependency entry for pcap4j. It should look similar to this:</p>
+
+<code>
+<!-- pom.xml -->
+<project>
+    ...
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>org.pcap4j</groupId>
+            <artifactId>pcap4j-core</artifactId>
+            <version>1.7.3</version>
+            <type>jar</type>
+        </dependency>
+        ...
+    </dependencies>
+    ...
+</project>
+</code>
+
+<p>Now we are ready to start writing source code. Inside the <strong>src/main/java</strong> directory, drill down the directories until you get to the <strong>App.java</strong> file. We can start editing in that file. It should already look something like this:</p>
+
+<code>
+// App.java
+package com.github.username;
+
+public class App 
+{
+    public static void main(String[] args)
+    {
+        System.out.println("Hello World!");
+    }
+}
+</code>
+
+
+<a name="list_network_devices"></a>
+<h2>Listing networking devices</h2>
+
+<p>Let's modify the App.java file a bit and put some code in the main() function that will list the network interfaces and ask the user to choose one. Update the code to look more like this:</p>
+
+<code>
+// App.java
+package com.github.username;
+
+import java.io.IOException;
+import org.pcap4j.core.PcapNetworkInterface;
+import org.pcap4j.util.NifSelector;
+
+public class App 
+{
+    public static void main(String[] args)
+    {
+        // The class that will store the network device
+        // we want to use for capturing.
+        PcapNetworkInterface device = null;
+
+        // Pcap4j comes with a convenient method for listing
+        // and choosing a network interface from the terminal
+        try {
+            // List the network devices available with a prompt
+            device = new NifSelector().selectNetworkInterface();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("You chose: " + device);
+    }
+}
+</code>
+
+<p>Now that we have some code we actually want to run and test, let's set up Maven to package our app in to an executable JAR file with dependencies that is ready for us to run.</p>
+
+<h2>Packaging and running the application</h2>
+
+<p>To make packaging and running the application easier, we should package the application as a JAR with all the dependencies embedded. Modify the <strong>pom.xml</strong> in the root directory of the project and add a section for <strong>build</strong> and add the following plugin configurations to your existing <strong>pom.xml</strong>. While we're at it, let's tell the compiler plugin to target Java version 1.8.</p>
+
+<code>
+<!-- pom.xml -->
+<project>
+    ...
+    <build>
+        <plugins>
+            <!-- Specify to the compiler we want Java 1.8 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <!-- Tell the JAR plugin which class is the main class -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.github.username.App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- Embed dependencies inside the final JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <finalName>uber-${project.artifactId}-${project.version}</finalName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    ...
+</project>
+</code>
+
+<p>After adding those plugins, we can navigate to the root project directory with the <strong>pom.xml</strong> and run:</p>
+
+<code>
+# Generate the uber jar in the target directory
+mvn package
+
+# Launch the jar
+java -jar target/uber-pcap-1.0.0.jar
+
+# You might need to elevate your privileges with sudo
+sudo java -jar target/uber-pcap-1.0.0.jar
+</code>
+
+<p>When you run the example it will print out all available devices and you must enter a number to select a device</p>
+
+
+
+<h3>Some minor refactoring</h3>
+
+<p>Before we move on and make this program more complex, let's break out the code from the main() method in to a separate method like this</p>
+
+<code>
+// App.java
+package com.github.username;
+
+import java.io.IOException;
+import org.pcap4j.core.PcapNetworkInterface;
+import org.pcap4j.util.NifSelector;
+
+public class App {
+
+    static PcapNetworkInterface getNetworkDevice() {
+        PcapNetworkInterface device = null;
+        try {
+            device = new NifSelector().selectNetworkInterface();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return device;
+    }
+
+    public static void main(String[] args) {
+        PcapNetworkInterface device = getNetworkDevice();
+        System.out.println("You chose: " + device);
+    }
+}
+</code>
+
+
+<h3>Getting the device list yourself</h3>
+<p>If you want to get the list of devices yourself, instead of using the selector tool provided, call the native <strong>Pcaps.findallDevs()</strong> method. Refer to this code snippet taken from the NifSelector class.</p>
+
+<code>
+// Instead of using NifSelector, you can get the
+// list of network devices from the system
+
+List<PcapNetworkInterface> allDevs = null;
+
+try {
+    allDevs = Pcaps.findAllDevs();
+} catch (PcapNativeException e) {
+    throw new IOException(e.getMessage());
+}
+
+if (allDevs == null || allDevs.isEmpty()) {
+    throw new IOException("No NIF to capture.");
+}
+</code>
+
+
+<a name="live_capturing"></a>
+<h2>Getting a handle and capturing live packets</h2>
+
+<p>Once you have selected a device, you can create call <strong>openLive()</strong> to create a handle that can be used to listen for packets. In this next code snippet, we will modify the <strong>main()</strong> function to actually open the device that was chosen.</p>
+
+<p>We will do a few things here, first we will open the device with <strong>openLive()</strong> and then we will create a <strong>PacketListener</strong> that defines how to handle the packets when they are received. The last step is to tell the open device to loop and process packets using the listener we defined. The listener we create that processes the packets simply prints out the packet information. You will need to add a few extra imports for this code. Also note the additional <strong>throws</strong> on the main function, done to simplify the example.</p>
+
+<code>
+// App.java
+package com.github.username;
+
+import java.io.IOException;
+
+import org.pcap4j.core.NotOpenException;
+import org.pcap4j.core.PacketListener;
+import org.pcap4j.core.PcapHandle;
+import org.pcap4j.core.PcapNativeException;
+import org.pcap4j.core.PcapNetworkInterface;
+import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
+import org.pcap4j.packet.Packet;
+import org.pcap4j.util.NifSelector;
+
+public class App {
+
+    static PcapNetworkInterface getNetworkDevice() {
+        PcapNetworkInterface device = null;
+        try {
+            device = new NifSelector().selectNetworkInterface();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return device;
+    }
+
+    public static void main(String[] args) throws PcapNativeException, NotOpenException {
+        // The code we had before
+        PcapNetworkInterface device = getNetworkDevice();
+        System.out.println("You chose: " + device);
+
+        // New code below here
+        if (device == null) {
+            System.out.println("No device chosen.");
+            System.exit(1);
+        }
+
+        // Open the device and get a handle
+        int snapshotLength = 65536; // in bytes   
+        int readTimeout = 50; // in milliseconds                   
+        final PcapHandle handle;
+        handle = device.openLive(snapshotLength, PromiscuousMode.PROMISCUOUS, readTimeout);
+
+        // Create a listener that defines what to do with the received packets
+        PacketListener listener = new PacketListener() {
+            @Override
+            public void gotPacket(Packet packet) {
+                // Override the default gotPacket() function and process packet
+                System.out.println(handle.getTimestamp());
+                System.out.println(packet);
+            }
+        };
+
+        // Tell the handle to loop using the listener we created
+        try {
+            int maxPackets = 50;
+            handle.loop(maxPackets, listener);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Cleanup when complete
+        handle.close();
+    }
+
+}
+</code>
+
+
+<a name="capturing_with_filters"></a>
+<h2>Capturing with BPF filter</h2>
+
+<p>You can implement filters using the Berkeley Packet Filter (BPF) syntax. Read more about BPF at <a href="https://en.wikipedia.org/wiki/Berkeley_Packet_Filter" target="_blank">https://en.wikipedia.org/wiki/Berkeley_Packet_Filter</a>. After opening a device (or a pcap file, covered later) and getting a handle, you can set the filter on the handle using <strong>setFilter()</strong>. Be sure to set the filter after the handle is created, but before you begin capturing. The <strong>setFilter()</strong> method takes care of compiling and setting the filter in one step, something that is normally two separate steps in C.</p>
+
+<code>
+// import org.pcap4j.core.BpfProgram.BpfCompileMode;
+
+// Attach a filter to the handle after creating it
+final PcapHandle handle = device.openLive(SNAPLEN, PromiscuousMode.PROMISCUOUS, READ_TIMEOUT);
+
+// Set a filter to only listen for tcp packets on port 80 (HTTP)
+String filter = "tcp port 80";
+handle.setFilter(filter, BpfCompileMode.OPTIMIZE);
+
+// Continue with rest of code
+</code>
+
+
+
+
+<a name="more_about_packets"></a>
+<h2>Looking deeper at the packet classes</h2>
+
+<p>
+Now that we know how to capture packets and process them, it's worth taking a moment to look at the AbstractPacket class that provides the base functionality for all packet types including the TcpPacket class.
+</p>
+
+<p>Refer to the official documentation of the AbstractPacket class at <a href="https://kaitoy.github.io/pcap4j/javadoc/latest/en/org/pcap4j/packet/AbstractPacket.html" target="_blank">https://kaitoy.github.io/pcap4j/javadoc/latest/en/org/pcap4j/packet/AbstractPacket.html</a>, but I will point out a few noteworthy methods.</p>
+
+<code>
+// If we had any kind of packet object, we could use:
+packet.getHeader()
+packet.getPayload()
+packet.length()
+packet.getRawData()
+packet.toHexString()
+</code>
+
+<p>The above reference is for a generic packet object. There is also a more specific <a href="https://kaitoy.github.io/pcap4j/javadoc/latest/en/org/pcap4j/packet/TcpPacket.html" target="_blank">TcpPacket</a> as well as many other types of packets.</p>
+
+
+
+
+<a name="writing_pcap_file"></a>
+<h2>Writing a pcap file</h2>
+
+<p>To write a pcap file, you must create a <strong>PcapDumper</strong> object, obtained from a handle by calling <strong>handle.dumpOpen(fileName)</strong>.</p>
+
+<code>
+// import org.pcap4j.core.PcapDumper;
+PcapDumper dumper = handle.dumpOpen("dump.pcap");
+
+// Write packets as needed
+try {
+    dumper.dump(packet, handle.getTimestamp());
+} catch (NotOpenException e) {
+    e.printStackTrace();
+}
+
+// Be sure to close it when done
+dumper.close();
+</code>
+
+
+<a name="reading_pcap_file"></a>
+<h2>Reading a pcap file</h2>
+
+<p>Reading a pcap file is very similar to reading from a regular device. The only difference is that you call a static method, <strong>Pcaps.openOffline()</strong>, instead of <strong>handle.openLive()</strong>. Once you have the handle, you treat it exactly the same way as a handle to a live device.</p>
+
+<code>
+// import org.pcap4j.core.Pcaps;
+
+PcapHandle handle;
+try {
+    handle = Pcaps.openOffline("dump.pcap", TimestampPrecision.NANO);
+} catch (PcapNativeException e) {
+    handle = Pcaps.openOffline("dump.pcap");
+}
+</code>
+
+
+<a name="stats_about_handle"></a>
+<h2>Get stats about a handle</h2>
+
+<p>Using a handle that we already have, we can get statistics about how many packets were captured and dropped using the <strong>PcapStat</strong> class obtained from <strong>handle.getStats()</strong>.</p>
+
+<code>
+// import org.pcap4j.core.PcapStat;
+// import com.sun.jna.Platform;
+
+PcapStat stats = handle.getStats();
+System.out.println("Packets received: " + stats.getNumPacketsReceived());
+System.out.println("Packets dropped: " + stats.getNumPacketsDropped());
+System.out.println("Packets dropped by interface: " + stats.getNumPacketsDroppedByIf());
+// Supported by WinPcap only
+if (Platform.isWindows()) {
+    System.out.println("Packets captured: " + stats.getNumPacketsCaptured());
+}
+</code>
+
+<a name="full_code_example"></a>
+<h2>Full code example</h2>
+
+<p>This example contains all of the code above, except for the example of reading a pcap file. It will open a live device, dump some packets using a filter to listen on TCP port 80, write the packets to a file, and print out statistics at the end.</p>
+
+<code>
+// App.java
+package com.github.username;
+
+import java.io.IOException;
+
+import com.sun.jna.Platform;
+
+import org.pcap4j.core.NotOpenException;
+import org.pcap4j.core.PacketListener;
+import org.pcap4j.core.PcapDumper;
+import org.pcap4j.core.PcapHandle;
+import org.pcap4j.core.PcapNativeException;
+import org.pcap4j.core.PcapNetworkInterface;
+import org.pcap4j.core.PcapStat;
+import org.pcap4j.core.BpfProgram.BpfCompileMode;
+import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
+import org.pcap4j.packet.Packet;
+import org.pcap4j.util.NifSelector;
+
+public class App {
+
+    static PcapNetworkInterface getNetworkDevice() {
+        PcapNetworkInterface device = null;
+        try {
+            device = new NifSelector().selectNetworkInterface();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return device;
+    }
+
+    public static void main(String[] args) throws PcapNativeException, NotOpenException {
+        // The code we had before
+        PcapNetworkInterface device = getNetworkDevice();
+        System.out.println("You chose: " + device);
+
+        // New code below here
+        if (device == null) {
+            System.out.println("No device chosen.");
+            System.exit(1);
+        }
+
+        // Open the device and get a handle
+        int snapshotLength = 65536; // in bytes   
+        int readTimeout = 50; // in milliseconds                   
+        final PcapHandle handle;
+        handle = device.openLive(snapshotLength, PromiscuousMode.PROMISCUOUS, readTimeout);
+        PcapDumper dumper = handle.dumpOpen("out.pcap");
+
+        // Set a filter to only listen for tcp packets on port 80 (HTTP)
+        String filter = "tcp port 80";
+        handle.setFilter(filter, BpfCompileMode.OPTIMIZE);
+
+        // Create a listener that defines what to do with the received packets
+        PacketListener listener = new PacketListener() {
+            @Override
+            public void gotPacket(Packet packet) {
+                // Print packet information to screen
+                System.out.println(handle.getTimestamp());
+                System.out.println(packet);
+
+                // Dump packets to file
+                try {
+                    dumper.dump(packet, handle.getTimestamp());
+                } catch (NotOpenException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        // Tell the handle to loop using the listener we created
+        try {
+            int maxPackets = 50;
+            handle.loop(maxPackets, listener);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Print out handle statistics
+        PcapStat stats = handle.getStats();
+        System.out.println("Packets received: " + stats.getNumPacketsReceived());
+        System.out.println("Packets dropped: " + stats.getNumPacketsDropped());
+        System.out.println("Packets dropped by interface: " + stats.getNumPacketsDroppedByIf());
+        // Supported by WinPcap only
+        if (Platform.isWindows()) {
+            System.out.println("Packets captured: " +stats.getNumPacketsCaptured());
+        }
+
+        // Cleanup when complete
+        dumper.close();
+        handle.close();
+    }
+}
+</code>
+
+<a name="further_reading"></a>
+<h2>Further reading</h2>
+
+<ul>
+    <li><a href="https://github.com/kaitoy/pcap4j" target="_blank">GitHub Repository for pcap4j</a></li>
+    <li><a href="https://github.com/kaitoy/pcap4j/tree/v1/pcap4j-sample/src/main/java/org/pcap4j/sample" target="_blank">Official Examples</a></li>
+    <li><a href="http://www.javadoc.io/doc/org.pcap4j/pcap4j/1.7.3" target="_blank">Official Documentation for v1.7.3</a></li>
+</ul>

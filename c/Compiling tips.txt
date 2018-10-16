@@ -1,0 +1,29 @@
+Use maven to build C projects???
+Use autoconf and Makefile ./configure;make;make install;
+
+mvn clean compile build test package verify deploy
+
+-Wall
+# SDL compile flags
+-lSDL -l
+# OpenGL compile flags
+-lGL -lGLUT
+# OpenSSL compile flags
+-lssl -lcrypto
+# Compiling windows apps
+xxxxxx
+# Add include and lib dirs
+-I/path/to/include -L/path/to/LIB
+
+# Put .dll in bin dirs in PATH or same dir as executable
+
+
+Windows:
+
+
+
+Mac:
+
+
+Linux:
+

@@ -1,0 +1,23 @@
+# Use Go compiler instead of cgo, build all 
+# export CGO_ENABLED=0 or:
+CGO_ENABLED=0 go build -a progam.go
+
+# When go getting tell it to use Go compiler (not cgo)
+# and rebuild all dependencies (-a) right in to the file. This will compile pthread, libc, or whatever else
+# It also removes debug info (-ldflags '-s') reducing the file size
+CGO_ENABLED=0 go get -a -ldflags '-s' github.com/nanodano/somegoprogram
+
+3 https://blog.codeship.com/building-minimal-docker-containers-for-go-applications/
+# CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+
+#################################
+
+# Generally, --ldflags '-extldflags "-static"' can be added to the compile command and it will output a proper static executable.
+# http://matthewkwilliams.com/index.php/2014/09/28/go-executables-are-statically-linked-except-when-they-are-not/
+
+# Example: go build --ldflags '-extldflags "-static"' ./code-cgo.go
+# http://blog.hashbangbash.com/2014/04/linking-golang-statically/
+
+--ldflags is passed to the go linker. It takes a string of arguments.
+'-extldflags ...' is a flag for the 6l linker, to pass additional flags to the external linker (in my situation, that is gcc).
+"-static" is the argument to gcc (also to ld) to link statically.

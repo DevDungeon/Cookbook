@@ -1,0 +1,448 @@
+<!--<h1>TomCat Tutorial</h1>-->
+
+<!-- Tags: Java, TomCat, sysadmin, Cryptography, Security, JSP, Servlet, Linux, Windows, Mac -->
+
+<h2>Overview</h2>
+
+<ul>
+    <li><a href="#intro">Introduction</a></li>
+
+    <li><a href="#setup">Setup</a></li>
+    <li>
+        <ul>
+            <li><a href="#download_extract_java_tomcat">Download and extract Java and Tomcat</a></li>
+            * Important environment variables (JAVA_HOME, CATALINA_HOME, PATH)
+            * Setup TomCat with an editor/IDE (just configure env vars and locations)
+            * Setup TomCat as a Service (optional)
+            * using nginx as a reverse proxy/load balancer-- link, why
+        </ul>
+    </li>
+    
+    Basic usage
+        * Starting/stopping TomCat manually (start/status/shutdown scripts)
+        ---- Verify TomCat server is working---
+        - Serving static files
+        - Serving Java Server Pages (JSP)
+        - Modifying configs (conf/server.xml and each apps/context.xml?)
+
+    Deploying web apps
+        - Manually deploying web apps/.war files - move your dirs/wars to webapps
+        - using web front end that comes with TomCat Manager app
+        - Deploying war files with Maven
+
+    Enabling the admin web interface
+        - Create a TomCat admin user
+        <li><a href="#access_admin_webapp">Accessing admin web apps</a></li>>
+        - Adding other tomcat admin users/roles
+        * Admin webapps (manager/host-manager) (whitelisting ip in context.xml)
+        deploying .war files with web app
+        
+    Conclusion
+    <li><a href="#references">References/documentation</a></li>
+</ul>
+
+
+
+
+
+
+<a name="intro"></a>
+<h2>Introduction</h2>
+
+<p>TomCat, in its simplest concept, is a web server. Well, it's more than that. While it can serve static files, its primary purpose is to act as a 'servlet container' that serves Java web applications. It can process [.jsp] files, which are like PHP scripts but for Java, and it can also run [Java Servlets], which are classes that process the GET, POST, and other HTTP requests. TomCat will listen on TCP ports for HTTP requests, and route requests to your Java classes, JSP files, or static files. It is also possible to embed TomCat in to a standalone application, but that is out of the scope of this document.</p>
+
+
+Beginner level Java knowledge is expected, although there is virtually no Java code in this tutorial specfically.
+
+This is aimed at beginner to intermediate developers who want to learn about basic Java web app hosting. You should either be a system administrator setting up TomCat or a developer learning how to set up TomCat.
+
+you'll learn...
+basics of setting up, minimal knowledge needed to get started
+
+
+link to official docs
+
+uses/limitations
+alternatives tomcat alternatives: jetty, tomcatEE, glassfish, jboss/wildfly
+TomCat and Jetty are both servlet containers, TomCatEE and Glassfish are like supersets of servlet containers. TomCat EE, Glassfish and other EE servers can also handle servlets and JSP files, but can also do many other things.
+
+diff between TomEE and TomCat, Glassfish, Jetty
+
+
+
+
+
+
+
+<a name="setup"></a>
+<h2>Setup</h2>
+
+
+
+<a name="download_extract_java_tomcat"></a>
+<h3>Download and extract Java and Tomcat</h3>
+
+
+
+Get Java first
+
+You will need a copy of the Java Runtime Environment (JRE) to run TomCat. I recommended getting the full Java Development Kit (JDK), which includes the JRE. If you want to develop your own apps you must get the JDK. If you only want to run TomCat then you only need the JRE.
+
+    * Download Java JDK. I am using OpenJDK 11 in this example.
+    * Extract zip file
+    * Move Java to wherever you want. Could be your home directory,
+    or /opt/openjdk11 for example. For the rest of this example we will
+    assume the path /opt/openjdk11 or C:\opt\openjdk11 is used
+
+    * Set the JAVA_HOME environment variable for TomCat.
+    If you are only downloading the JRE and not the full JDK, set JRE_HOME
+
+
+    * Optional: In Linux, storing and running the jdk from your home directory works just fine, but if you are the system administrator and you want to make java available for everyone you can move it to a location that everyone can read
+        * sudo chown -R root:root /opt/openjdk11
+        ???chmod -R 775 /opt/openjdk11
+    
+    * Optional: adding Java executables to your PATH, allowing it to be called from the command line. This is not required if you are only setting up TomCat as a service, but is useful you want to use Java and the compiler from the shell to run programs and do development. Add the bin directory inside JAVA_HOME to your path. For example /opt/openjdk11/bin to your PATH
+    set PATH=%PATH%:
+    export PATH=/opt/openjdk11/bin:$PATH
+
+
+Download and extract TomCat
+
+    * Download TomCat
+    * Extract zip file
+
+If you are using an IDE for development like NetBeans or IntelliJ, you just need to configure your IDE to use the TomCat directory and it will take care of starting and stopping the service as well as deploying your app.
+
+CATALINA_HOME environment variable to the TomCat root directory
+JAVA_HOME to the Java you want to use
+
+
+To use TomCat as a standalone server without installing it
+- no env var settings required, no services/path/other things changed. 
+
+If you don't want to set up a service, and just want to manually start and stop the server, which is useful for development, then just run the startup.sh or startup.bat script with the JAVA_HOME and CATALINA_HOME environment variables set. Run shutdown.bat or shutdown.sh to stop the server.
+
+    set JAVA_HOME=C:\opt\openjdk11
+    set CATALINA_HOME=C:\opt\tomcat9
+
+    C:\opt\tomcat9\bin\startup.bat
+    C:\opt\tomcat9\bin\shutdown.bat
+
+
+This is a convenient way to run if you want full manual control, don't have to permanently set any environment variables, don't have to install anything or configure any services. Good for development, not good for production. It is also consistent across platforms
+
+configs are located in conf\ (main: server.xml, e.g. changing port, adding users)
+
+log files are in logs\
+You can view logs in the TomCat's log directory. For example, the /opt/tomcat9/logs directory.
+Simple access logs are kept by default even if you don't do any custom logging from your JSPs or Servlets.
+
+
+
+
+
+
+
+
+
+
+
+## Install TomCat as a Windows service
+
+For Mac, I don't know, tbh. You'll have to follow the standalone/manual instructions.
+
+**** to install tomcat as a service in windows, use the windows installer [[link]]
+
+Install Tomcat as a systemd service in Linux
+--------------------------------------------
+
+
+    * Download and extract TomCat from https://tomcat.apache.org
+    * Extract zip file. Using TomCat 9 in this example.
+    * Move to /opt/tomcat9
+
+### Prepare low privilege user and directory permissions (optional)
+
+
+optional, but recommended. don't use root, don't use your personal user unless it's your personal server (i.e. if tomcat is in your home directory),
+
+
+        # Create low priv tomcat user and update permissions
+        sudo useradd tomcat
+        sudo gpasswd -a tomcat tomcat
+
+        # to add other users to the tomcat group ()
+        sudo gpasswd -a otheruser tomcat
+        chown tomcat:tomcat /opt/tomcat9
+    
+        # Let scripts be executed
+        chmod +x /opt/tomcat9/bin/*.sh
+
+        ???chmod -R 000 /opt/tomcat/webapps
+        chmod -R 775 /opt/tomcat/webapps
+
+### Example systemd service file
+
+    * Create a systemd service file (/etc/systemd/system/tomcat.service)
+
+        # Example systemd file
+        [Unit]
+        Description=Apache Tomcat
+        After=network.target
+
+        [Service]
+        Type=forking
+
+        Environment=JAVA_HOME=/opt/openjdk11
+        Environment=CATALINA_PID=/opt/tomcat9/tomcat.pid
+        Environment=CATALINA_HOME=/opt/tomcat9
+        Environment=CATALINA_BASE=/opt/tomcat9
+        Environment='CATALINA_OPTS=-Xmx1024M -server'
+        
+        WorkingDirectory=/opt/tomcat9
+
+        ExecStart=/opt/tomcat9/bin/startup.sh
+        ExecStop=/opt/tomcat9/bin/shutdown.sh
+
+        User=tomcat
+        Group=tomcat
+        UMask=0007
+        RestartSec=15
+        Restart=always
+
+        [Install]
+        WantedBy=multi-user.target
+
+## Running, restarting, getting status of service
+
+<p>Control the service and get information using these commands:</p>
+
+<pre><code>
+    sudo systemctl status tomcat
+    sudo systemctl enable tomcat # Sets it to start on boot
+    sudo systemctl start tomcat
+    sudo systemctl stop tomcat
+    sudo systemctl restart tomcat
+</code></pre>
+
+<h3>using nginx as a reverse proxy/load balance</h3>
+<!-- LINK adding ssl - doable with tomcat, but requires familiarity with keytool and some m ore configuration. I recommend using nginx instead if you need to _x_ --link
+        adding virtual hosts (possible to configure it, but I recommend nginx)
+        nginx reverse proxy (see tutorial) - can control public ports listening, ssl, and vhosts, also for running multiple instances, load balancing -->
+        <!-- Embedding TomCat in to an application (use jetty?) -->
+
+
+
+<h3>Verify TomCat server is working</h3>
+<p>
+Visit http://<ip>:8080 to see if TomCat is working. Use a web browser if possible, otherwise curl or wget can work to test.
+        (curl, wget, firefox, lynx, links - this serves webapps/ROOT)
+        default port 8080, change in conf\server
+</p>
+
+
+
+<h3>Serving static files</h3>
+
+<p>
+TomCat can handle serving static files out of the box
+* By default there is a ROOT directory in the TomCat's webapps/ directory. There is already an index.jsp and some other resources inside. That is the landing page you hit when you visited the TomCat server in the browser in the previous section at http://<ip>:8080
+* Add files to ROOT which is available / (e.g. ...) (Note there are already files here including an index.jsp!)
+* or create a new webapp by creating a new directory inside webapps and place static files there. accessible at /<directory_name> (e.g. ...)
+* Can drop in flat files like .txt, .zip or .html
+* can create subdirectories
+* Can also drop in Java Server Pages (.jsp files) to any folder. TomCat knows how to process them out of the box. No recompilation or restarting necessary when adding or modifying JSP files
+</p>
+
+
+
+<h3>Serving Java Server Pages (JSP)</h3>
+
+<p>
+serving .jsp pages is dead simple. They are treated just like static files when being routed by TomCat. Just point your browser to /somepage.jsp and it will run. TomCat knows automatically how to treat .jsp files and will process them through Java and return the dynamic output. They will automatically be compiled. This makes it easy to make updates and create single page tools. [ tutorial link  for jsp basics ]
+</p>
+
+Here's one simple example though if you want to test something:
+
+<pre><code>
+    <html>
+        <body>
+            <% %>
+        </body>
+    </html>
+</code></pre>
+
+chekc out more at ___link___
+
+
+<!-- 
+## creating web apps
+
+A web app at it's very simplest, is just a directory inside the TomCat's webapps directory. The simplest web app you can create is an empty directory in /opt/tomcat9/webapps/. It won't do much, but it will register in the TomCat Manager app as an application.
+
+You can drop static files inside the directory as well as .jsp files and they will get processed and served without any additional cofiguration.
+
+JSP files are a quick way to get started with dynamic content. They are like PHP scripts that can be treated as HTML but Java code can be interjected to add dynamc logic. (( (( Link to tutorial for JSPs))  )) 
+
+The next level up is to use Servlets to handle the server-side logic. Servlet classes must be compiled and placed the classes/ directory inside the web app directory. This allows you to better separate the logic code (Java) from the visual presentation code (HTML/CSS/JavaScript). ((( Link to Servlet Tutorial ))) -->
+
+
+
+<h2>Enabling the admin web interface</h2>
+
+There are two webapps that come bundled with TomCat to help with administration.
+They are the Manager App and Host Manager. Manager App allows you to manage the
+different web apps. Host Manager lets you configure virtual hosts to handle mutliple
+host names.
+
+
+
+<h3>Create a TomCat admin user</h3>
+    
+?conf/server.xml ?
+
+In /opt/tomcat9/conf/tomcat-users.xml
+
+    <!--<role rolename="manager-gui"/>--> <!-- Necessary? -->
+    <!--<role rolename="admin-gui"/>--> <!-- Necessary? -->
+    <user username="tomcat" password="s3cret" roles="manager-gui,admin-gui"/>
+    <!-- manager-gui for manager app, admin-gui for host-manager app -->
+
+<a name="access_admin_webapp"></a>
+<h3>Accessing admin web apps</h3>
+
+[screenshot of botton]
+
+    then visit :8080 and click 'manager app' or /manager/html
+     - default only accessible on localhost
+    to allow remote, modify tomcat/webapps/manager/META-INF/context.xml
+    Append your IP with | separator
+
+    Do the same for tomcat/webapps/host-manager/META-INF/context.xml
+
+    then try http://<public_ip>:8080/manager/html (manager app)
+    and http://<public_ip>:8080/host-manager/html (host-manager app)
+
+    You will log in to these using the tomcat user and password created in
+    the previous section in /opt/tomcat9/conf/tomcat-users.xml
+
+
+
+
+
+## Creating dynamic Java Server Pages (JSP)
+
+Instead of serving flat files like .html or .txt, you can create dynamic pages that execute Java code. Java Server Pages, or .jsp files, are like PHP scripts. You can treat them like regular HTML files, but can interject Java code in to them. Java Server Pages are standalone files that you can drop in to any directory of a web app. If you name a file index.jsp it will be treated just like index.html and the filename can be omitted from the URL.
+
+To learn more, check out my more in-depth [Java Server Pages (JSP) Tutorial] [LINK]----------------
+
+## Creating servlets
+
+Serving static files and standalone .JSP files can only get you so far. To add more complex Java logic to a web app, you need to create Servlets. Learn more about creating servers with my [Java Servlet Tutorial---link]----------------.
+
+## deploying web app
+
+just move the app directory in to the webapps/ directory
+
+## war files
+
+war files make it easier, because everything is packaged in to a single file
+
+a web app zipped up (jarred)
+
+    example creating war file
+
+You can just place a .war file in the webapps/ directory or unzip it there
+
+a war file is just a zipped up directory that contains your entire web app
+- how to create a war? See: Java Server Pages Tutorial [LINK]----------- and the Java Servlet Tutorial [LINK]------------------. But in short, it can be done like this:
+
+    # Create a .war from a directory
+    jar -cf webappname.war /path/to/webappname/*
+
+
+
+
+
+## Deploying .war files with the Manager app
+
+visit the manager at http://<ip>/manager/html logging in with the credentials created in TomCat's conf/tomcat-users.xml file earlier.
+Just use the web interface to select your .war file and upload it.
+
+
+More details at https://tomcat.apache.org/tomcat-9.0-doc/manager-howto.html#Introduction
+
+<h2>Deploying WAR files with Maven</h2>
+
+use maven ((link to tuts maven basics)) to generate new web app project and package as war
+(add tomcat server/creds in settings.xml, configure tomcat maven plugin in pom.xml to use server, mvn tomcat:deploy/undeploy/redeploy)
+
+## Configuring SSL/TLS
+
+<< java keytool tutorial >>
+
+You'll need an SSL certificate before you can set up SSL on the TomCat server.
+
+Learn how to create your own self-signed certificates with my ""[LINK]---------------------
+
+-- If you want to get a free trusted signed certificate from a certificate authority, you can use LetsEncrypt. To learn how to use LetsEncrypt to set up your free SSL certificates, check out my "LetsEncrypt SSL Tutorial"(LINK). That tutorial will walk you through getting a signed certificate. ---------
+
+https://tomcat.apache.org/tomcat-9.0-doc/ssl-howto.html
+
+How to use the self signed cert
+
+How to force SSL (redirect, or only use ssl)
+
+
+## Optional: using nginx
+    
+    for ssl, reverse proxy, www force, ssl force (recommended so it doesnt have to bind to 80, lets you support other web apps maybe go, nodejs, python, apache, nginx supports load balancing, force www/ssl, can serve static files if necessary, caching)
+    --------- Refer to my Nginx reverse proxy tutorial [LINK]----------
+
+#?????monitoring serve ststus/memory through admin page? remotely?
+
+## other config things
+
+how to change what port it listens to? tomcat/conf ?
+whats on 8009? how to turn it off?
+mapping certain apps to different domains? rewriting subdirectory name to root or to other domain?
+can delete unnecessary apps like docs and examples?
+living w/o manager app too? how to use manager app better
+force ssl, force www, in nginx? Using nginx as rproxy, to handle ssl, logs, use w/o nginx? good to use nginx if anything else will ever need port 80/443 access too (like go apps,)
+jdbc pool to keep database connections open
+url rewriting
+□ How to add ssl using letsencrypt https://tomcat.apache.org/tomcat-9.0-doc/ssl-howto.html
+□ https://tomcat.apache.org/tomcat-9.0-doc/logging.html
+□ https://tomcat.apache.org/tomcat-9.0-doc/jdbc-pool.html
+□ https://tomcat.apache.org/tomcat-9.0-doc/rewrite.html
+
+customizing 404 page
+
+
+
+Conclusion
+-----------------------
+(tomcat is production quality, recommend putting it behind a reverse proxy/load balancer like nginx) link to official docs again. moving forward/learning more - what are some of its more advanced capabilities? whats not covered here?
+
+
+
+
+
+
+<a name="references"></a>
+<h2>References</h2>
+
+
+- Java Server Pages (JSP) Tutorial
+- Java Servlet Tutorial
+- Nginx Reverse Proxy Tutorial
+- LetsEncrypt SSL Tutorial
+- maven basics tutorial
+
+https://tomcat.apache.org/tomcat-9.0-doc/manager-howto.html#Introduction
+https://tomcat.apache.org/tomcat-9.0-doc/ssl-howto.html
+□ https://tomcat.apache.org/tomcat-9.0-doc/logging.html
+□ https://tomcat.apache.org/tomcat-9.0-doc/jdbc-pool.html
+□ https://tomcat.apache.org/tomcat-9.0-doc/rewrite.html
+

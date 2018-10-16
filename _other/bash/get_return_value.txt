@@ -1,0 +1,11 @@
+# See if last statement executed was successful
+./runSomething
+
+if [ $? -eq 0 ]; then
+    echo OK
+else
+    echo FAIL
+fi
+
+# The return value can also be stored as a variable
+returnValue=$?

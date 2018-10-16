@@ -1,0 +1,62 @@
+These are some of the recommended editors for various platforms.
+
+C/C++ Compiler options
+
+
+Cross platform
+--------------
+gcc
+clang
+
+
+Windows
+------------
+Microsoft Visual C++
+*Code::Blocks has a Windows download that comes with mingw gcc packaged in
+*QtCreator can do MinGW
+
+
+
+
+
+My recommendations:
+
+Windows:
+These come with compilers packaged making setup much easier. NetBeans, 
+- Code::Blocks (for easy install, packaged with mingw gcc if Windows)
+- QtCreator
+- Eclipse
+- Microsoft Visual Studio Community with MSCV compiler (if targeting Windows only)
+For manual setup/alternatives
+- MinGW/MSYS2 self install, manually configure any editor like VSCode
+- Windows Subsystem for Linux, to use and compile to Linux environment
+
+Linux:
+- Eclipse
+- QtCreator
+- Code::Blocks
+
+
+
+Cross platform
+--------------
+Qt Creator
+Visual Studio Code
+Atom
+Sublime Text
+vim
+emacs
+Code::Blocks
+NetBeans
+CLion
+Eclipse
+Dev-C++
+
+Windows Only
+------------
+Visual Studio
+
+Mac Only
+--------
+XCode
+

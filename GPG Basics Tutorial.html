@@ -1,0 +1,126 @@
+  <!--<h1>GPG Basics Tutorial</h1>-->
+<!-- Tags: Cryptography, GPG, PGP, Maven, Security, sysadmin, Privacy  -->
+
+
+https://www.nginx.com/blog/tcp-load-balancing-udp-load-balancing-nginx-tips-tricks/
+
+title:
+x gpg basics?
+o> gpg tutorial
+x gpg basics tutorial?
+gpg --help and man pages
+
+intro (diff between pgp and gpg?)
+what is gpg and why use it
+installation apt-get install gnugp gpg
+Key management
+ listing what keys are stored (secret and non-secret)
+ create a new private key
+ export a private key
+ import a private key
+ generate public key from private key
+ export your public key
+ push key to pub server
+
+now you can use this key to sign, encrypt, use Maven to sign things for you, just configure maven gpg plugin with the name of your key
+ 
+<!-- Encryption
+Other use cases (exercises for the reader):
+    Encrypt/decrypt a file symmetrically (with password)
+    Encrypt for specific recipent only
+    Decrypt / verify sender
+    sign(Detached/attached), verify signature
+    Sending/receiving encrypted emails (cli examples)
+-->
+(( check out maven basics tutorial ))
+<!-- (( check out turoail on using maven central -- they require gpg signed stuff)) -->
+
+(( pitch my book for info on crypto/security with Go language. ))
+
+Mention gpg language libraries - py, go, java, c
+
+Conclusion
+    ( now you have a private key and a public key)
+
+<!-- --------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+what is gpg and why use it
+- encrypt things
+- if you want to push things to maven central
+- can use to send secure emails
+- mention email client plugins
+
+
+
+
+- See which keys are stored, public and private
+
+    gpg --list-keys
+    gpg --list-secret-keys
+
+- Or create a new private key
+
+    gpg --gen-key
+
+
+- Export a private key
+
+    # Find the id of your key
+    # The ID is the 8 digit hexadecimal number in the second column after the slash (/)
+    gpg --list-secret-keys 
+    
+    # This is your private key keep it secret!
+    gpg --export-secret-keys --armor XXXXXXXX > ./my-priv-gpg-key.asc
+
+# Omitting the --armor flag will give you binary output,
+# which will result in a slightly smaller file but the ASCII
+# formatted (armored) can be printed physically, is human readable,
+# and transfered digitally easier.
+
+- delete a key
+    # use the same id listed with --list-secret-keys that was used to export
+    gpg --delete-secret-keys XXXXXXXX
+
+- Import an existing private key if you already have one
+
+    gpg --import ./my-priv-gpg-key.bin
+
+- Make sure key is somewhere public like MIT's public key server
+
+You share your public key - why? explain
+
+    gpg --keyserver hkp://pgp.mit.edu --send-keys XXXXXXXX
+
+revocation certificate?
+running your own gpg server?
+trusted rings?
+
+
+# quick encrypt/decrypt example
+# signing something
+# using gpg in maven (maven basics tutorial) (maven central tutorial)
+
+
+Interesting piece about short key ids
+https://futureboy.us/pgp.html#ShortKeyID
+
+Conclusion
+
+References
+https://gnupg.org/
+https://en.wikipedia.org/wiki/GNU_Privacy_Guard

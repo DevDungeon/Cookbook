@@ -12,6 +12,8 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 
+// gcc test.c -lssl -lcrypto
+
 // Simple structure to keep track of the handle, and
 // of what needs to be freed later.
 typedef struct {

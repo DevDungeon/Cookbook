@@ -5,4 +5,4 @@ nbactions.mxl
 *.class
 *.iml
 .idea
-
+nb-configuration.xml

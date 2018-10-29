@@ -1,3 +1,4 @@
+# gem install espeak-ruby
 require 'espeak'
 include ESpeak
 

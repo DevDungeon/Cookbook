@@ -19,7 +19,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.devdungeon.commandlineargs.Main</mainClass>
+                            <mainClass>CommandLineArgs</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

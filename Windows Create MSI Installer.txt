@@ -1,1 +1,5 @@
 Use Inno Setup Compiler to create an installer for an .exe.
+
+How to add file type recognition so you can run like ruby, test.rb -> test
+How to add a right click context menu for files?
+How to modify user PATH?

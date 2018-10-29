@@ -1,0 +1,9 @@
+.idea
+.settings
+.vscode
+nbproject
+target
+.classpath
+.project
+nb-configuration.xml
+*.iml

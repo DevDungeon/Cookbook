@@ -1,0 +1,220 @@
+<!--<h1>Colorize Terminal Output in Python</h1>-->
+<!-- Tags: Python, CLI, sysadmin, Linux, Windows, Mac -->
+<h2>Overview</h2>
+
+<ul>
+    <li><a href="#intro">Introduction</a></li>
+    <li><a href="#color_text_with_ansi_escape_chars">Color text with ANSI escape characters</a></li>
+    <li><a href="#install_colorama">Install colorama</a></li>
+    <li><a href="#clear_screen">Clear the screen</a></li>
+    <li><a href="#change_text_style">Change text style</a></li>
+    <li><a href="#turn_on_autoreset">Turn on auto-reset</a></li>
+    <li><a href="#alternatives">Colorama alternatives</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#references">Reference links</a></li>
+</ul>
+
+
+
+<a name="intro"></a>
+<h2>Introduction</h2>
+
+<p>This tutorial covers how to use standard ANSI escape codes to colorize and style terminal output. We'll cover the basics of escape characters, using them to clear the screen and set foreground and background colors, and how to get them working in Windows using the <a href="https://github.com/tartley/colorama" target="_blank">colorama</a> package.</p>
+
+<p>If you write an application that supports color, keep in mind that not every terminal supports the color characters. Consider adding an option with your program to toggle color output on or off, otherwise people who have no color will see all the escape characters and the output will be ugly and hard to read.</p>
+
+
+
+
+<a name="color_text_with_ansi_escape_chars"></a>
+<h2>Color text with ANSI escape characters</h2>
+
+<p>You can manually colorizing output by using escape characters. This is quite tedious and ugly, but possible. The big catch here is that these ANSI escape characters don't work in Windows. Don't worry though, we'll cover how to get them working in Windows below!. This will work on ANSI consoles like Linux shells, but not in Windows. Windows has their own escape characters. Here are some simple examples to show how the escape characters can be used with the <b>print()</b> function in Python.</p>
+
+<pre><code>
+# In Python, print red text using ANSI escape codes
+# Doesn't work well in Windows though
+print('\033[2J')  # Clear screen
+print('\033[31m' + 'Hello' + '\033[0m')  # Red text
+</code></pre>
+
+<p>The <b>\033</b> is how the escape character is represented in Python, which is then followed by a special code. The 033 is the octal value of the escape character code, 27. Sometimes it is represented as <b>\x1b</b> which is the hexadecimal equivalent for 27. In the bash shell, you might see the escape character represented by <b>\e</b> in codes that look like <b>\e[31m</b>. You may have seen these codes if you have ever tried to customize your <b>PS1</b> prompt shell in bash. The \033 just designated that the values coming directly after it are special characters meant to be interpeted by the terminal. We typically pass color codes right after the escape character to change the color text being output, but there are also special characters to clear the screen or move the cursor.</p>
+
+<p>The <b>[31m</b> part of <b>\033[31m</b> means "red foreground mode". All escape codes start with a an open bracket <b>[</b> but not all of them end with an <b>m</b>. For example, <b>[2J</b> is the code to clear the screen and <b>[3D</b> will move the cursor back 3 characters. The <b>m</b> in <b>[31m</b> is because we are toggling graphics <b>m</b>ode 31 (red foreground).</p>
+
+<p>You can try these yourself and see how they works. Your results may vary. Since this is unreliable, we'll look at the <b>colorama</b> Python package which has a bunch of shortcuts for these hard-to-remember codes, and also enables these ANSI codes on Windows, making colorized code more portable.</p>
+
+
+
+
+
+<a name="install_colorama"></a>
+<h2>Install colorama package</h2>
+
+<p>The <b>colorama</b> package will abstract away the Windows specific stuff and let you use regular ANSI color codes. It also provides convenient Python utilities for coloring text in an easy way that works across all platforms.</p>
+
+<pre><code>
+pyhon -m pip install colorama
+</code></pre>
+
+
+
+
+
+
+
+<a name="clear_screen"></a>
+<h2>Clear the screen</h2>
+
+</p>Once you initialize colorama you can start passing ANSI codes. You can manually print out the escape character <b>\033</b> followed by the code for clear screen which is <b>[2J</b> and it will clear the screen. Colorama also provides a convenience function that will return the value you need to print to clear the screen. The example below shows both options.</p>
+
+<pre><code>
+import colorama
+
+colorama.init()
+
+# Print the clear screen code '\033[2J'
+print('\033[2J')
+
+# Or use the colorama provided function which
+# returns an equivalent value '\x1b[2J'
+print(colorama.ansi.clear_screen())
+</code></pre>
+
+
+
+
+
+
+
+
+<a name="change_text_style"></a>
+<h2>Change text style</h2>
+
+<p>After installing the <b>colorama</b> package, you can use it inside your Python programs like this:</p>
+
+<pre><code>
+import colorama
+
+# If using Windows, init() will cause anything sent to stdout or stderr
+# will have ANSI color codes converted to the Windows versions. Hooray!
+# If you are already using an ANSI compliant shell, it won't do anything
+colorama.init()
+
+# Now regular ANSI codes should work, even in Windows
+CLEAR_SCREEN = '\033[2J'
+RED = '\033[31m'   # mode 31 = red forground
+RESET = '\033[0m'  # mode 0  = reset
+print(CLEAR_SCREEN + RED + 'Welcome!' + RESET)
+</code></pre>
+
+<p>The example above shows how to import <b>colorama</b> and initialize it. Initializing it will add a filter on stdout and stderr which causes any ANSI escape characters be converted to the Windows equivalent. This is neat because it will also work if you have aother packages or code that outputs typical ANSI color characters. The author of colorama mentions <a href="https://pypi.org/project/termcolor/">termcolor</a> as an option that you can use in tandem with colorama.</p>
+
+<p>Colorama does provide a better way to output colors though. You don't need to use the ugly escape characters manually. It has some named values for the colors and styles. The example below shows how to use the friendly shortcuts provided by colorama to change text style.</p>
+
+<pre><code>
+import colorama
+from colorama import Fore, Back, Style
+colorama.init()
+
+# Set the color semi-permanently
+print(Fore.CYAN)
+print("Text will continue to be cyan")
+print("until it is reset or changed")
+print(Style.RESET_ALL)
+
+# Colorize a single line and then reset
+print(Fore.RED + 'You can colorize a single line.' + Style.RESET_ALL)
+
+# Colorize a single word in the output
+print('Or a single ' + Back.GREEN + 'words' + Style.RESET_ALL + ' can be highlighted')
+
+# Combine foreground and background color
+print(Fore.BLUE + Back.WHITE)
+print('Foreground, background, and styles can be combined')
+print("==========            ")
+
+print(Style.RESET_ALL)
+print('If unsure, reset everything back to normal.')
+</code></pre>
+
+<p>For a full list of foreground, background, and style options, refer to the official <a href="https://github.com/tartley/colorama" target="_blank">colorama GitHub page</a>. Here's a quick list:</p>
+
+<pre>
+Fore: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
+Back: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
+Style: DIM, NORMAL, BRIGHT, RESET_ALL
+</pre>
+
+<p>Note that not all of them may be supported by all terminals. For example Windows does not support dim. For a full list of the codes, check out <a href="https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters" target="_blank">ANSI escape code list</a>. On that Wikipedia page it is the "SGR (Select Graphic Rendition) parameters" section that I linked to. Code 0 should look familiar, it is the reset value. 30-37 will set a foreground color, 40-47 will set background color. Not every code is supported by every terminal, and note every code is handled by colorama's Windows converter.</p>
+
+
+
+
+
+
+<a name="turn_on_autoreset"></a>
+<h2>Turn on auto-reset</h2>
+
+<p>If you don't want to print Style.RESET_ALL all the time, you can have it reset automatically after each print statement.
+
+<pre><code>
+import colorama
+from colorama import Fore, Back
+
+colorama.init(autoreset=True)
+
+# Automatically adds a Style.RESET_ALL after each print statement
+print(Fore.RED + 'Red foreground text')
+print(Back.RED + 'Red background text')
+print("Some plain text")
+</code></pre>
+
+
+
+
+
+<a name="alternatives"></a>
+<h2>Colorama alternatives</h2>
+
+<p>Since colorama just takes advantage of ANSI standard escape characters, any other library that makes use of this standard can be used. These are not strictly replacements or alternatives because many of them can be used in tandem with colorama since colorama's main purpose is to convert the ANSI codes in to proper Window's equivalents enabling all the typical terminal control utilities. Here are some links to other resources you might find useful:</p>
+
+<ul>
+    <li><a href="https://pypi.org/project/termcolor/" target="_blank">termcolor package</a></li>
+    <li><a href="https://github.com/erikrose/blessings" target="_blank">Blessings package</a></li>
+    <li><a href="http://urwid.org/" target="_blank">Urwid website</a></li>
+    <li><a href="https://github.com/thomasballinger/curtsies" target="_blank">Curtsies</a></li>
+    <li><a href="https://docs.python.org/3/howto/curses.html" target="_blank">Curses Programming with Python</a></li>
+    <li><a href="/content/curses-windows-python" target="_blank">Curses in Windows with Python</a></li>
+</ul>
+
+
+
+<a name="conclusion"></a>
+<h2>Conclusion</h2>
+
+<p>After reading this you should understand how basic ANSI escape codes are used to change the color of text in the terminal. You should also know how to get it working in Windows. You should be able to clear the screen, change forground and background color, and reset the styles of text. To take it further, you can look in to the <b>curses</b> library which will allow you to control the screen even more. If you want to learn more about how the terminal works, you can check out this good PyCon talk: <a href="https://www.youtube.com/watch?v=WAitSilLDUA" target="_blank">Thomas Ballinger - Terminal whispering - PyCon 2015</a>.</p>
+
+
+
+
+
+<a name="references"></a>
+<h2>Reference links</h2>
+
+<ul>
+    <li><a href="https://docs.python.org/3/howto/curses.html" target="_blank">Curses Programming with Python</a></li>
+    <li><a href="https://pypi.org/project/colorama/" target="_blank">colorama on PyPI.org</a></li>
+    <li><a href="https://github.com/tartley/colorama" target="_blank">colorama GitHub page</a></li>
+    <li><a href="https://docs.python.org/3/howto/curses.html" target="_blank">Curses Programming with Python (Official docs)</a></li>
+    <li><a href="/content/curses-windows-python">Curses in Windows</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters" target="_blank">ANSI escape code list</a></li>
+    <li><a href="https://www.youtube.com/watch?v=WAitSilLDUA" target="_blank">Thomas Ballinger - Terminal whispering - PyCon 2015</a></li>
+    <li><a href="https://github.com/thomasballinger/curtsies" target="_blank">Curtsies</a></li>
+    <li><a href="https://pypi.org/project/termcolor/">termcolor package</a></li>
+    <li><a href="https://github.com/erikrose/blessings" target="_blank">Blessings package</a></li>
+    <li><a href="http://urwid.org/" target="_blank">Urwid website</a></li>
+</ul>
+
+
+

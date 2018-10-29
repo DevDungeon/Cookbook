@@ -47,3 +47,8 @@ Everyone has different goals with programming so identify topics relevant to you
 
 * http://www.devdungeon.com/cookbook
 * https://github.com/DevDungeon/Cookbook
+
+## Contact
+
+John "NanoDano" Leon <nanodano@devdungeon.com>
+https://www.devdungeon.com

@@ -1,63 +1,60 @@
-  <!--<h1>GPG Basics Tutorial</h1>-->
-<!-- Tags: Cryptography, GPG, PGP, Maven, Security, sysadmin, Privacy  -->
+<!--<h1>GPG Tutorial</h1>-->
+<!-- Tags: Cryptography, GPG, PGP, Maven, Security, sysadmin, Privacy, Linux, Windows, Mac  -->
+
+<h2>Overview</h2>
+
+<ul>
+    <li><a href="#intro">Introduction</a></li>
+    <li><a href="#install_gpg">Install GPG</a></li>
+    <li><a href="#basic_usage">Basic usage</a></li>
+    
+    <li><a href="#key_management">Key management</a>
+        <ul>
+            <li><a href="#list_keys">List keys stored locally</a></li>
+            <li><a href="#create_key">Create a new private key</a></li>
+            <li><a href="#export_key">Export a private key</a></li>
+            <li><a href="#delete_key">Delete a key</a></li>
+            <li><a href="#import_key">Import a private key</a></li>
+            <li><a href="#push_to_keyserver">Push your public key to key server</a></li>
+        </ul>
+    </li>
 
 
-https://www.nginx.com/blog/tcp-load-balancing-udp-load-balancing-nginx-tips-tricks/
-
-title:
-x gpg basics?
-o> gpg tutorial
-x gpg basics tutorial?
-gpg --help and man pages
-
-intro (diff between pgp and gpg?)
-what is gpg and why use it
-installation apt-get install gnugp gpg
-Key management
- listing what keys are stored (secret and non-secret)
- create a new private key
- export a private key
- import a private key
- generate public key from private key
- export your public key
- push key to pub server
-
-now you can use this key to sign, encrypt, use Maven to sign things for you, just configure maven gpg plugin with the name of your key
- 
-<!-- Encryption
-Other use cases (exercises for the reader):
-    Encrypt/decrypt a file symmetrically (with password)
-    Encrypt for specific recipent only
-    Decrypt / verify sender
-    sign(Detached/attached), verify signature
-    Sending/receiving encrypted emails (cli examples)
--->
-(( check out maven basics tutorial ))
-<!-- (( check out turoail on using maven central -- they require gpg signed stuff)) -->
-
-(( pitch my book for info on crypto/security with Go language. ))
-
-Mention gpg language libraries - py, go, java, c
-
-Conclusion
-    ( now you have a private key and a public key)
-
-<!-- --------------------------- -->
+    <li><a href="#encryption">Encryption</a>
+        <ul>
+            <li><a href="#encrypt_symmetrically">Encrypt with a passphrase (symmetric)</a></li>
+            <li><a href="#encrypt_for_recipient">Encrypt for a single recipient (asymmetric)</a></li> (example sending an 
+            <li><a href="#decrypt_message">Decrypt a message</a></li>
+            encrypted email (cli example using pipe uuencode))
+        </ul>
+    </li>
+    
 
 
+    <li><a href="#signatures">Signatures</a>
+        <ul>
+            <li></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+            verification
+                sign a message (example: email/public code sharing)
+                verify a signature (example: email/public code sharing)
+
+        </ul>
+    </li>
+    
+
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#references">Reference links</a></li>
+</ul>
 
 
+<a name="intro"></a>
+<h2>Introduction</h2>
 
-
-
-
-
-
-
-
-
-
-
+<p>
+    gpg is a cryptography tool
+    (diff between pgp and gpg?) what is gpg and why use it Use cases (email, offline storage, personal encryption vs encrypting for someone)
 
 what is gpg and why use it
 - encrypt things
@@ -65,62 +62,397 @@ what is gpg and why use it
 - can use to send secure emails
 - mention email client plugins
 
+There are bindings to most programming languages so you can use it within your own custom application, but this tutorial is focused on the command-line utility <pre>gpg</pre>.
+
+who this is for: people who already understand basic cryptography but want to learn how to use GPG tool
+
+(( check out maven basics tutorial ))
+<!-- (( check out turoail on using maven central -- they require gpg signed stuff)) -->
+(( pitch my book for info on crypto/security with Go language. ))
+
+</p>
 
 
 
-- See which keys are stored, public and private
-
-    gpg --list-keys
-    gpg --list-secret-keys
-
-- Or create a new private key
-
-    gpg --gen-key
 
 
-- Export a private key
 
-    # Find the id of your key
-    # The ID is the 8 digit hexadecimal number in the second column after the slash (/)
-    gpg --list-secret-keys 
-    
-    # This is your private key keep it secret!
-    gpg --export-secret-keys --armor XXXXXXXX > ./my-priv-gpg-key.asc
 
-# Omitting the --armor flag will give you binary output,
-# which will result in a slightly smaller file but the ASCII
+
+<a name="install_gpg"></a>
+<h2>Install GPG</h2>
+
+<h3>Windows</h3>
+
+<p>
+</p>
+
+
+<h3>Mac</h3>
+
+<p></p>
+
+<h3>Linux</h3>
+sudo yum install gnupg2
+<p></p>
+
+
+
+
+<a name="basic_usage"></a>
+<h2>Basic usage</h2>
+
+<p>To get started and make sure it is installed correctly, run <pre>gpg</pre> with the <pre>--help</pre> flag to print out the version number, supported encryption and hash algorithms, and all the usage options. This will give you an overview of all the features GPG has.</p>
+
+<pre><code>
+gpg --help
+</code></pre>
+
+<p>Example output of <pre>gpg --help</pre>:</p>
+
+<pre>
+gpg (GnuPG) 2.2.10
+libgcrypt 1.8.3
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later https://gnu.org/licenses/gpl.html
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Home: C:/opt/gnupg
+Supported algorithms:
+Pubkey: RSA, ELG, DSA, ECDH, ECDSA, EDDSA
+Cipher: IDEA, 3DES, CAST5, BLOWFISH, AES, AES192, AES256, TWOFISH,
+        CAMELLIA128, CAMELLIA192, CAMELLIA256
+Hash: SHA1, RIPEMD160, SHA256, SHA384, SHA512, SHA224
+Compression: Uncompressed, ZIP, ZLIB, BZIP2
+
+Syntax: gpg [options] [files]
+Sign, check, encrypt or decrypt
+Default operation depends on the input data
+
+Commands:
+
+ -s, --sign                  make a signature
+     --clear-sign            make a clear text signature
+ -b, --detach-sign           make a detached signature
+ -e, --encrypt               encrypt data
+ -c, --symmetric             encryption only with symmetric cipher
+ -d, --decrypt               decrypt data (default)
+     --verify                verify a signature
+ -k, --list-keys             list keys
+     --list-signatures       list keys and signatures
+     --check-signatures      list and check key signatures
+     --fingerprint           list keys and fingerprints
+ -K, --list-secret-keys      list secret keys
+     --generate-key          generate a new key pair
+     --quick-generate-key    quickly generate a new key pair
+     --quick-add-uid         quickly add a new user-id
+     --quick-revoke-uid      quickly revoke a user-id
+     --quick-set-expire      quickly set a new expiration date
+     --full-generate-key     full featured key pair generation
+     --generate-revocation   generate a revocation certificate
+     --delete-keys           remove keys from the public keyring
+     --delete-secret-keys    remove keys from the secret keyring
+     --quick-sign-key        quickly sign a key
+     --quick-lsign-key       quickly sign a key locally
+     --sign-key              sign a key
+     --lsign-key             sign a key locally
+     --edit-key              sign or edit a key
+     --change-passphrase     change a passphrase
+     --export                export keys
+     --send-keys             export keys to a keyserver
+     --receive-keys          import keys from a keyserver
+     --search-keys           search for keys on a keyserver
+     --refresh-keys          update all keys from a keyserver
+     --import                import/merge keys
+     --card-status           print the card status
+     --edit-card             change data on a card
+     --change-pin            change a card's PIN
+     --update-trustdb        update the trust database
+     --print-md              print message digests
+     --server                run in server mode
+     --tofu-policy VALUE     set the TOFU policy for a key
+
+Options:
+
+ -a, --armor                 create ascii armored output
+ -r, --recipient USER-ID     encrypt for USER-ID
+ -u, --local-user USER-ID    use USER-ID to sign or decrypt
+ -z N                        set compress level to N (0 disables)
+     --textmode              use canonical text mode
+ -o, --output FILE           write output to FILE
+ -v, --verbose               verbose
+ -n, --dry-run               do not make any changes
+ -i, --interactive           prompt before overwriting
+     --openpgp               use strict OpenPGP behavior
+
+(See the man page for a complete listing of all commands and options)
+
+Examples:
+
+ -se -r Bob [file]          sign and encrypt for user Bob
+ --clear-sign [file]        make a clear text signature
+ --detach-sign [file]       make a detached signature
+ --list-keys [names]        show keys
+ --fingerprint [names]      show fingerprints
+
+Please report bugs to https://bugs.gnupg.org
+</pre>
+
+
+
+
+
+
+
+
+
+
+<a name="key_management"></a>
+<h2>Key management</h2>
+
+
+
+<a name="list_keys"></a>
+<h3>List keys stored locally</h3>
+
+<pre><code>
+# List public keys you have stored (yours and other people's keys)
+gpg --list-keys
+
+# List private keys (generally only your own)
+gpg --list-secret-keys
+</code></pre>
+
+<a name="create_key"></a>
+<h3>Create a new private key</h3>
+
+<p>Use the <b>--gen-key</b> flag to create a new secret (private) key. This will walk you through an interactive prompt to fill out the questions like what is your name.</p>
+
+<pre><code>
+gpg --gen-key
+</pre></code>
+
+
+<a name="export_key"></a>
+<h3>Export a private key</h3>
+
+<p>You might want to export your private key in order to back it up somewhere. Don't share your private key with other people though. You can export in armored (ASCII) format and you could actually print it out on paper or write it down since it is human readable and put it in cold storage. Text format may also work better than binary in certain communication mediums.</p>
+
+<pre><code>
+# Find the ID of your key first
+# The ID is the hexadecimal number
+gpg --list-secret-keys
+
+# This is your private key keep it secret!
+# Replace XXXXXXXX with your hexadecimal key ID
+gpg --export-secret-keys --armor XXXXXXXX > ./my-priv-gpg-key.asc
+
+# Omitting the --armor flag will give you binary output instead of ASCII
+# which would result in a slightly smaller file but the ASCII
 # formatted (armored) can be printed physically, is human readable,
 # and transfered digitally easier.
-
-- delete a key
-    # use the same id listed with --list-secret-keys that was used to export
-    gpg --delete-secret-keys XXXXXXXX
-
-- Import an existing private key if you already have one
-
-    gpg --import ./my-priv-gpg-key.bin
-
-- Make sure key is somewhere public like MIT's public key server
-
-You share your public key - why? explain
-
-    gpg --keyserver hkp://pgp.mit.edu --send-keys XXXXXXXX
-
-revocation certificate?
-running your own gpg server?
-trusted rings?
+# Both formats can be imported back in to GPG later
+</code></pre>
 
 
-# quick encrypt/decrypt example
-# signing something
-# using gpg in maven (maven basics tutorial) (maven central tutorial)
+<a name="delete_key"></a>
+<h3>Delete a key</h3>
+
+<p>You can delete a private key from local storage with the following command:</p>
+
+<pre><code>
+# Use the ID listed with --list-secret-keys
+gpg --delete-secret-keys XXXXXXXX
+</code></pre>
 
 
-Interesting piece about short key ids
-https://futureboy.us/pgp.html#ShortKeyID
+<a name="import_key"></a>
+<h3>Import a key</h3>
 
-Conclusion
+<p>If you need to import a private key you can use the following command. This is useful if you are on a new computer or a fresh install and you need to import your key from a backup.</p>
 
-References
-https://gnupg.org/
-https://en.wikipedia.org/wiki/GNU_Privacy_Guard
+<pre><code>
+# This works the same for binary or ASCII (armored) versions of keys
+# This is also the same for private and public keys
+gpg --import ./my-priv-gpg-key.bin
+</code></pre>
+
+
+<a name="push_to_keyserver"></a>
+<h3>Push your public key to key server</h3>
+    
+<p>You may want or need to publish your public key somewhere where everyone can find it. For example, to push code to the Maven central repository, you must sign your code with a GPG key that has a public signature somewhere like the MIT public key server. You can push your public key using the <b>--send-keys</b> flag.</p>
+
+<pre><code>
+# There are many public key servers out there, not just MIT
+# Replace XXXXXXXX with your key id from --list-keys
+gpg --keyserver hkp://pgp.mit.edu --send-keys XXXXXXXX
+</code></pre>
+
+
+
+
+<a name="encryption"></a>
+<h2>Encryption</h2>
+
+<p>There are two types. Symmetric and asymmetric. GPG supports many different algorithms for each method. The most commonly known ones are AES for symmetric and RSA for asymmetric. ECDSA is starting to slowly replace RSA though. The following examples will demonstrate how to do both symmetric and asymmetric encryption as well as decrypt a message.</p>
+
+
+
+<a name="encrypt_symmetrically"></a>
+<h3>Encrypt with a passphrase (symmetric)</h3>
+
+<p>Can be decrypted by anyone with the passphrase. No specific recipient. Passphrase can be shared with many people. This can be useful for just encrypting files locally with a simple passphrase, or to encrypt a document before sending it to someone. You'll have to find another channel to send them the passphrase though if it is not already exchanged before-hand.</p>
+
+<p>There are two formats of output you can get: binary and text. The binary version will take up less space, but the ASCII version is a little easier to work with and can be transported over text means, say, pasted in to an email. They both decrypt the same way.</p>
+
+<pre><code>
+gpg --symmetric message.txt
+# Prompts you for a passphrase
+# Creates message.txt.gpg (binary)
+
+gpg --armored --symmetric message.txt
+# Same, but ASCII format output instead of binary
+# Creates message.txt.asc (ASCII)
+
+# Specify the encryption algorithm
+gpg --symmetric --cipher-algo AES256
+
+# Get the list of cipher algorithms
+gpg --version
+
+# Specify output file
+gpg --output message.txt.gpg --symmeteric message.txt
+</code></pre>
+
+
+
+
+<a name="encrypt_for_recipient"></a>
+<h3>Encrypt for a single recipient (asymmetric)</h3>
+
+<p>You can encrypt a message for a single specific recipient. You do this by encrypting asymmetrically with your private key and the recipients public key. By doing this, only the recipient's private key will decrypt the message. You will need the recipient's public key in order to do this. They can share their public key with you directly, or you can search public key servers.</p>
+
+<pre><code>
+# Import NanoDano's public GPG key
+gpg --keyserver pgp.mit.edu --search-keys nanodano@devdungeon.com
+
+# It will print a list of matching results.
+# Enter the number next to the one you want to import
+# After it's imported you can verify the public key is stored with
+gpg --list-keys
+</code></pre>
+
+<p>After you have the receipient's public key imported, you can encrypt messages that only they can decrypt.</p>
+
+<pre><code>
+# This will prompt and ask the recipient's email address
+gpg --encrypt message.txt
+
+# or specify the recipient as the -r argument
+gpg --encrypt message.txt --recipient nanodano@devdungeon.com
+# Encrypted output will be in message.txt.gpg
+
+# Get the list of cipher algorithms
+gpg --version
+
+# Specify output file
+
+</code></pre>
+
+
+<a name="decrypt_message"></a>
+<h3>Decrypt a message</h3>
+
+
+<p>You can decrypt messages with the <b>-d</b> or <b>--decrypt</b> option. It will automatically determine if it is symmetrically encrypted with something like AES and it needs a passphrase, or if it was encrypted asymmetrically with something like RSA and it needs to look for a private key. The recipient will be detected automatically and GPG will search locally to see if the private key is stored. If it is, it will ask for the passphrase and then print out the decrypted message to the console. If it is a symmetric encryption it will prompt you for the passphrase, and then print the message.</p>
+
+<pre><code>
+# Decrypt and print message to screen
+gpg -d message.txt.gpg
+
+# Decrypt and put output in decrypted.txt
+gpg --decrypt message.txt.gpg > decrypted.txt
+</code></pre>
+
+
+<a name=""></a>
+<h3></h3>
+<p></p>
+
+
+
+
+<a name="signatures"></a>
+<h2>Signatures</h2>
+
+<p></p>
+
+
+
+<a name=""></a>
+<h3></h3>
+<p></p>
+
+<a name=""></a>
+<h3></h3>
+<p></p>
+
+<a name=""></a>
+<h3></h3>
+<p></p>
+
+<a name=""></a>
+<h3></h3>
+<p></p>
+
+<a name=""></a>
+<h3></h3>
+<p></p>
+
+
+
+
+
+
+<a name="conclusion"></a>
+<h2>Conclusion</h2>
+
+<p>After reading this, you should understand how to use GPG for its most common tasks like creating and managing keys, encrypting symettrically with AES, encrypting a message for a specific person with RSA, and how to sign and verify signatures.</p>
+
+<p>This was not a comprehensive overview of all the GPG features. It was only a brief overview of some basics. Here are some notable things that are not covered here:</p>
+
+<ul>
+    <li>Plugins for applications like Outlook and Thunderbird to add GPG encryption support.</li>
+    <li>Trusted rings</li>
+    <li>Signing people's public keys</li>
+    <li>Good encrpytion habits</li>
+    <li>Revocation keys</li>
+    
+</ul>
+
+<p>Read more about all the features on the <a href="https://gnupg.org/documentation/index.html" target="_blank">Official GnuPG documentation</a>.</p>
+
+
+
+<a name="references"></a>
+<h2>Reference links</h2>
+
+<ul>
+    <li><a href="https://gnupg.org/" target="_blank">GNUPG website</a></li>
+    <li><a href="https://gnupg.org/documentation/index.html" target="_blank">Official GnuPG documentation</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/GNU_Privacy_Guard" target="_blank">GNUPG Wikipedia page</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/Pretty_Good_Privacy" target="_blank">PGP Wikipedia page</a></li>
+    <li><a href="https://futureboy.us/pgp.html#ShortKeyID" target="_blank"></a></li>
+    <li><a href="" target="_blank"></a></li>
+    <li><a href="" target="_blank"></a></li>
+    <li><a href="" target="_blank"></a></li>
+    <li><a href="" target="_blank"></a></li>
+</ul>
+
+
+
+
+
+

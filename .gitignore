@@ -26,3 +26,14 @@ a.out
 *.swp
 *.exe
 *.exe~
+/java/tools.files/nbproject/
+
+.idea
+.settings
+.vscode
+nbproject
+target
+.classpath
+.project
+nb-configuration.xml
+*.iml

@@ -1,7 +1,4 @@
-# nothing about apt, just focus on manual deb install/uninstall and custom deb files
-
 <!--<h1>Debian Package (dpkg) Tutorial</h1>-->
-
 <!-- Tags: Debian, sysadmin, dpkg, Linux -->
 
 <h2>Overview</h2>
@@ -27,14 +24,12 @@
 <p>A <b>.deb</b> file is a Debian package, but really it is just a standard Unix archive (ar) file. The <b>dpkg</b> tool is the Debian package manager and <b>apt-get</b> is a higher level command-line tool for managing packages which uses <b>dpkg</b> under the hood to manage dependencies and pull from remote repositories.</p>
 
 
-        
-        
-        -x|--extract <deb> <directory>   Extract files.
-        -X|--vextract <deb> <directory>  Extract & list files.
-        -R|--raw-extract <deb> <directory>
-                                        Extract control info and files.
-        --ctrl-tarfile <deb>             Output control tarfile.
-        --fsys-tarfile <deb>             Output filesystem tarfile.
+-x|--extract <deb> <directory>   Extract files.
+-X|--vextract <deb> <directory>  Extract & list files.
+-R|--raw-extract <deb> <directory>
+                                Extract control info and files.
+--ctrl-tarfile <deb>             Output control tarfile.
+--fsys-tarfile <deb>             Output filesystem tarfile.
 -->
       
 
@@ -199,8 +194,6 @@ verify pakage is installed by checking the status with
 
 Update packages
 - reinstall file with dpkg/apt-get
-
-
 
 
 

@@ -1,14 +1,16 @@
 require 'active_record'
 require 'mysql2' #'mysql2' or 'pg' or 'sqlite3'
 
-# Change the following to reflect your database settings
+# Database settings
 ActiveRecord::Base.establish_connection(
+  # How to do a sqlite in memory?
   adapter:  'mysql2', # or 'postgresql' or 'sqlite3'
   host:     'localhost',
   database: 'test',
   username: 'test',
   password: 'test'
 )
+
 
 # Define your classes based on the database
 # Table is users, needs primary key id auto_increment
@@ -17,13 +19,16 @@ class User < ActiveRecord::Base
   #has_many                :posts
 end
 
+
 # Create new user
 new_user = User.new
 new_user.name = "Test user"
 new_user.save
+puts new_user
 
 # Create new user another way
 new_user2 = User.create(name: "Test user2")
+puts new_user2
 
 # Queries
 puts User.find(1).inspect

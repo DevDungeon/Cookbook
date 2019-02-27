@@ -46,19 +46,17 @@ Completed Topics
 - Making HTTP requests
 - Parsing JSON
 - Packet capturing
-
 - Cross-compiling - https://github.com/japaric/rust-cross
 - Wrapping C libraries
 - Linking to custom C libraries
 - Multithreading
+- Channels & ownership
 
 Unfinished Topics
 =================
 
-- Channels
-- Thread pools
-
-- Packaging modules/publishing
+- Packing binary structs (create a tcp/ip packet struct)
+- Packaging modules/publishing (how to share a library)
 
 - Creating a CSV file
 - Making database connections

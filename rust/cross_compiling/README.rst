@@ -15,3 +15,8 @@ Add the compile target with ``rustup``::
 Cross compile with --target=XX flag. For example::
 
   rustc --target=x86_64-pc-windows-gnu -C linker=x86_64-w64-mingw32-gcc test.rs
+
+References
+----------
+
+- https://github.com/japaric/rust-cross

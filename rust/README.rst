@@ -46,18 +46,19 @@ Completed Topics
 - Making HTTP requests
 - Parsing JSON
 - Packet capturing
+- Cross-compiling - https://github.com/japaric/rust-cross
 
 Unfinished Topics
 =================
 
+- Can you link Rust object files with C? - Yes!
+- Wrapping C libraries
+
+- Multithreading
 - Packaging modules/publishing
 - Creating a CSV file
-- Cross-compiling - https://github.com/japaric/rust-cross
 - Making database connections
-- Wrapping C libraries
-- Can you link Rust object files with C? - Yes!
 - Playing an audio file
-- Multithreading
 - Drawing 2D graphics to screen
 - Drawing 3D graphics to screen
 - GUI programming

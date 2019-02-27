@@ -1,0 +1,9 @@
+# Compile shared lib
+gcc -c multiply.c -o multiply.o
+
+# Create static lib
+ar rcs libmultiply.a multiply.o
+
+
+# To compile test.c which consumes multiply.o, use
+gcc test.c multiply.o

@@ -1,4 +1,6 @@
 *~
+.settings
+.project
 .idea
 .DS_Store
 /java/Swing/HelloWorld/nbproject/private/

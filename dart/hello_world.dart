@@ -1,0 +1,4 @@
+
+main() {
+    print('hello');
+}

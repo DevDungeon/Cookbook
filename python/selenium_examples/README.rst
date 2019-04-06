@@ -59,6 +59,15 @@ Or use the click function::
 
   driver.find_element*().click()
 
+Scroll to bottom
+----------------
+
+Example::
+
+	# Scroll to bottom
+	driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
+
+
 Login
 -----
 

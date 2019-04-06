@@ -59,6 +59,17 @@ Or use the click function::
 
   driver.find_element*().click()
 
+Login
+-----
+
+```python
+username = driver.find_element_by_name("username")
+password = driver.find_element_by_name("password")
+username.send_keys("username")
+password.send_keys("password")
+login_attempt = driver.find_element_by_xpath("//*[@type='submit']")
+```
+
 Switching windows
 -----------------
 

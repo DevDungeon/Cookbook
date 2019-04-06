@@ -67,6 +67,28 @@ Example::
 	# Scroll to bottom
 	driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
 
+	# Scroll to bottom slowly
+	response = driver.execute_async_script("""
+	//alert('Window height is' + window.innerHeight);
+	//alert('Body height is ' + document.body.scrollHeight);
+	function sleep(milliseconds) {
+	  var start = new Date().getTime();
+	  for (var i = 0; i < 1e7; i++) {
+	    if ((new Date().getTime() - start) > milliseconds){
+	      break;
+	    }
+	  }
+	}
+
+	for (i = 0; i < (document.body.scrollHeight / window.innerHeight) + 1; i++) {
+	    // Should scroll by availHeight until scrollHeight is reached
+	    alert("scrolling " + i);
+	    window.scrollBy(0,window.innerHeight);
+	    sleep(1000);
+	}
+	""")
+
+
 
 Login
 -----

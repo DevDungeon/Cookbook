@@ -72,7 +72,12 @@ SysTray
 
 Create a `QSystemTrayIcon`, then call `set_icon()` on it and then `show()`.
 
-Create a `QMenu`, call `addAction` to add `QAction`s that have been connected to a callback using `action.triggered.connect(func_name)`
+Create a `QMenu`, call `addAction` to add `QAction`s that have been
+created and connected to a callback using `action.triggered.connect(func_name)`.
+Then attach the `QMenu` to the `QSystemTrayIcon` using `tray_icon.setContextMenu(menu)`.
+
+You can display balloon alerts from the tray icon using `tray_icon.showMessage()` and passing
+an icon like `QSystemTrayIcon.Information`.
 
 References
 ----------

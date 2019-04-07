@@ -77,7 +77,7 @@ created and connected to a callback using `action.triggered.connect(func_name)`.
 Then attach the `QMenu` to the `QSystemTrayIcon` using `tray_icon.setContextMenu(menu)`.
 
 You can display balloon alerts from the tray icon using `tray_icon.showMessage()` and passing
-an icon like `QSystemTrayIcon.Information`.
+a value like `QSystemTrayIcon.Information`.
 
 References
 ----------

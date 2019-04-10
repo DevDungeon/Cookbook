@@ -6,6 +6,7 @@
 
 DATE=`date '+%Y-%m-%d-%H-%M-%S'`
 echo "$DATE [*] Taking picture"
-raspistill -o /home/pi/Pictures/image-${DATE}.jpg
+raspistill -o /home/pi/Pictures/image-${DATE}.jpg -w 3280 -h 2464 -q 100
 DATE=`date '+%Y-%m-%d-%H-%M-%S'`
 echo "$DATE [+] Done taking picture."
+

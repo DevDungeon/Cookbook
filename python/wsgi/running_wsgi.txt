@@ -1,0 +1,14 @@
+## Or more production worthy wsgi server: waitress
+# python -m pip install waitress
+# python -m waitress index:wsgi_app  # module name, class name
+
+## Or using standard library wsgiref
+# from wsgiref.simple_server import make_server
+# make_server('0.0.0.0', 9999, wsgi_app).serve_forever()
+
+mod_wsgi on Apache
+
+
+uwsgi
+
+gunicorn

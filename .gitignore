@@ -1,4 +1,6 @@
 *~
+.settings
+.project
 .idea
 .DS_Store
 /java/Swing/HelloWorld/nbproject/private/
@@ -27,7 +29,6 @@ a.out
 *.exe
 *.exe~
 /java/tools.files/nbproject/
-
 .idea
 .settings
 .vscode
@@ -37,3 +38,5 @@ target
 .project
 nb-configuration.xml
 *.iml
+venv
+

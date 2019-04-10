@@ -18,5 +18,5 @@ if can_resize:
     screen.refresh()
     time.sleep(3)
 else:
-    screen.endwin()
+    curses.endwin()
     print("Unable to resize window")

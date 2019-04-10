@@ -1,4 +1,5 @@
 # Simplest logger setup/what are default output levels?
+import logging
 
 # How to make a custom logger that outputs to stdout and diff format to a file
 # https://docs.python.org/3/library/logging.html

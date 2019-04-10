@@ -1,9 +1,0 @@
-Fix Rails 5.2 on Windows SQLite error
-
-Replace the sqlite3 gem with this one
-
-    gem 'sqlite3', git: "https://github.com/larskanis/sqlite3-ruby", branch: "add-gemspec"
-
-Then again run 
-
-    bundle install

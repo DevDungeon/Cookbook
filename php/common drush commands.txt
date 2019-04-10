@@ -1,0 +1,9 @@
+common drush commands
+
+
+
+drush cc all # clear all caches
+
+drush update
+
+drush backup/restore

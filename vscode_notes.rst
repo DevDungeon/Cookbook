@@ -19,12 +19,39 @@ Run with::
 
 Change logo by replacing image in ``resources`` directory.
 
-Settings stored in
-==================
+Settings files
+==============
 
-``~/.config/Code`` or ``~/.config/code-oss-dev``
+User settings are stored in ``~/.config/Code`` for VSCode proper or ``~/.config/code-oss-dev`` for the open source dev version.
 
-Icon theme: Material
+You can have specific settings for each project.
+Create a ``.vscode`` directory inside any workspace folder and add the files needed. For example::
+
+- ``launch.json`` - Debug launch 
+- ``settings.json`` - Custom settings, extension configurations
+- ``tasks.json`` - 
+
+This is a sample ``settings.json`` file from ``~/.config/code-oss-dev/User/settings.json``::
+
+	{
+	    "telemetry.enableTelemetry": false,
+	    "telemetry.enableCrashReporter": false,
+	    
+	    "workbench.colorTheme": "One Dark Pro",
+	    "workbench.iconTheme": "material-icon-theme",
+	    
+	    "editor.cursorBlinking": "phase",
+	    "editor.fontFamily": "'Hack', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+	    
+	    "window.zoomLevel": -1,
+	    
+	    "workbench.startupEditor": "newUntitledFile", // No welcome page
+
+	    "keyboard.dispatch": "keyCode", // To allow Caps->Escape dconf mapping (good for vim mode)
+	    
+	    "vim.enableNeovim": true,
+	    "vim.neovimPath": "/usr/bin/nvim",
+	}
 
 
 Custom snippets
@@ -49,13 +76,39 @@ Custom tasks
 
 To create a custom task from template:
 
-- Run ``Configure Tasks`` from the command palette
+- Run ``Tasks: Configure Tasks`` from the command palette
 - Select the ``Create tasks.json file from template``
 
-Custom launchers
-----------------
+To run a task:
 
-Go to the Debug tab (``CTRL-SHIFT-D``) and choose `Add Config` or modify the `launch.json` file in the workspace directory directly.
+- Run ``Tasks: Run Task`` from the command palette.
+- Choose the task you created.
+
+To modify tasks:
+
+- Run ``Tasks: Configure Task`` from the command palette.
+- It will ask which task to configure, or prompt for a new ``tasks.json`` file if none exists.
+
+An example ``{workspaceFolder}/.vscode/tasks.json`` file::
+
+	{
+	    // See https://go.microsoft.com/fwlink/?LinkId=733558
+	    // for the documentation about the tasks.json format
+	    "version": "2.0.0",
+	    "tasks": [
+		{
+		    "label": "Run the date command",
+		    "type": "shell",
+		    "command": "date",
+		    "problemMatcher": []
+		}
+	    ]
+	}
+
+Custom launchers
+================
+
+Go to the Debug tab (``CTRL-SHIFT-D``) and choose `Add Config` or modify the ``.vscode/launch.json`` file in the workspace directory directly.
 
 For example, if the ``Debugger for Chrome`` extension is installed, you can add::
         

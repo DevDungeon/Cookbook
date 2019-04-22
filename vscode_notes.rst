@@ -54,8 +54,8 @@ This is a sample ``settings.json`` file from ``~/.config/code-oss-dev/User/setti
 	}
 
 
-Custom snippets
-================
+User snippets
+=============
 
 File > Preferences > Users Snippets
 Then select, ``New global snippets file``
@@ -69,6 +69,14 @@ Run from palette::
   Developer: Generate Color Theme from Current Settings
 
 https://medium.com/@caludio/how-to-write-a-visual-studio-code-color-theme-from-scratch-7ccb7e5da2aa
+
+Change the color theme:
+
+-
+
+Change the file icon theme:
+
+-
 
 
 Custom tasks

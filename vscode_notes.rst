@@ -48,8 +48,43 @@ Custom tasks
 ============
 
 To create a custom task from template:
+
 - Run ``Configure Tasks`` from the command palette
 - Select the ``Create tasks.json file from template``
+
+Custom launchers
+----------------
+
+Go to the Debug tab (``CTRL-SHIFT-D``) and choose `Add Config` or modify the `launch.json` file in the workspace directory directly.
+
+For example, if the ``Debugger for Chrome`` extension is installed, you can add::
+        
+	{
+            "type": "chrome",
+            "request": "launch",
+            "name": "Open Chrome for Angular app",
+            "url": "http://localhost:4200",
+            "webRoot": "${workspaceFolder}",
+            "runtimeExecutable": "/usr/bin/chromium-browser",
+        }
+
+Or to launch a Django app::
+
+        {
+            "name": "Python: Django",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "console": "integratedTerminal",
+            "args": [
+                "runserver",
+                "--noreload",
+                "--nothreading"
+            ],
+            "django": true
+        },
+
+
 
 Custom plugin
 =============

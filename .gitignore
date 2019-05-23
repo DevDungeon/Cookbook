@@ -40,3 +40,4 @@ nb-configuration.xml
 *.iml
 venv
 
+cookbook.code-workspace

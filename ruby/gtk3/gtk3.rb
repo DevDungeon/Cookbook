@@ -26,7 +26,7 @@ class MyApp < Gtk::Window
 	end
 end
 
-Gtk.init
-	window = MyApp.new
+#Gtk.init
+window = MyApp.new
 Gtk.main
 

@@ -8,5 +8,6 @@
     "markdownlint.run": "onSave",
     "java.home": "C:\\o\\openjdk11",
     "workbench.colorTheme": "Visual Studio Dark",
-    "html.autoClosingTags": false
+    "html.autoClosingTags": false,
+    "keyboard.dispatch": "keyCode"
 }

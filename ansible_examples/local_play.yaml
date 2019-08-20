@@ -1,0 +1,9 @@
+# local_play.yaml
+- name: Local play
+  hosts: localhost
+  connection: local
+  tasks:
+  - name: Create a text file
+    command: touch test.txt
+  - name: Rename the file
+    command: mv test.txt test.md

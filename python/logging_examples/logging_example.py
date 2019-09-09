@@ -1,3 +1,5 @@
+import logging
+
 # Goes to stderr by default
 
 logging.basicConfig(level=logging.WARNING, format="%(msg)s")

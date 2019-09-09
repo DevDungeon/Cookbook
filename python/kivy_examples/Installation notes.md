@@ -11,9 +11,12 @@ pip install kivy
 In Windows, you may need to install other dependencies
 
 ```bash
-pip install pypiwin32
-pip install kivy_deps.sdl2 kivy.deps.gstreamer 
+# Other pip packages to install
+pypiwin32
+kivy_deps.glew
 # One of the backends:
-pip install kivy_deps.glew
-pip install kivy.deps.angle
+kivy_deps.sdl2
+kivy.deps.angle
+# If needed for video
+kivy.deps.gstreamer
 ```

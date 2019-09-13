@@ -1,3 +1,3 @@
 import webbrowser
 
-webbrowser.open("https://www.devdungeon.com/") 
+webbrowser.open("https://www.devdungeon.com/")

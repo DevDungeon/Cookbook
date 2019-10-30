@@ -24,7 +24,7 @@ def product_detail(product_id):
 # Trailing slash makes a difference
 # With test1, /test1 gets redirected to /test1/
 # With test2, /test2/ comes up with no match.
-@app.route('/test1/') # /test1 works, /test1/ works
+@app.route('/test1/') # /test1 works, /test1/ works (/test1 redirects to /test1/)
 @app.route('/test2')  # /test2 works, /test2/ fails
 def trailing_slash():
     # Multiple routes can go to a single function

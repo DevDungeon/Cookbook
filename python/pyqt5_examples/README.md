@@ -84,3 +84,7 @@ References
 
 https://github.com/DevDungeon/PyQt5-Bitcoin-Price-Checker
 https://github.com/DevDungeon/PyQt5-Bitcoin-Price-Checker/pull/1
+
+
+Building for Android:
+https://medium.com/@Lola_Dam/packaging-pyqt-application-using-pyqtdeploy-for-both-linux-and-android-32ac7824708b

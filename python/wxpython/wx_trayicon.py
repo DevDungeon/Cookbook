@@ -1,3 +1,4 @@
+# pip install wxpython
 import wx
 import wx.adv
 

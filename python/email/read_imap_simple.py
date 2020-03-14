@@ -33,3 +33,4 @@ for message_number in message_numbers_raw[0].split():
             print(f'Multipart Payload\n{sub_message.get_payload()}')
     else:  # Not a multipart message, payload is simple string
         print(f'Payload\n{message.get_payload()}')
+    # You could also use `message.iter_attachments()` to get attachments only

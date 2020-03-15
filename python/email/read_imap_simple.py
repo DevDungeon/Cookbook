@@ -2,7 +2,7 @@ import imaplib
 import email
 
 imap_server = imaplib.IMAP4_SSL(host='mail.example.com')
-imap_server.login('user', 'pass')
+imap_server.login('user@example.com', 'password')
 
 imap_server.select()  # Default is `INBOX`
 
@@ -14,8 +14,13 @@ for message_number in message_numbers_raw[0].split():
     message = email.message_from_bytes(msg[0][1])
     
     print('== Email message =====')
-    print(message)
+    # print(message)  # print FULL message
     print('== Email details =====')
+    print(f'From: {message["from"]}')
+    print(f'To: {message["to"]}')
+    print(f'Cc: {message["cc"]}')
+    print(f'Bcc: {message["bcc"]}')
+    print(f'X-Priority: {message["x-priority"]}')
     print(f'Object type: {type(message)}')
     print(f'Content type: {message.get_content_type()}')
     # Content disposition will tell type, if is attachment, filename, size

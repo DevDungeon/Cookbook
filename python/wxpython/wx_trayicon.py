@@ -11,7 +11,7 @@ TRAY_ICON = 'test.png'
 def create_menu_item(menu, label, func):
     item = wx.MenuItem(menu, -1, label)
     menu.Bind(wx.EVT_MENU, func, id=item.GetId())
-    menu.AppendItem(item)
+    menu.Append(item)
     return item
 
 
@@ -45,9 +45,15 @@ class TaskBarIcon(wx.adv.TaskBarIcon):
 def main():
     app = wx.App()
     TaskBarIcon()
+
+    # Main window is required on some platforms so
+    # the app does not immediately exit.
+    # You don't have to show it though.
+    frame = wx.Frame(parent=None, title='Hello wxPython')
+    # frame.Show()
+    # frame.Hide()
     app.MainLoop()
 
 
 if __name__ == '__main__':
     main()
-

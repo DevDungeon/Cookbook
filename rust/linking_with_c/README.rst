@@ -17,7 +17,7 @@ In the Rust file,
 
 - Add all external functions at the top with ``extern{}`` block
 - Add a link decorator like ``#[link(name = "myfunctions")]``
-  + OR set the link in the build.rs file ``println!("cargo:rustc-link-lib=multiply");``
+  + OR set the link in the build.rs file ``println!("cargo:rustc-link-lib=myfunctions");``
 - Add ``extern crate libc;`` and ``use libc::c_int`` and all other datatypes needed
 - When calling the C function, wrap in an ``unsafe{}`` block
 

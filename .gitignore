@@ -1,5 +1,7 @@
 *~
 .settings
+settings.php
+
 .project
 .idea
 .DS_Store

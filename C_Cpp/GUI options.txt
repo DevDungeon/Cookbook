@@ -1,4 +1,0 @@
-Nuklear (single .h ANSI C file) https://github.com/vurtun/nuklear
-GTK
-Native OS
-libui

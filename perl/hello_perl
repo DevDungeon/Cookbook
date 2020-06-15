@@ -1,3 +1,0 @@
-print "Hello. What is your name?";
-$name = <STDIN>;
-print "Hello, " . $name;

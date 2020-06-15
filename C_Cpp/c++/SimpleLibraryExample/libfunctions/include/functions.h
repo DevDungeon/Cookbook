@@ -1,2 +1,0 @@
-void say_hello();
-

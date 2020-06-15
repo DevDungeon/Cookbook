@@ -1,4 +1,4 @@
-# Does file exist?
+# Does file or directory exist?
 if [ -e /file/to/test.txt ]
 then
   echo "Exists"

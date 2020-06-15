@@ -1,8 +1,0 @@
-[package]
-name = "packet_capture"
-version = "0.1.0"
-authors = ["BuildTools <unconfigured@null.spigotmc.org>"]
-edition = "2018"
-
-[dependencies]
-pcap = "0.7.0"

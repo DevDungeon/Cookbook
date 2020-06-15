@@ -1,8 +1,0 @@
-[package]
-name = "get_file_metadata"
-version = "0.1.0"
-authors = ["NanoDano <nanodano@devdungeon.com>"]
-edition = "2018"
-
-[dependencies]
-chrono = "0.4"

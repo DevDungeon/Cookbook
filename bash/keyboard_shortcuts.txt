@@ -1,13 +1,13 @@
-# Keyboard shortcuts
+# Bash Keyboard shortcuts
 
-*	CTRL-k: delete ('kill') from cursor position to the end of the line
-*	CTRL-u: delete from cursor position to the beginning of the line
-*	ALT-d: delete from cursor position to the end of the current 'word'
-*	CTRL-w: delete from cursor position to the beginning of the current 'word'
-*	CTRL-a: move cursor to the first character of the line
-*	CTRL-e: move cursor beyond the last character of the line
-*	ALT-a: move cursor to the first character of the current 'word'
-*	ALT-e: move cursor to the last character of the current 'word'
-*	CTRL-y: insert latest deleted 'word'
-*	ESC-_ or !$: repeats the last argument of the previous command.
+- CTRL-k: delete ('kill') from cursor position to the end of the line
+- CTRL-u: delete from cursor position to the beginning of the line
+- ALT-d: delete from cursor position to the end of the current 'word'
+- CTRL-w: delete from cursor position to the beginning of the current 'word'
+- CTRL-a: move cursor to the first character of the line
+- CTRL-e: move cursor beyond the last character of the line
+- ALT-a: move cursor to the first character of the current 'word'
+- ALT-e: move cursor to the last character of the current 'word'
+- CTRL-y: insert latest deleted 'word'
+- ESC-_ or !$: repeats the last argument of the previous command.
 

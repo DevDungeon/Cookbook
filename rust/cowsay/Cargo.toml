@@ -1,7 +1,0 @@
-[package]
-name = "user_input"
-version = "0.1.0"
-authors = ["BuildTools <unconfigured@null.spigotmc.org>"]
-
-[dependencies]
-ferris-says = "0.1"

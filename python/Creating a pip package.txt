@@ -1,0 +1,49 @@
+Creating a pip package
+
+Create a folder for your module. Should be lowercase and underscores.
+
+Create a setup.py in the base directory.
+
+from setuptools import setup
+setup(name='package_name',
+      version='0.1.1',
+      description='Description.',
+      url='https://github.com/NanoDano/package_name',
+      author='NanoDano',
+      author_email='nanodano@devdungeon.com',
+      license='MIT',
+      packages=['package_name'],  # The folder with the real code
+      scripts=['bin/executable'], # List of executable scripts to include
+      zip_safe=False,
+      install_requires=['dependency_package'])
+
+Create the folder with the real code: <package_name>
+Create an __init__.py in the new folder and have it import all the things from that directory:
+from .some_file import SomeClass
+
+
+Add scripts to the bin folder. Put a shebang so it is handled properly.
+=========
+
+If not already done, set up ~/.pypirc
+
+[distutils]
+index-servers=pypi
+
+[pypi]
+repository = https://pypi.python.org/pypi
+username = DevDungeon
+password = <password>
+
+======
+
+Register the package by uploading it
+
+
+========
+Compile for source distribution at minimum
+
+python setup.py sdist
+
+pip install twine
+twine upload dist/*

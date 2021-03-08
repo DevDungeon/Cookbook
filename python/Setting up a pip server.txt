@@ -1,0 +1,16 @@
+Setting up a pip server
+
+## Installation.
+pip install pypiserver[passlib]
+mkdir ~/packages                      ## Copy packages into this directory.
+
+## Start server.
+pypi-server -p 8080 ~/packages &      ## Will listen to all IPs.
+
+## Download and Install hosted packages.
+pip install  --extra-index-url http://localhost:8080/simple/ ...
+
+
+# Put this in to ~/.pip/pip.confg under [global]
+; Custom index
+extra-index-url = https://<user>:<pass>@pypi.private.example.org/

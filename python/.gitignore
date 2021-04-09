@@ -4,3 +4,5 @@
 .idea
 __pycache__
 test.html
+.env
+settings.py

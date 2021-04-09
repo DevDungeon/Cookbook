@@ -1,0 +1,7 @@
+# Get the cPanel API token from your dashboard:
+# Security -> Manage API Tokens
+# cpsess id can be obtained from URL while logged into dahs
+
+CPANEL_API_TOKEN = 'AAABBBCCCDDDD'
+CPANEL_BASE_URL = 'https://cpanel.example.net:2083/cpsess##########'
+CPANEL_USERNAME = 'myuser'

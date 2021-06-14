@@ -11,4 +11,22 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <name>SysTrayTest</name>
+    <build>
+        <plugins>
+            <!-- maven-jar-plugin - Included by default, but configuration can be overriden.
+            Defines the main class for the jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.devdungeon.systraytest1.TrayIconDemo</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

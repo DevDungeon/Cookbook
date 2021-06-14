@@ -1,2 +1,0 @@
-#!/bin/sh
-java -jar /opt/twittertool/twittertool-1.0.0.jar

@@ -1,7 +1,0 @@
-Package: twittertool
-Version: 1.0.0
-Maintainer: King Foo
-Architecture: all
-Description: hello world
-Priority: optional
-Section: utils

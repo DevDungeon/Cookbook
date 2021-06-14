@@ -144,7 +144,7 @@ public class TrayIconDemo {
             public void itemStateChanged(ItemEvent e) {
                 int cb1Id = e.getStateChange();
                 if (cb1Id == ItemEvent.SELECTED){
-                    trayIcon.setImageAutoSize(true);
+                    trayIcon.setImageAutoSize(true);  // DO THIS!! Otherwise icon is not the right size!
                 } else {
                     trayIcon.setImageAutoSize(false);
                 }

@@ -1,0 +1,27 @@
+<!-- client.html -->
+<!-- https://developer.mozilla.org/en-US/docs/Web/API/WebSocket#examples -->
+<html>
+<body>
+
+<script>
+
+const socket = new WebSocket('ws://localhost:8080');
+
+// Connect
+socket.addEventListener('open', function (event) {
+    socket.send('Hello Server!');
+});
+
+// Handle server messages
+socket.addEventListener('message', function (event) {
+    console.log('Message from server ', event.data);
+});
+
+// To send data, use `socket.send()`
+
+</script>
+
+
+
+</body>
+</html>

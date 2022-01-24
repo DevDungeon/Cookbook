@@ -1,5 +1,4 @@
 .idea/
-guestbook/guestbook.txt
 *.sqlite3
 .vscode
 settings.local.php

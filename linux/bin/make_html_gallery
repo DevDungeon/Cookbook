@@ -1,0 +1,50 @@
+#!/bin/env ruby
+
+# Whether or not to create an all.html with every image
+CREATE_ALL = false
+
+if CREATE_ALL
+	all = File.open("all.html", 'w')
+	all.write("<html><body>")
+end
+
+# Create an index.html page that lists all gallery pages
+index = File.open("index.html", 'w')
+index.write("<html><body>")
+
+# Create html files for each directory
+Dir.entries(".").each do |dir|
+	if dir != "." and dir != ".." and File.directory?(dir)
+
+		count = 0
+
+		File.open("#{dir}.html", 'w') { |file|
+			file.write("<html><body>")
+
+
+
+			Dir.entries(dir).shuffle.each do |path|
+				unless path == "." or path == ".."
+					link = "<a href=\"#{dir}/#{path}\" target=\"_blank\"><img src=\"#{dir}/#{path}\" width=\"auto\" height=\"250\" style=\"float:left;\"></a>"
+					file.write link
+					count += 1
+					all.write link if CREATE_ALL
+				end
+			end
+			file.write("</body></html>")
+		}
+
+		# Write html link to index with pic count
+		index.write("<a href=\"#{dir}.html\" target=\"_blank\">#{dir}</a> (#{count})<br />")
+
+
+	end
+end
+
+index.write("</body></html>")
+index.close()
+
+if CREATE_ALL
+	all.write("</body></html>")
+	all.close()
+end

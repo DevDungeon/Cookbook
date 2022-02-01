@@ -1,0 +1,63 @@
+[Desktop Entry]
+
+# File should end with .desktop. E.g. myapp.desktop
+# Can live in:
+#    /usr/share/applications/
+#    /usr/local/share/applications/
+#    $HOME/.local/share/applications/
+
+
+# Application, Links (URL), or Directory (sub-group for applications)
+Type=Application
+
+Encoding=UTF-8
+Icon=/path/to/launch_icon.png
+Name=MySpecificApp
+GenericName=SomethingGeneric
+Comment=This is a tooltip
+Exec=/thing/to/execute
+# To pass arguments use %u or %U
+# Exec=/thing/to/execute %u
+
+# Should run in a terminal?
+Terminal=false
+
+# Name of the window. Optional. See below.
+# Allows windows to stack
+# If this does not match, duplicate icons may show up in your dock
+StartupWMClass=name-of-app-window
+# To get name of a window:
+# `xprop WM_CLASS`
+# Then click on the window.
+# It will output something like:
+# WM_CLASS(STRING) = "code-oss-dev", "code-oss-dev"
+# Your entry would have the line:
+# StartupWMClass=code-oss-dev
+
+
+# Optional categories
+Categories=Development;Education;
+
+# If you want to have a special protocol handler. For example,
+# this is what Zoom meetings does to register zoommtg:// scheme
+# and to be associated with the x-zoom mime type
+# MimeType=x-scheme-handler/zoommtg;application/x-zoom;
+# X-KDE-Protocols=zoommtg
+
+
+# Optional actions (right click options)
+Actions=launch1;launch2;launch3
+
+[Desktop Action launch1]
+Name=Launch normally
+Exec=/path/to/launch
+
+[Desktop Action launch2]
+Name=Launch with alt options
+Exec=/path/to/launch --alts
+
+[Desktop Action launch3]
+Name=Launch with alt options again
+Exec=/path/to/launch --otheralts
+
+

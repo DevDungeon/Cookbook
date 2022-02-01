@@ -1,0 +1,41 @@
+# Example ~/.ssh/config file
+# Can also set them system-wide in `/etc/ssh/ssh_config`
+
+# Settings for all SSH connections
+Host *
+    IPQoS throughput  # Needed to fix SSH in Fedora in VMWare
+
+Host sandbox # Connect using ``ssh sandbox`` or ``scp sandbox:* .``
+    HostName sandbox.local
+    #User myusername
+    #IdentityFile ~/.ssh/id_rsa
+    #Port 22
+    #ServerAliveInterval 30
+    #ProxyJump jumphost.local
+    
+    # Froward x11 (might need to run `export DISPLAY=:0) in session
+    ForwardX11 yes
+    
+    # If using local forward, do ssh -f -N host
+    # -f puts ssh in background
+    # -N makes it not execute a remote command
+    #LocalForward 9906 127.0.0.1:3306
+    
+    # Another local forward example. This one will take the service that sits on
+    # the remote host listening locally on port 3006 and makes it available
+    # via a local listener that listens on localhost:9999.
+    # E.g. Make a remote mysql database that only listens locally available
+    #      on your localhost port 9999
+    #LocalForward 127.0.0.1:9999 127.0.0.1:3306
+
+    # Remote forward will make something available on the local machine/network available
+    # to the remote server.
+    # E.g. Making an internal git server available to the host you are connecting to that
+    #      would not normally be able to reach the git server. 
+    # This eample makes git available on localhost:9999 while on the remote SSH server
+    #RemoteForward 127.0.0.1:9999 internal-git-server.local:22
+
+    # Set up a SOCKS proxy on 127.0.0.1:9999 that lets you pivot through the remote host(HostName) 
+    # Then configure the local tool/browser to use a SOCKS proxy of localhost:9999
+    #DynamicForward 127.0.0.1:9999
+    

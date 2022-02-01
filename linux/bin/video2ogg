@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Convert a video to the open ogg format
+ffmpeg -i "$1" -vn -ar 44100 -ac 2 -ab 192k -f ogg "$1".ogg

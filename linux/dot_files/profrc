@@ -1,0 +1,37 @@
+# ~/.config/profanity/profrc
+# Template: https://github.com/profanity-im/profanity/blob/master/profrc.example
+
+[ui]
+theme=devdungeon
+
+[connection]
+defaccount=you@devdungeon.com
+account=you@devdungeon.com
+
+[presence]
+autoaway.mode=away
+autoaway.check=true
+autoaway.awaytime=15
+autoaway.awaymessage=Away from computer
+
+[alias]
+nanodano=/msg nanodano@devdungeon.com Hello
+devdungeon=/join general@conference.devdungeon.com
+
+[logging]
+chlog=true
+grlog=true
+maxsize=1048580
+rotate=true
+shared=true
+
+[otr]
+warn=true
+log=on
+policy=manual
+
+[presence]
+autoaway.mode=away
+autoaway.time=15
+autoaway.message=Away from computer
+autoaway.check=true

@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+
+uname -a
+for f in $(ls /etc | grep release)
+do
+    cat /etc/$f
+done
+

@@ -1,0 +1,16 @@
+# ~/.muttrc.account2
+
+# Load generic colors/preferences
+source ~/.muttrc
+
+### Account specific settings ###
+set from = "john.doe@example.com"
+set realname = "John Doe"
+
+set smtp_url = "smtps://me@example.com@mail.example.com:465/"
+set smtp_pass = "password"
+# Omit password, and it will prompt you
+set imap_user = "me@example.com"
+set imap_pass = "password"
+set folder = "imaps://mail.example.com:993"
+set spoolfile = "+INBOX"

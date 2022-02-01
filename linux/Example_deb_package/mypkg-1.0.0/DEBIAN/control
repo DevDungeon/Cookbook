@@ -1,0 +1,7 @@
+Package: mypkg
+Version: 1.0.0
+Maintainer: Your Name <you@example.com>
+Description: My test package, please ignore
+Homepage: https://github.com/username/projectname
+Architecture: all
+Depends: git, python3 (>=3.5), openjdk-8-jre-headless|openjdk-8-jre|openjdk-8-jdk-headless|openjdk-8-jdk

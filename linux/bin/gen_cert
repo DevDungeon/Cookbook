@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Generates SSL cert and key in current directory
+
+echo "Generating cert and key: cert.pem, cert.key"
+
+openssl req -new -nodes -x509 -out cert.pem \
+-keyout cert.key -days 3650 \
+-subj "/C=DE/ST=NRW/L=Earth/O=CompanyName/OU=IT/CN=www.random.com/emailAddress=email@example.com"

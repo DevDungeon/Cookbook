@@ -1,0 +1,8 @@
+#!/bin/bash
+# Convert an mp3 file to mp4 video with static image
+
+read -p "Input mp3:" audio
+read -p "Image:" image
+read -p "Output mp4:" -i "output.mp4" outputfile
+
+ffmpeg -loop_input -i $image -i $audio -shortest -acodec copy $outputfile

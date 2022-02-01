@@ -1,6 +1,5 @@
 {
     "telemetry.enableTelemetry": false,
-    "workbench.colorTheme": "Solarized Dark",
     "markdownlint.config": {
         "MD003": {
             "style": "setext_with_atx"

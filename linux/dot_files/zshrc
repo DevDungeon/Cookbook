@@ -1,0 +1,79 @@
+# Path
+export PATH=$PATH:$HOME/NanoBin/bin:$HOME/bin
+export GOPATH=$HOME
+
+# Aliases
+alias ll='ls -l'
+alias la='ls -la'
+alias h='history'
+alias zrc='vim ~/.zshrc'
+alias zrcl='vim ~/.zshrc.local'
+alias vrc='vim ~/.vimrc'
+alias vrcl='vim ~/.vimrc.local'
+alias py='python3'
+alias py2='python2'
+alias py3='python3'
+alias rb='ruby'
+alias pl='perl'
+alias gdif='git diff'
+alias st='git status'
+alias spider='scrapy runspider'
+alias ydl='youtube-dl'
+alias youtube-x='youtube-dl -x --audio-format vorbis --audio-quality 0'
+alias act='source ~/venv/bin/activate'
+
+# Load local config before initializing zsh
+source $HOME/.zshrc.local
+
+# "Double scp"
+dscp() {
+    # Pushes a file to a remote host home dir through a jump host
+    # Example:
+    # dscp fedjump sensu file.txt
+    # dscp jump irma file.txt
+    jump_host=$1
+    dest_host=$2
+    file_path=$3
+    scp -oProxyJump=$jump_host $file_path $dest_host:
+}
+ 
+# "Double ssh"
+dssh() {
+    # Ssh through a jump host
+    # Examples:
+    # dssh fedjump sensu
+    # dssh jump irma
+    jump_host=$1
+    dest_host=$2
+    ssh -J $jump_host $dest_host
+}
+
+send_email() {
+    to_address=$1
+    message=$2
+    /usr/sbin/sendmail "${to_address}" <<EOF
+subject:ConsoleMailer
+from:${USER}@$(hostname)
+ 
+$message
+EOF
+    echo "Sent message to ${to_address}: $message"
+}
+
+set -i vi
+
+#export VIRTUAL_ENV_DISABLE_PROMPT=0
+# Activate Python venv if none is active
+#if [[ -z $VIRTUAL_ENV  ]]
+#then
+#  source $HOME/venv/bin/activate
+#fi
+
+# if [ -f /usr/bin/nvim ]
+# then
+#   alias vim=nvim
+#   export EDITOR=nvim
+# else
+#   export EDITOR=vim
+# fi
+

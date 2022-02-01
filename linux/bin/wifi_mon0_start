@@ -1,0 +1,22 @@
+#!/bin/bash
+
+echo "Bringing wlan0 down..."
+ifconfig wlan0 down
+
+echo "Setting wlan0 MAC..."
+macchanger -r wlan0
+
+echo "Bringing wlan0 up..."
+ifconfig wlan0 up
+
+echo "Starting airmon-ng..."
+airmon-ng start wlan0
+
+echo "Bringing mon0 down..."
+ifconfig mon0 down
+
+echo "Setting mon0 MAC..."
+macchanger -r mon0
+
+echo "Bringing mon0 up..."
+ifconfig mon0 up

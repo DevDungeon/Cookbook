@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "-- CurlFtpFS --"
+read -p "Enter host: " host 
+read -p "Mount point: " mntpoint
+read -p "FTP User: " user
+read -p "FTP Password: " pass
+
+curlftpfs $host $mntpoint -o user=$user:$pass

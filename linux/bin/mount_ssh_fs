@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "-- SSHFS --"
+read -e -p "SSH User: " -i "$USER" user
+read -e -p "Enter host: " host
+read -e -p "Mount point: " -i "/mnt" mntpoint
+read -e -p "SSH port: " -i "22" port
+read -e -p  "Remote path: " -i "" rpath
+
+sshfs $user@$host:$rpath $mntpoint -p $port

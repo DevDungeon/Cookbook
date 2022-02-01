@@ -1,0 +1,99 @@
+# ~/.config/profanity/themes/devdungeon
+# Load it with: /theme load devdungeon
+# Template: https://github.com/profanity-im/profanity/blob/master/theme_template
+
+[colours]
+bkgnd=Grey3
+titlebar=Grey15
+titlebar.text=Grey93
+titlebar.brackets=Cyan1
+
+titlebar.unencrypted=yellow
+titlebar.encrypted=Grey93
+titlebar.untrusted=bold_yellow
+titlebar.trusted=Grey93
+
+titlebar.online=Grey93
+titlebar.offline=Grey70
+titlebar.away=bold_yellow
+titlebar.chat=Green1
+titlebar.dnd=bold_red
+titlebar.xa=yellow
+
+statusbar=Grey15
+statusbar.text=Grey93
+statusbar.time=Grey93
+statusbar.brackets=Cyan1
+statusbar.active=Grey70
+statusbar.current=Grey93
+statusbar.new=Cyan1
+# Shell input color
+input.text=Grey93
+# Console text
+main.text=Grey93
+# Direct message text
+main.text.me=Grey93
+main.text.them=Grey93
+# Profanity ASCII art title
+main.splash=Cyan1
+main.help.header=white
+# Timestamp on the left
+main.time=bold_black
+
+# Notifications in console when someone's status changes
+online=white
+away=bold_yellow
+chat=Green1
+dnd=bold_red
+xa=yellow
+offline=bold_black
+
+occupants.header=bold_black
+roster.header=bold_black
+roster.chat=Green1
+roster.chat.active=Green1
+roster.chat.unread=bold_cyan
+roster.online=white
+roster.online.active=white
+roster.online.unread=bold_cyan
+roster.away=bold_yellow
+roster.away.active=bold_yellow
+roster.away.unread=bold_cyan
+roster.xa=yellow
+roster.xa.active=yellow
+roster.xa.unread=bold_cyan
+roster.dnd=bold_red
+roster.dnd.active=bold_red
+roster.dnd.unread=bold_cyan
+roster.offline=bold_black
+roster.offline.active=bold_black
+roster.offline.unread=bold_cyan
+roster.room=white
+roster.room.unread=bold_white
+roster.room.mention=bold_cyan
+roster.room.trigger=bold_cyan
+
+otr.started.trusted=green
+otr.started.untrusted=yellow
+otr.ended=red
+otr.trusted=green
+otr.untrusted=yellow
+
+incoming=bold_yellow
+mention=bold_cyan
+trigger=yellow
+typing=yellow
+gone=bold_black
+error=bold_black
+roominfo=bold_white
+roommention=bold_cyan
+roommention.term=bold_cyan
+roomtrigger=bold_black
+roomtrigger.term=bold_black
+subscribed=white
+unsubscribed=bold_black
+
+# Usernames
+me=white
+them=bold_cyan
+receipt.sent=bold_black

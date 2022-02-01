@@ -1,0 +1,73 @@
+# ~/.muttrc
+
+# Identity
+set from = "john.doe@example.com"
+set realname = "John Doe"
+
+# Sending mail with SMTPS
+# TLS is  `smtps://` and port 465
+# non-TLS `smtp://`  and port 25 or 587
+set smtp_url = "smtps://me@example.com@mail.example.com:465/"
+set smtp_pass = "password"
+
+# Receiving mail with IMAPS
+# TLS is  `imaps://` with port 993
+# non-TLS `imap://`  with port 143
+# Omit password, and it will prompt you
+set imap_user = "me@example.com"
+set imap_pass = "password"
+set folder = "imaps://mail.example.com:993"
+set spoolfile = "+INBOX"
+# Automatically fetch mailbox folders from server
+set imap_check_subscribed = yes
+
+# Turn on sidebar showing folders
+set sidebar_visible = yes
+
+# Set editor when composing
+set editor = "vim"
+
+# Sorting
+# Default sort will put oldest emails at top `last-date-received`
+# Use `reverse-last-date-received` to have newest messages at top
+set sort = reverse-last-date-received
+# or try `set sort = threads`
+
+# Colors (general)
+color normal     white         default
+color status     cyan          default
+color indicator  brightcyan    default
+color tree       magenta       default
+color error      brightred     default
+color message    brightmagenta default
+# Color headers
+color header     brightyellow  default "^from:"
+color header     yellow        default "^to:"
+color header     yellow        default "^cc:"
+color header     blue          default "^date:"
+color header     brightblue    default "^subject:"
+# Color bodies
+color attachment brightblack   default
+color search     red           brightblack
+color signature  cyan          default
+color tilde      blue          default
+# Color URLs
+color body       brightblue    default "(^|<| )mailto:[^ ]+@[^ ]( |>|$)"
+color body       brightblue    default "(^|<| )(http|https|ftp)://[^ ]+( |>|$)"
+# Quoted emails
+color quoted     magenta       default
+color quoted1    cyan          default
+color quoted2    green         default
+color quoted3    magenta       default
+color quoted4    cyan          default
+color quoted5    green         default
+color quoted6    magenta       default
+color quoted7    cyan          default
+
+
+
+
+
+
+# To manually set folders
+#mailboxes =INBOX =INBOX.Sent =Inbox.Trash

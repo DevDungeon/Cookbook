@@ -1,0 +1,71 @@
+background yes
+use_xft yes
+xftfont Sans:size=8
+xftalpha 1
+update_interval 1.5
+total_run_times 0
+own_window yes
+own_window_transparent yes
+own_window_type normal #desktop
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+double_buffer yes
+minimum_size 300 200
+maximum_width 600
+draw_shades yes
+draw_outline no
+draw_borders no
+draw_graph_borders yes
+default_color white
+default_shade_color black
+default_outline_color white
+alignment top_right
+gap_x 15
+gap_y 5
+no_buffers yes
+uppercase no
+cpu_avg_samples 2
+override_utf8_locale yes
+
+color1 white
+default_shade_color 7a999c
+default_outline_color green
+
+TEXT
+${color}${font Radio Space:bold:size=10:}SYSTEM${hr 2}
+${font OpenLogos:size=10}${color}- ${color1}${font}Kernel${alignr}${kernel}
+${font StyleBats:size=10}${color}- ${color1}${font}Uptime${alignr}${uptime}
+
+${font Radio Space:bold:size=10}${color}PROCESSORS ${hr 2}${font sans-serif:normal:size=8}${color1}
+${font poky:size=10}${color}- ${color1}${font}AVG: ${cpu cpu0}% ${color}${cpubar cpu0}
+${font poky:size=10}${color}- ${color1}${font}${color1}CPU1: ${cpu cpu1}% ${color}${cpubar cpu1}
+${font poky:size=10}${color}- ${color1}${font}${color1}CPU2: ${cpu cpu2}% ${color}${cpubar cpu2}
+
+${font Radio Space:bold:size=10}${color}MEMORY ${hr 2}
+${font stylebats:size=10}${color}- ${color1}${font}${color1}${font sans-serif:normal:size=8}${color1}RAM $alignc $mem / $memmax 
+$alignr $memperc% 
+${color}$membar
+
+${font Radio Space:bold:size=10}${color}DISK SPACE ${hr 2} 
+${font poky}- ${font sans-serif:normal:size=8}${color1}/ $alignc ${fs_used /} / ${fs_size /} $alignr${fs_used_perc /}%
+${color}${fs_bar /}
+${font poky}- ${if_existing /data}${font sans-serif:normal:size=8}${color1}Data $alignc ${fs_used /data} / ${fs_size /data} $alignr${fs_used_perc /data}% ${endif} 
+${if_existing /data}${color}${fs_bar /data}${endif}
+
+${font Radio Space:bold:size=10}${color}TOP PROCESSES (MEMORY) ${hr 2}
+${font StyleBats:size=10}${color}- ${color1}${font}${color1}${top_mem name 1}${alignr}${top mem 1} %
+${font StyleBats:size=10}${color}- ${color1}${font}${color1}${top_mem name 2}${alignr}${top mem 2} %
+${font StyleBats:size=10}${color}- ${color1}${font}${color1}${top_mem name 3}${alignr}${top mem 3} %
+${font StyleBats:size=10}${color}- ${color1}${font}${color1}${top_mem name 4}${alignr}${top mem 4} %
+${font StyleBats:size=10}${color}- ${color1}${font}${color1}${top_mem name 5}${alignr}${top mem 5} %
+
+${font Radio Space:bold:size=10}${color}TOP PROCESSES (CPU) ${hr 2}
+${font StyleBats:size=10}${color}- ${color1}${font}${color1}${top_mem name 1}${alignr}${top cpu 1} %
+${font StyleBats:size=10}${color}- ${color1}${font}${color1}${top_mem name 2}${alignr}${top cpu 2} %
+${font StyleBats:size=10}${color}- ${color1}${font}${color1}${top_mem name 3}${alignr}${top cpu 3} %
+${font StyleBats:size=10}${color}- ${color1}${font}${color1}${top_mem name 4}${alignr}${top cpu 4} %
+${font StyleBats:size=10}${color}- ${color1}${font}${color1}${top_mem name 5}${alignr}${top cpu 5} %
+
+${font Radio Space:bold:size=10}${color}NETWORK (enp4s0)${hr 2}
+${font PizzaDude Bullets:size=10}${color}- ${font}${color1}IP address: $alignr ${addr enp4s0}
+${font PizzaDude Bullets:size=10}${color}- ${font}${color1}DOWN: $alignr ${downspeed enp4s0}/${totaldown enp4s0}
+${font PizzaDude Bullets:size=10}${color}- ${font}${color1}UP: $alignr ${upspeed enp4s0}/${totalup enp4s0}

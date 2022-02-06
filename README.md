@@ -6,6 +6,12 @@ If you are a beginner, you will probably want to start out with one language lik
 
 Here is an example of when my Cookbook comes in handy. Recently I was faced with a situation where I needed to make an HTTP request to an API, parse the JSON response, generate a CSV spreadsheet, and email the spreadsheet. Because I already had my own cookbook snippets for doing each of those three actions, it was really easy to put together a program that did what I needed it to.
 
+## Watch the video
+
+  
+[![The Cookbook Method](https://img.youtube.com/vi/8vmUTz6it5A/0.jpg)](https://www.youtube.com/watch?v=8vmUTz6it5A "The Cookbook Method")
+
+
 ### Benefits of Building Your Own Cookbook
 
 * You can share it with others

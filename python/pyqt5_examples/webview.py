@@ -1,5 +1,9 @@
 #!/usr/bin/python
 # https://pythonspot.com/pyqt5-webkit-browser/
+# pip install pyqtwebengine
+# or in Debian
+# sudo apt install python3-pyqt5.qtwebengine
+
 import PyQt5
 from PyQt5.QtCore import QUrl
 from PyQt5.QtWidgets import QApplication, QWidget

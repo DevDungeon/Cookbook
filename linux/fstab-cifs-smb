@@ -1,0 +1,12 @@
+### Mount SMB drive on boot
+## Append in /etc/fstab
+# `sudo apt install cifs-utils`
+
+# Cred file should contain the following and be chmod 400:
+
+#username=smbuser
+#passsword=secret pass
+
+# Remount all with `sudo mount -a`
+
+//mynas.local/music /mnt/music cifs uid=mylinuxuser,gid=sudo,credentials=/root/smbcreds.txt

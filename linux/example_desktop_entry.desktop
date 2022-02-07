@@ -6,6 +6,8 @@
 #    /usr/local/share/applications/
 #    $HOME/.local/share/applications/
 
+# For an app to autorun in Debian desktop, put
+# the .desktop entry into `~/.config/autostart/`
 
 # Application, Links (URL), or Directory (sub-group for applications)
 Type=Application

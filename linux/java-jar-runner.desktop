@@ -1,0 +1,18 @@
+# /usr/share/applications/java-jar-runner.desktop
+# ~/.local/share/applications/java-jar-runner.desktop
+# May also need to update ~/.ocal/share/applications/defaults.list:
+
+# [Default Applications]
+# application/x-java-archive=java-jar-runner.desktop
+[Desktop Entry]
+Name=Java
+Comment=Java
+GenericName=Java
+Keywords=java
+Exec=java -jar %f
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+MimeType=application/x-java-archive
+StartupNotify=true
+#Icon=/path/to/.png

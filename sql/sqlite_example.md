@@ -1,6 +1,4 @@
-# SQlite notes
-
-Reference: [https://www.devdungeon.com/content/sqlite3-tutorial](https://www.devdungeon.com/content/sqlite3-tutorial)
+# SQLite notes
 
 
 ```sql

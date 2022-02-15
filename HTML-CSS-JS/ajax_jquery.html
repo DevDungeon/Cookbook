@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script>
+        function makeRequest() {
+            // If you need form data, use
+            //  $('form').serializeArray()
+            $.ajax({
+                method: "POST",
+                url: "https://httpbin.org/post",
+                data: { value: "hello" }
+            }).done(msg => {
+                $("#results").text(JSON.stringify(msg))
+            });
+        }
+    </script>
+
+    <button onClick="makeRequest()">Make request</button>
+
+    <h2>Results</h2>
+    <div><pre id="results"></pre></div>
+</body>
+</html>

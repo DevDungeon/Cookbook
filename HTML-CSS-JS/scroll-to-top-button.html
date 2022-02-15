@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Add a scroll to top button. Reference: https://css-tricks.com/how-to-make-an-unobtrusive-scroll-to-top-button/ -->
+    <style>
+        .scrollToTopBtn {
+            background-color: #22222255;
+            border: none;
+            color: #EEEEEE;
+            cursor: pointer;
+            font-size: 24px;
+            line-height: 48px;
+            width: 48px;
+            rotate: -90deg;
+            position: fixed; /* place it at the bottom right corner */
+            bottom: 20px;
+            right: 20px;
+            z-index: 100; /* keep it at the top of everything else */
+            opacity: 0; /* hide with opacity */
+            transform: translateY(100px); /* also add a translate effect */
+            transition: all 0.5s ease; /* and a transition */
+        }
+
+        .showBtn {
+            opacity: 1;
+            transform: translateY(0)
+        }
+    </style>
+
+
+<button class="scrollToTopBtn">ᐅ</button>
+    
+     <script>
+        // Handle back-to-top button
+        // https://css-tricks.com/how-to-make-an-unobtrusive-scroll-to-top-button/
+        var rootElement = document.documentElement
+        var scrollToTopBtn = document.querySelector(".scrollToTopBtn");
+
+        function handleScroll() {
+            // Do something on scroll
+            var scrollTotal = rootElement.scrollHeight - rootElement.clientHeight
+            if ((rootElement.scrollTop / scrollTotal) > 0.20) { // Show at what percentage (20%)
+                // Show button
+                scrollToTopBtn.classList.add("showBtn")
+            } else {
+                // Hide button
+                scrollToTopBtn.classList.remove("showBtn")
+            }
+        }
+        document.addEventListener("scroll", handleScroll)
+
+
+        function scrollToTop() {
+            rootElement.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+        scrollToTopBtn.addEventListener("click", scrollToTop);
+    </script>
+
+    <pre>
+    Lorem ipsum dolor, sit amet 
+    consectetur adipisicing elit. 
+    Nemo esse exercitationem quis cupiditate
+     itaque qui, provident inventore voluptatum blanditiis
+      harum ut, aspernatur asperiores obcaecati quam odio 
+      necessitatibus optio ab ex.
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+    Fugit rem nam iste, dolorum illo ut ipsum non, ad ea sunt
+     architecto, ipsam deleniti esse ipsa nobis mollitia delec
+     tus eaque eos.
+     Lorem ipsum dolor, sit amet 
+     consectetur adipisicing elit. 
+     Nemo esse exercitationem quis cupiditate
+      itaque qui, provident inventore voluptatum blanditiis
+       harum ut, aspernatur asperiores obcaecati quam odio 
+       necessitatibus optio ab ex.
+     Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+     Fugit rem nam iste, dolorum illo ut ipsum non, ad ea sunt
+      architecto, ipsam deleniti esse ipsa nobis mollitia delec
+      tus eaque eos.
+      Lorem ipsum dolor, sit amet 
+      consectetur adipisicing elit. 
+      Nemo esse exercitationem quis cupiditate
+       itaque qui, provident inventore voluptatum blanditiis
+        harum ut, aspernatur asperiores obcaecati quam odio 
+        necessitatibus optio ab ex.
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+      Fugit rem nam iste, dolorum illo ut ipsum non, ad ea sunt
+       architecto, ipsam deleniti esse ipsa nobis mollitia delec
+       tus eaque eos.
+       Lorem ipsum dolor, sit amet 
+       consectetur adipisicing elit. 
+       Nemo esse exercitationem quis cupiditate
+        itaque qui, provident inventore voluptatum blanditiis
+         harum ut, aspernatur asperiores obcaecati quam odio 
+         necessitatibus optio ab ex.
+       Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+       Fugit rem nam iste, dolorum illo ut ipsum non, ad ea sunt
+        architecto, ipsam deleniti esse ipsa nobis mollitia delec
+        tus eaque eos.
+        Lorem ipsum dolor, sit amet 
+    consectetur adipisicing elit. 
+    Nemo esse exercitationem quis cupiditate
+     itaque qui, provident inventore voluptatum blanditiis
+      harum ut, aspernatur asperiores obcaecati quam odio 
+      necessitatibus optio ab ex.
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+    Fugit rem nam iste, dolorum illo ut ipsum non, ad ea sunt
+     architecto, ipsam deleniti esse ipsa nobis mollitia delec
+     tus eaque eos.
+     Lorem ipsum dolor, sit amet 
+     consectetur adipisicing elit. 
+     Nemo esse exercitationem quis cupiditate
+      itaque qui, provident inventore voluptatum blanditiis
+       harum ut, aspernatur asperiores obcaecati quam odio 
+       necessitatibus optio ab ex.
+     Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+     Fugit rem nam iste, dolorum illo ut ipsum non, ad ea sunt
+      architecto, ipsam deleniti esse ipsa nobis mollitia delec
+      tus eaque eos.
+      Lorem ipsum dolor, sit amet 
+      consectetur adipisicing elit. 
+      Nemo esse exercitationem quis cupiditate
+       itaque qui, provident inventore voluptatum blanditiis
+        harum ut, aspernatur asperiores obcaecati quam odio 
+        necessitatibus optio ab ex.
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+      Fugit rem nam iste, dolorum illo ut ipsum non, ad ea sunt
+       architecto, ipsam deleniti esse ipsa nobis mollitia delec
+       tus eaque eos.
+       Lorem ipsum dolor, sit amet 
+       consectetur adipisicing elit. 
+       Nemo esse exercitationem quis cupiditate
+        itaque qui, provident inventore voluptatum blanditiis
+         harum ut, aspernatur asperiores obcaecati quam odio 
+         necessitatibus optio ab ex.
+    </pre>
+</body>
+</html>

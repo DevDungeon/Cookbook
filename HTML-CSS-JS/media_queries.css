@@ -1,0 +1,8 @@
+
+/* Default Styles for anything larger than 600px wide */
+#full-menu { display: block; }
+#compact-menu { display: none; }
+
+/* Special styles to be applied only on browsers less than 600px wide */
+@media (max-width: 600px) { #full-menu { display: none; }
+#compact-menu { display: block; } }

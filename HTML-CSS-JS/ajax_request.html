@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+  <script>
+  // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
+  function makeHttpRequest() {
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = processResponse;
+    req.open("GET", "https://httpbin.org/get");
+    req.send();
+
+    function processResponse() {
+      if (req.readyState != 4) return; // State 4 is DONE
+      document.getElementById("results").innerText = req.responseText;
+    }
+  }
+  </script>
+
+  <button onClick="makeHttpRequest()">Make request</button>
+
+  <h2>Results</h2>
+  <div>
+    <pre id="results"></pre>
+  </div>
+
+</body>
+</html>

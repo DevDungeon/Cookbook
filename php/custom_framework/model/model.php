@@ -11,8 +11,7 @@ $db->exec("CREATE TABLE IF NOT EXISTS posts (title TEXT, content TEXT)");
 
 /**
  *
- *  Define functions for application. E.g. Get user profiles, Create new entry.
- *
+ *  Define functions for application. E.g. Get post, delete post
  * 
  */
 function get_posts() {
@@ -52,19 +51,15 @@ function delete_post($id) {
 
 
 /* 
-  In the "controller", include this mode.php and start using functions
+  Example usage in controller:
 */
 // require_once('model.php');
-
-// CREATE
+// // CREATE
 add_post("New post", "lorem ipsum...");
-
-// READ
-print_r(get_posts());
-print_r(get_post(4));
-
-// UPDATE
-update_post(4, 'New 4 title', 'new 4 content');
-
-// DELETE
-delete_post(4);
+// // READ
+// print_r(get_posts());
+// print_r(get_post(4));
+// // UPDATE
+// update_post(4, 'New 4 title', 'new 4 content');
+// // DELETE
+// delete_post(4);

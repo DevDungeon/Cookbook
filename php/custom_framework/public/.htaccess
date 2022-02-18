@@ -1,4 +1,5 @@
 # .htaccess
+# Ensure all requests go through the router
 RewriteEngine On
 RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-d

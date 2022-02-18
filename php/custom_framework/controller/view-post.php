@@ -13,5 +13,4 @@ $post4 = get_post(4);
 /**
  * View
  */
-render('view-post');
-// require '../view/php/view-post.tpl.php';
+require '../view/view-post.php';

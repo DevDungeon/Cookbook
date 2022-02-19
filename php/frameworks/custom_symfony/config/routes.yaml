@@ -1,0 +1,7 @@
+home:  # name
+    path: /
+    controller: App\Controller\MainController::hi
+
+post:
+    path: /post
+    controller: App\Controller\PostController::index

@@ -1,0 +1,10 @@
+{
+    "require": {
+        "symfony/config": "^6.0",
+        "symfony/http-kernel": "^6.0",
+        "symfony/http-foundation": "^6.0",
+        "symfony/routing": "^6.0",
+        "symfony/dependency-injection": "^6.0",
+        "symfony/framework-bundle": "^6.0"
+    }
+}

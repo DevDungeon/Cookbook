@@ -1,1 +1,0 @@
-https://github.com/DevDungeon/PHP-Composer-Package-Example

@@ -1,4 +1,6 @@
-all: my_os.asm
+default: clean build run_iso
+
+build:
 	mkdir build/
 	# Compile
 	nasm -f bin -o build/my_os_binary.bin my_os.asm

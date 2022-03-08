@@ -1,0 +1,18 @@
+#!/bin/bash -ex
+
+rm -f boot.o boot.elf boot.bin
+
+
+as -o boot.o bootloader.S
+#as -o boot.o minimal.S
+ld -Ttext 0x7C00 -o boot.elf boot.o
+objcopy -O binary boot.elf boot.bin
+
+# OR: provide the <entry> label from the asm code (like _start but something else)
+# ld -o boot.bin --oformat binary -e <entry> -Ttext 0x7c00 -o boot.bin boot.o
+
+# Run
+# Alt-2 and then type `quit` to exit
+# if using -nographic, then get prompt with `CTRL-A c`
+qemu-system-i386 -drive format=raw,file=boot.bin -display curses
+

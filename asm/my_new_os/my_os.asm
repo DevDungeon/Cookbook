@@ -1,24 +1,28 @@
-BITS 16
+; Reference: http://mikeos.sourceforge.net/write-your-own-os.html
+
+	BITS 16 ; In boot mode, you're in real mode, 16 bits
+
 start:
-	mov ax, 07C0h		; Set up 4K stack space after this bootloader
+
+	mov ax, 07C0h	; Set up 4K stack space after this bootloader
 	add ax, 288		; (4096 + 512) / 16 bytes per paragraph
 	mov ss, ax
 	mov sp, 4096
 
-	mov ax, 07C0h		; Set data segment to where we're loaded
+	mov ax, 07C0h	; Set data segment to where we're loaded
 	mov ds, ax
 
-
-	mov si, text_string	; Put string position into SI
-	call print_string	; Call our string-printing routine
+	mov si, text_string	; Put string position into source index
+	call print_string	; Call the function
 
 	jmp $			; Jump here - infinite loop!
 
+		; 0xa for newline (move down) and 0xd for carriage return (go left)
+	text_string db 'MikeOS tutorial works!', 0xa, 0xd, 'Yay!!', 0
 
-	text_string db 'This is my cool new OS!', 0
 
 
-print_string:			; Routine: output string in SI to screen
+print_string:		; Print string in SI to screen
 	mov ah, 0Eh		; int 10h 'print char' function
 
 .repeat:

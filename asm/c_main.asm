@@ -1,26 +1,36 @@
-; Because we have a reference to 'main'
-; we can compile with nasm to create the
-; .o object file, and then compile that with
-; gcc. Example
-; nasm -f elf64 c_main.asm 
-; gcc c_main.o
-; ./a.out
+	BITS 16
+start:
+	mov ax, 07C0h		; Set up 4K stack space after this bootloader
+	add ax, 288		; (4096 + 512) / 16 bytes per paragraph
+	mov ss, ax
+	mov sp, 4096
 
-SECTION .DATA
-	hello:     db 'Hello world!',10
-	helloLen:  equ $-hello
+	mov ax, 07C0h		; Set data segment to where we're loaded
+	mov ds, ax
 
-SECTION .TEXT
-	GLOBAL main
 
-main:
-	mov eax,4            ; 'write' system call = 4
-	mov ebx,2            ; file descriptor 1 = STDOUT
-	mov ecx,hello        ; string to write
-	mov edx,helloLen     ; length of string to write
-	int 80h              ; call the kernel
+	mov si, text_string	; Put string position into SI
+	call print_string	; Call our string-printing routine
 
-	; Terminate program
-	mov eax,1            ; 'exit' system call
-	mov ebx,0            ; exit with error code 0
-	int 80h              ; call the kernel
+	jmp $			; Jump here - infinite loop!
+
+
+	text_string db 'This is my cool new OS!', 0
+
+
+print_string:			; Routine: output string in SI to screen
+	mov ah, 0Eh		; int 10h 'print char' function
+
+.repeat:
+	lodsb			; Get character from string
+	cmp al, 0
+	je .done		; If char is zero, end of string
+	int 10h			; Otherwise, print it
+	jmp .repeat
+
+.done:
+	ret
+
+
+	times 510-($-$$) db 0	; Pad remainder of boot sector with 0s
+	dw 0xAA55		; The standard PC boot signature

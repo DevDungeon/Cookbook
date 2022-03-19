@@ -1,0 +1,1 @@
+puts $::env(SHELL)

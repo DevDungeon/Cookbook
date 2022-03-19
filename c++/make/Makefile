@@ -1,7 +1,7 @@
 # By default running make with no args runs first make rule
+SHELL := /bin/bash
 
-my_custom_make:
-	g++ main.cpp -o main -Wall -g
+all: clean debug run
 
 debug:
 	g++ main.cpp -Wall -g
@@ -10,5 +10,10 @@ release:
 	g++ main.cpp -Wall -static
 
 clean:
-	rm main
+	if [[ -f main ]]; then rm main; fi
+
+run:
+	./a.out
+
+
 

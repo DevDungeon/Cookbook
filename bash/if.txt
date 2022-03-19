@@ -2,7 +2,12 @@
 if [ -e /file/to/test.txt ]
 then
   echo "Exists"
+else
+  echo "Does not exist"
 fi
+
+# If/else on a single line
+if [ -e /asdf ]; then echo "yes"; else echo "no"; fi
 
 # Is file a directory?
 if [ -d /file/to/test ]

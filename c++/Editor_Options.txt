@@ -13,6 +13,11 @@ NetBeans
 CLion
 Eclipse
 Dev-C++
+sfte
+fp-ide
+joe
+mcedit
+
 
 Windows Only
 ------------

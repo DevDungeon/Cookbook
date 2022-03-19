@@ -17,21 +17,21 @@ void setup() {
   
   // set up the LCD's number of rows and columns:
   lcd.begin(16, 2);
-} 
 
-void loop() {
-  // turn on LCD backlight
+    // turn on LCD backlight
  lcd.setBacklight(HIGH);
  
  // what will write first line
- lcd.print("    TINYLAB     ");
+ lcd.print("    TINYLAB!    ");
  
  lcd.setCursor(0, 1);
  
  // what will write second line
  lcd.print(" by Sixfab Inc.");
+} 
+
+void loop() {
+
 }
  
  
-
-

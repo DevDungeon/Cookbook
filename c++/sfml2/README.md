@@ -63,5 +63,7 @@ g++ -c main.cpp -I<sfml-install-path>/include
 g++ main.o -o sfml-app -L<sfml-install-path>/lib -lsfml-graphics -lsfml-window -lsfml-system
 ```
 
+## Docs
 
+To build docs, go into `docs/`and run `doxygen` to get the HTML files.
 
